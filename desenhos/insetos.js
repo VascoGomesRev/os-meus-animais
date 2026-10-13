@@ -139,5 +139,161 @@ besouro: `<g class="corpo">
  <path class="orelha" d="M84 34 Q62 8 40 12 M136 34 Q158 8 180 12" stroke="#5DB33E" stroke-width="3" fill="none" stroke-linecap="round"/>
  <path d="M50 48 Q110 10 170 48 Q156 108 110 112 Q64 108 50 48 Z" fill="#9BE06A"/>
  ${olhos(80,140,58,13,15)}${bochechas(82,138,84)}${sorriso(110,90)}
+</g>`,
+grilo: `<g class="corpo">
+ <path d="M70 150 L40 120 L28 200 M150 150 L180 120 L192 200" stroke="#3A2A1E" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M92 186 L86 204 M128 186 L134 204" stroke="#3A2A1E" stroke-width="6" stroke-linecap="round"/>
+ <ellipse cx="110" cy="160" rx="46" ry="36" fill="#4A3426"/>
+ <path class="asa" d="M108 130 Q70 134 70 170 Q90 192 108 190 Z" fill="#6B4C36"/>
+ <path class="asa" d="M112 130 Q150 134 150 170 Q130 192 112 190 Z" fill="#6B4C36"/>
+ <path class="orelha" d="M88 46 Q60 4 6 20 M132 46 Q160 4 214 20" stroke="#2B1E15" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="110" cy="86" r="48" fill="#3B2A20"/>
+ <ellipse cx="90" cy="60" rx="12" ry="7" fill="#7A5A44" opacity=".7"/>
+ ${olhos(92,128,84,11,13)}${bochechas(76,144,104)}${sorriso(110,108,'#fff')}
+</g>`,
+vespa: `<g class="corpo">
+ <ellipse class="asa" cx="62" cy="112" rx="40" ry="16" transform="rotate(-30 62 112)" fill="#E6F4FA" opacity=".85" stroke="#B9D3DE" stroke-width="2"/>
+ <ellipse class="asa" cx="158" cy="112" rx="40" ry="16" transform="rotate(30 158 112)" fill="#E6F4FA" opacity=".85" stroke="#B9D3DE" stroke-width="2"/>
+ <path d="M96 150 L80 200 M124 150 L140 200" stroke="#222" stroke-width="4" stroke-linecap="round"/>
+ <ellipse cx="110" cy="174" rx="22" ry="32" fill="#FFD21F"/>
+ <path d="M90 166 h40 M92 184 h36" stroke="#222" stroke-width="8" stroke-linecap="round"/>
+ <path d="M104 204 L110 214 L116 204 Z" fill="#222"/>
+ <ellipse cx="110" cy="140" rx="7" ry="8" fill="#222"/>
+ <ellipse cx="110" cy="124" rx="18" ry="14" fill="#FFD21F"/>
+ <path d="M92 40 Q78 14 64 14 M128 40 Q142 14 156 14" stroke="#222" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <ellipse cx="110" cy="74" rx="44" ry="42" fill="#FFD21F"/>
+ <path d="M72 50 Q110 26 148 50 Q130 40 110 40 Q90 40 72 50 Z" fill="#222"/>
+ ${olhos(92,128,74,11,13)}${bochechas(78,142,94)}${sorriso(110,96)}
+</g>`,
+mosquito: `<g class="corpo">
+ <ellipse class="asa" cx="60" cy="100" rx="44" ry="14" transform="rotate(-20 60 100)" fill="#EEF6FA" opacity=".85" stroke="#C2D3DB" stroke-width="2"/>
+ <ellipse class="asa" cx="160" cy="100" rx="44" ry="14" transform="rotate(20 160 100)" fill="#EEF6FA" opacity=".85" stroke="#C2D3DB" stroke-width="2"/>
+ <path d="M100 130 L56 150 L30 204 M104 136 L76 170 L66 204 M120 130 L164 150 L190 204 M116 136 L144 170 L154 204" stroke="#6F7378" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <ellipse cx="110" cy="166" rx="12" ry="40" fill="#8E9398"/>
+ <path d="M100 150 h20 M100 166 h20 M100 182 h20" stroke="#6F7378" stroke-width="3"/>
+ <ellipse cx="110" cy="128" rx="18" ry="14" fill="#8E9398"/>
+ <path d="M96 42 Q86 20 74 20 M124 42 Q134 20 146 20" stroke="#6F7378" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <circle cx="110" cy="78" r="40" fill="#A8ADB2"/>
+ <path d="M110 100 L110 124" stroke="#4E5257" stroke-width="4" stroke-linecap="round"/>
+ ${olhos(94,126,72,11,13)}${bochechas(80,140,88)}${sorriso(110,90)}
+</g>`,
+traca: `<g class="corpo">
+ <path class="asa" d="M108 96 L24 190 Q60 204 108 196 Z" fill="#C9BBA4"/>
+ <path class="asa" d="M112 96 L196 190 Q160 204 112 196 Z" fill="#C9BBA4"/>
+ <path d="M60 170 Q80 160 100 172 M120 172 Q140 160 160 170" stroke="#A8977C" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="70" cy="184" r="5" fill="#A8977C"/><circle cx="150" cy="184" r="5" fill="#A8977C"/>
+ <ellipse cx="110" cy="150" rx="18" ry="48" fill="#B3A68F"/>
+ <path class="orelha" d="M92 44 Q76 18 60 10 M128 44 Q144 18 160 10" stroke="#8C7D66" stroke-width="3" fill="none"/>
+ <path d="M84 34 l-8 -4 M78 24 l-8 -2 M70 16 l-8 0 M136 34 l8 -4 M142 24 l8 -2 M150 16 l8 0" stroke="#8C7D66" stroke-width="3" stroke-linecap="round"/>
+ <circle cx="110" cy="80" r="42" fill="#D8CDB9"/>
+ ${olhos(94,126,78,11,13)}${bochechas(80,140,96)}${sorriso(110,98)}
+</g>`,
+'bicho-da-seda': `<g class="corpo">
+ <ellipse cx="184" cy="178" rx="24" ry="30" fill="#FFF6D6"/>
+ <path d="M166 166 Q184 158 202 166 M164 182 Q184 174 204 182 M168 196 Q184 190 200 196" stroke="#E8DBA8" stroke-width="3" fill="none"/>
+ <ellipse cx="54" cy="186" rx="26" ry="20" fill="#F2F2EC"/>
+ <ellipse cx="84" cy="176" rx="30" ry="26" fill="#F7F7F2"/>
+ <ellipse cx="116" cy="164" rx="32" ry="30" fill="#FBFBF7"/>
+ <path d="M52 204 v-4 M80 204 v-4 M112 204 v-6 M140 204 v-6" stroke="#D9D4C7" stroke-width="6" stroke-linecap="round"/>
+ <path class="cauda" d="M30 184 Q24 170 32 164" stroke="#D9D4C7" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <circle cx="110" cy="92" r="54" fill="#FFFFFF"/>
+ <path d="M80 44 Q90 36 100 42 M120 42 Q130 36 140 44" stroke="#D9D4C7" stroke-width="4" fill="none" stroke-linecap="round"/>
+ ${olhos(90,130,90,12,14)}${bochechas(72,148,112)}${sorriso(110,114)}
+</g>`,
+centopeia: `<g class="corpo">
+ <path d="M20 184 v18 M36 184 v18 M52 180 v20 M68 176 v22 M84 172 v24 M100 168 v28 M116 164 v32 M132 160 v36 M148 158 v38 M24 184 l-6 16 M40 184 l-6 16 M56 180 l-6 18 M72 176 l-6 20 M88 172 l-6 22 M104 168 l-6 26 M120 164 l-6 30 M136 160 l-6 34" stroke="#C4501E" stroke-width="4" stroke-linecap="round"/>
+ <circle class="cauda" cx="24" cy="180" r="14" fill="#F07A2E"/>
+ <circle cx="42" cy="176" r="16" fill="#F58A3C"/>
+ <circle cx="62" cy="172" r="17" fill="#F07A2E"/>
+ <circle cx="82" cy="168" r="18" fill="#F58A3C"/>
+ <circle cx="102" cy="164" r="19" fill="#F07A2E"/>
+ <circle cx="124" cy="160" r="20" fill="#F58A3C"/>
+ <circle cx="146" cy="156" r="21" fill="#F07A2E"/>
+ <path class="orelha" d="M136 50 Q120 18 104 14 M170 50 Q190 18 206 18" stroke="#C4501E" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="152" cy="98" r="50" fill="#FF9447"/>
+ ${olhos(134,170,94,11,13)}${bochechas(118,186,114)}${sorriso(152,116)}
+</g>`,
+escorpiao: `<g class="corpo">
+ <path class="cauda" d="M150 170 Q200 160 196 110 Q192 70 160 70" stroke="#C99A5E" stroke-width="16" fill="none" stroke-linecap="round"/>
+ <path d="M160 70 Q150 60 158 52 Q166 62 160 70 Z" fill="#9C7240"/>
+ <path d="M70 176 L44 196 M80 182 L66 204 M140 176 L166 196 M130 182 L144 204" stroke="#A97B45" stroke-width="5" stroke-linecap="round"/>
+ <path d="M70 130 Q40 128 30 104" stroke="#C99A5E" stroke-width="10" fill="none" stroke-linecap="round"/>
+ <path d="M14 98 Q20 70 40 80 L32 92 Q44 96 46 106 Q30 118 14 98 Z" fill="#B78A50"/>
+ <ellipse cx="110" cy="168" rx="48" ry="26" fill="#C99A5E"/>
+ <path d="M80 166 h60 M86 180 h48" stroke="#A97B45" stroke-width="4" stroke-linecap="round"/>
+ <circle cx="104" cy="104" r="44" fill="#DDB27A"/>
+ ${olhos(88,120,100,11,13)}${bochechas(72,136,120)}${sorriso(104,122)}
+</g>`,
+lesma: `<g class="corpo">
+ <path class="cauda" d="M20 202 Q20 180 60 178 L150 172 L150 204 Z" fill="#B07A4A"/>
+ <path d="M40 196 Q80 190 140 192" stroke="#C99466" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path class="orelha" d="M100 62 Q92 30 80 16 M140 62 Q150 30 164 16" stroke="#9C6A3E" stroke-width="7" fill="none" stroke-linecap="round"/>
+ <circle cx="80" cy="16" r="10" fill="#9C6A3E"/><circle cx="164" cy="16" r="10" fill="#9C6A3E"/>
+ <circle cx="80" cy="15" r="5" fill="#2B1E15"/><circle cx="164" cy="15" r="5" fill="#2B1E15"/>
+ <circle cx="82" cy="12" r="2" fill="#fff"/><circle cx="166" cy="12" r="2" fill="#fff"/>
+ <path d="M70 204 Q66 70 122 64 Q176 70 172 204 Z" fill="#C08552"/>
+ <ellipse cx="96" cy="96" rx="10" ry="16" fill="#D9A273" opacity=".7"/>
+ ${olhos(104,140,120,10,12)}${bochechas(90,156,140)}${sorriso(122,142)}
+</g>`,
+cigarra: `<g class="corpo">
+ <path class="asa" d="M100 104 Q30 110 24 200 Q70 196 102 150 Z" fill="#E4F7F2" opacity=".75" stroke="#7FB8A4" stroke-width="3"/>
+ <path class="asa" d="M120 104 Q190 110 196 200 Q150 196 118 150 Z" fill="#E4F7F2" opacity=".75" stroke="#7FB8A4" stroke-width="3"/>
+ <path d="M60 140 L80 170 M160 140 L140 170" stroke="#7FB8A4" stroke-width="2"/>
+ <path d="M92 180 L80 204 M128 180 L140 204" stroke="#5A4630" stroke-width="5" stroke-linecap="round"/>
+ <ellipse cx="110" cy="160" rx="26" ry="42" fill="#7A6040"/>
+ <path d="M90 150 h40 M90 168 h40 M94 186 h32" stroke="#5A4630" stroke-width="4" stroke-linecap="round"/>
+ <ellipse cx="110" cy="80" rx="54" ry="42" fill="#6FA552"/>
+ <circle cx="58" cy="70" r="12" fill="#5A4630"/><circle cx="162" cy="70" r="12" fill="#5A4630"/>
+ ${olhos(92,128,78,11,13)}${bochechas(76,144,98)}${sorriso(110,100)}
+</g>`,
+zangao: `<g class="corpo">
+ <ellipse class="asa" cx="44" cy="70" rx="30" ry="20" transform="rotate(-30 44 70)" fill="#E6F4FA" opacity=".85" stroke="#B9D3DE" stroke-width="2"/>
+ <ellipse class="asa" cx="176" cy="70" rx="30" ry="20" transform="rotate(30 176 70)" fill="#E6F4FA" opacity=".85" stroke="#B9D3DE" stroke-width="2"/>
+ <path d="M80 190 L74 204 M110 196 v8 M140 190 L146 204" stroke="#222" stroke-width="6" stroke-linecap="round"/>
+ <circle cx="110" cy="120" r="88" fill="#FFC21A"/>
+ <path d="M30 150 Q110 180 190 150 L180 172 Q110 204 40 172 Z" fill="#2A2A2A"/>
+ <path d="M24 108 Q110 130 196 108 L198 92 Q110 110 22 92 Z" fill="#2A2A2A"/>
+ <path d="M40 60 l-6 -6 M60 44 l-4 -8 M84 36 l-2 -8 M136 36 l2 -8 M160 44 l4 -8 M180 60 l6 -6" stroke="#E0A400" stroke-width="4" stroke-linecap="round"/>
+ <path d="M90 36 Q80 14 70 10 M130 36 Q140 14 150 10" stroke="#222" stroke-width="5" fill="none" stroke-linecap="round"/>
+ ${olhos(88,132,70,13,15)}${bochechas(66,154,86)}${sorriso(110,88)}
+</g>`,
+'bicho-de-conta': `<g class="corpo">
+ <path d="M60 196 v8 M80 198 v6 M100 200 v4 M120 200 v4 M140 198 v6 M160 196 v8" stroke="#5E646B" stroke-width="5" stroke-linecap="round"/>
+ <path class="cauda" d="M196 196 Q214 150 180 110 Q170 160 150 196 Z" fill="#8A9097"/>
+ <path d="M30 198 Q30 110 110 104 Q190 110 190 198 Z" fill="#9AA0A7"/>
+ <path d="M50 198 Q54 140 70 116 M76 198 Q78 132 90 108 M104 198 V104 M134 198 Q136 132 128 108 M160 198 Q162 140 150 114" stroke="#7A8088" stroke-width="5" fill="none"/>
+ <path class="orelha" d="M84 52 Q66 26 52 24 M136 52 Q154 26 168 24" stroke="#5E646B" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="110" cy="92" r="44" fill="#B4BAC1"/>
+ ${olhos(94,126,88,11,13)}${bochechas(78,142,108)}${sorriso(110,110)}
+</g>`,
+lagartixa: `<g class="corpo">
+ <path class="cauda" d="M110 150 Q140 190 180 180 Q210 170 200 140" stroke="#BFAE8C" stroke-width="12" fill="none" stroke-linecap="round"/>
+ <path d="M84 132 L56 120 L48 108 M136 132 L164 120 L172 108 M88 172 L60 190 L52 202 M132 172 L160 190 L168 202" stroke="#BFAE8C" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <circle cx="46" cy="106" r="6" fill="#CDBD9B"/><circle cx="174" cy="106" r="6" fill="#CDBD9B"/><circle cx="50" cy="204" r="6" fill="#CDBD9B"/><circle cx="170" cy="204" r="6" fill="#CDBD9B"/>
+ <ellipse cx="110" cy="150" rx="22" ry="44" fill="#CDBD9B"/>
+ <circle cx="104" cy="146" r="4" fill="#A8987A"/><circle cx="118" cy="164" r="4" fill="#A8987A"/>
+ <ellipse cx="110" cy="82" rx="66" ry="40" fill="#D8C9AA"/>
+ ${olhos(88,132,70,13,15)}${bochechas(70,150,94)}${sorriso(110,98)}
+</g>`,
+'besouro-veado': `<g class="corpo">
+ <path d="M60 150 L34 140 M58 174 L30 184 M66 194 L46 204 M160 150 L186 140 M162 174 L190 184 M154 194 L174 204" stroke="#2A1A10" stroke-width="6" stroke-linecap="round"/>
+ <ellipse cx="110" cy="164" rx="52" ry="42" fill="#3A2416"/>
+ <path class="asa" d="M108 124 Q62 126 60 164 Q64 200 108 206 Z" fill="#5A3622"/>
+ <path class="asa" d="M112 124 Q158 126 160 164 Q156 200 112 206 Z" fill="#5A3622"/>
+ <path d="M80 72 Q40 60 36 20 Q50 30 54 44 Q60 30 66 36 Q62 52 86 60 Z" fill="#7A3A1E"/>
+ <path d="M140 72 Q180 60 184 20 Q170 30 166 44 Q160 30 154 36 Q158 52 134 60 Z" fill="#7A3A1E"/>
+ <ellipse cx="110" cy="96" rx="46" ry="36" fill="#7A5038"/>
+ <ellipse cx="90" cy="76" rx="10" ry="5" fill="#8C6A50" opacity=".6"/>
+ ${olhos(92,128,94,10,12)}${bochechas(76,144,112)}${sorriso(110,114,'#fff')}
+</g>`,
+tesourinha: `<g class="corpo">
+ <path class="cauda" d="M100 180 Q60 196 92 214 M120 180 Q160 196 128 214" stroke="#4A2A18" stroke-width="10" fill="none" stroke-linecap="round"/>
+ <path d="M86 140 L56 132 M84 160 L54 168 M134 140 L164 132 M136 160 L166 168" stroke="#6B4028" stroke-width="5" stroke-linecap="round"/>
+ <rect x="86" y="110" width="48" height="76" rx="22" fill="#8C5634"/>
+ <path d="M88 150 h44 M88 168 h44" stroke="#6B4028" stroke-width="4" stroke-linecap="round"/>
+ <path class="asa" d="M88 116 h44 v22 Q110 146 88 138 Z" fill="#B07444"/>
+ <path class="orelha" d="M90 40 Q72 14 54 12 M130 40 Q148 14 166 12" stroke="#5A3420" stroke-width="4" fill="none" stroke-linecap="round"/>
+ <circle cx="110" cy="76" r="42" fill="#A0653C"/>
+ ${olhos(94,126,72,11,13)}${bochechas(78,142,92)}${sorriso(110,94,'#fff')}
 </g>`
 });

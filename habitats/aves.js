@@ -119,5 +119,127 @@ cegonha: { nome: 'chaminé', svg: `<g>
  <path d="M44 72 Q110 20 176 72 Z" fill="#B07A45"/>
  <path d="M50 64 Q110 40 170 64 M64 52 Q110 34 156 52" stroke="#8A5A33" stroke-width="4" fill="none"/>
  <path class="balanca" d="M176 70 L196 60" stroke="#8A5A33" stroke-width="4" stroke-linecap="round"/>
+</g>` },
+andorinha: { nome: 'beiral', svg: `<g>
+ <rect x="20" y="70" width="180" height="135" fill="#F2E3C6"/>
+ <path d="M6 76 L214 76 L200 50 L20 50 Z" fill="#D9603B"/>
+ <path d="M30 64 H190" stroke="#B84A2A" stroke-width="4"/>
+ <path d="M120 78 Q150 120 180 78 Z" fill="#B07A45"/>
+ <path d="M130 90 Q150 100 170 90" stroke="#8A5A33" stroke-width="3" fill="none"/>
+ <rect x="44" y="110" width="40" height="40" rx="4" fill="#9FD3F2"/>
+ <path d="M64 110 V150 M44 130 H84" stroke="#FFFFFF" stroke-width="4"/>
+ <rect x="110" y="150" width="34" height="55" rx="4" fill="#8A5A33"/>
+ <circle class="balanca" cx="150" cy="96" r="5" fill="#FFD23F"/>
+</g>` },
+melro: { nome: 'sebe', svg: `<g>
+ <rect x="10" y="190" width="200" height="15" rx="6" fill="#6CC04A"/>
+ <rect x="20" y="100" width="180" height="95" rx="30" fill="#3F8F3A"/>
+ <circle cx="50" cy="104" r="26" fill="#4CAF50"/><circle cx="96" cy="96" r="30" fill="#4CAF50"/><circle cx="146" cy="98" r="28" fill="#4CAF50"/><circle cx="182" cy="108" r="22" fill="#4CAF50"/>
+ <circle cx="60" cy="140" r="6" fill="#2A2A6A"/><circle cx="70" cy="146" r="6" fill="#2A2A6A"/><circle cx="150" cy="150" r="6" fill="#2A2A6A"/><circle cx="160" cy="142" r="6" fill="#2A2A6A"/>
+ <circle cx="110" cy="160" r="8" fill="#FFFFFF"/><circle cx="110" cy="160" r="3" fill="#FFD23F"/>
+ <ellipse class="balanca" cx="190" cy="80" rx="12" ry="6" fill="#6CC04A"/>
+</g>` },
+pardal: { nome: 'arbusto', svg: `<g>
+ <rect x="10" y="190" width="200" height="15" rx="6" fill="#C8A26A"/>
+ <circle cx="110" cy="130" r="64" fill="#5AA845"/>
+ <circle cx="62" cy="152" r="40" fill="#4C9A3A"/><circle cx="158" cy="152" r="40" fill="#4C9A3A"/>
+ <circle cx="90" cy="110" r="5" fill="#E8463C"/><circle cx="140" cy="120" r="5" fill="#E8463C"/><circle cx="70" cy="150" r="5" fill="#E8463C"/><circle cx="150" cy="160" r="5" fill="#E8463C"/>
+ <circle cx="40" cy="198" r="4" fill="#E8C9A0"/><circle cx="52" cy="200" r="4" fill="#E8C9A0"/><circle cx="176" cy="198" r="4" fill="#E8C9A0"/>
+ <ellipse class="balanca" cx="110" cy="64" rx="12" ry="7" fill="#7FCC5A"/>
+</g>` },
+rouxinol: { nome: 'bosque', svg: `<g>
+ <rect x="0" y="186" width="220" height="19" rx="6" fill="#6CC04A"/>
+ <rect x="40" y="110" width="16" height="80" fill="#8A5A33"/><rect x="164" y="100" width="16" height="90" fill="#8A5A33"/><rect x="102" y="120" width="14" height="70" fill="#8A5A33"/>
+ <circle cx="48" cy="90" r="38" fill="#3F8F3A"/><circle cx="172" cy="80" r="40" fill="#3F8F3A"/><circle cx="109" cy="104" r="30" fill="#4CAF50"/>
+ <path d="M56 140 Q110 126 164 136" stroke="#8A5A33" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <circle cx="80" cy="196" r="5" fill="#FFFFFF"/><circle cx="140" cy="196" r="5" fill="#FFD23F"/>
+ <circle class="balanca" cx="110" cy="30" r="12" fill="#FFF3B0"/>
+</g>` },
+mocho: { nome: 'muro velho', svg: `<g>
+ <rect x="30" y="80" width="160" height="125" fill="#B0A590"/>
+ <path d="M30 110 H190 M30 140 H190 M30 170 H190 M70 80 V110 M130 80 V110 M100 110 V140 M160 110 V140 M70 140 V170 M130 140 V170 M100 170 V205 M160 170 V205" stroke="#8A8070" stroke-width="3"/>
+ <path d="M86 140 Q110 100 134 140 Z" fill="#3A3226"/>
+ <path d="M30 80 Q40 60 60 80 Q70 64 90 80" fill="#5AA845"/>
+ <path d="M150 80 Q164 62 190 80" fill="#5AA845"/>
+ <circle class="balanca" cx="180" cy="40" r="14" fill="#FFF3B0"/>
+</g>` },
+garca: { nome: 'caniçal', svg: `<g>
+ <ellipse cx="110" cy="186" rx="104" ry="22" fill="#4FA8E0"/>
+ <path d="M24 196 V90 M40 196 V70 M180 196 V80 M196 196 V100 M58 196 V110" stroke="#5E9A3A" stroke-width="5" stroke-linecap="round"/>
+ <ellipse cx="40" cy="74" rx="5" ry="16" fill="#8A5A33"/><ellipse cx="180" cy="84" rx="5" ry="16" fill="#8A5A33"/><ellipse cx="24" cy="94" rx="5" ry="14" fill="#8A5A33"/>
+ <path d="M80 186 q10 -6 20 0 M130 194 q10 -6 20 0" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+ <ellipse class="balanca" cx="196" cy="100" rx="5" ry="14" fill="#8A5A33"/>
+</g>` },
+colibri: { nome: 'flor grande', svg: `<g>
+ <path d="M110 205 V120" stroke="#4E8A3A" stroke-width="8"/>
+ <ellipse cx="80" cy="170" rx="26" ry="10" fill="#5AA845" transform="rotate(-30 80 170)"/>
+ <ellipse class="balanca" cx="140" cy="160" rx="26" ry="10" fill="#5AA845" transform="rotate(30 140 160)"/>
+ <ellipse cx="110" cy="70" rx="26" ry="44" fill="#FF6F91"/>
+ <ellipse cx="66" cy="96" rx="26" ry="44" fill="#FF6F91" transform="rotate(-60 66 96)"/>
+ <ellipse cx="154" cy="96" rx="26" ry="44" fill="#FF6F91" transform="rotate(60 154 96)"/>
+ <ellipse cx="80" cy="130" rx="22" ry="34" fill="#FF8FAB" transform="rotate(-130 80 130)"/>
+ <ellipse cx="140" cy="130" rx="22" ry="34" fill="#FF8FAB" transform="rotate(130 140 130)"/>
+ <circle cx="110" cy="108" r="22" fill="#FFD23F"/>
+</g>` },
+corvo: { nome: 'torre', svg: `<g>
+ <rect x="70" y="70" width="80" height="135" fill="#9A9AA6"/>
+ <path d="M64 70 V50 H80 V60 H96 V50 H124 V60 H140 V50 H156 V70 Z" fill="#7E7E8C"/>
+ <path d="M70 100 H150 M70 130 H150 M70 160 H150" stroke="#7E7E8C" stroke-width="3"/>
+ <path d="M98 205 V176 Q110 160 122 176 V205 Z" fill="#5A3A22"/>
+ <path d="M102 120 V104 Q110 94 118 104 V120 Z" fill="#2E2E3A"/>
+ <path d="M110 50 V20" stroke="#5A5A5A" stroke-width="3"/>
+ <path class="balanca" d="M110 20 L136 28 L110 36 Z" fill="#E8463C"/>
+ <circle cx="180" cy="40" r="14" fill="#FFF3B0"/>
+</g>` },
+pega: { nome: 'cerca', svg: `<g>
+ <rect x="0" y="188" width="220" height="17" rx="6" fill="#6CC04A"/>
+ <rect x="10" y="120" width="200" height="12" rx="3" fill="#B07A45"/><rect x="10" y="156" width="200" height="12" rx="3" fill="#B07A45"/>
+ <path d="M24 196 V110 L32 100 L40 110 V196 Z M74 196 V110 L82 100 L90 110 V196 Z M130 196 V110 L138 100 L146 110 V196 Z M180 196 V110 L188 100 L196 110 V196 Z" fill="#C8925A"/>
+ <circle cx="110" cy="182" r="7" fill="#FFD23F"/><circle cx="160" cy="184" r="6" fill="#FFFFFF"/>
+ <ellipse class="balanca" cx="60" cy="184" rx="10" ry="5" fill="#4CAF50"/>
+</g>` },
+falcao: { nome: 'castelo', svg: `<g>
+ <rect x="30" y="100" width="160" height="105" fill="#C8BCA8"/>
+ <rect x="20" y="70" width="46" height="135" fill="#B0A490"/><rect x="154" y="70" width="46" height="135" fill="#B0A490"/>
+ <path d="M20 70 V58 H32 V66 H44 V58 H56 V66 H66 V70 Z M154 70 V58 H166 V66 H178 V58 H190 V66 H200 V70 Z" fill="#9A8E7A"/>
+ <path d="M84 205 V160 Q110 130 136 160 V205 Z" fill="#6B4226"/>
+ <rect x="36" y="100" width="14" height="22" rx="7" fill="#3A3226"/><rect x="170" y="100" width="14" height="22" rx="7" fill="#3A3226"/>
+ <path d="M43 58 V30" stroke="#5A5A5A" stroke-width="3"/>
+ <path class="balanca" d="M43 30 L68 38 L43 46 Z" fill="#3E7FD6"/>
+</g>` },
+abutre: { nome: 'penhasco', svg: `<g>
+ <path d="M10 205 L30 110 L70 80 L120 96 L170 70 L210 120 L210 205 Z" fill="#C88A5A"/>
+ <path d="M30 140 L80 130 M120 120 L180 112 M50 170 L140 160" stroke="#A86A3E" stroke-width="5" stroke-linecap="round"/>
+ <path d="M120 96 L170 70 L150 100 Z" fill="#E0A878"/>
+ <ellipse cx="160" cy="196" rx="20" ry="6" fill="#8AA04A"/>
+ <circle cx="40" cy="40" r="16" fill="#FFD23F"/>
+ <path class="balanca" d="M170 70 L176 50" stroke="#6B8A3A" stroke-width="4" stroke-linecap="round"/>
+</g>` },
+arara: { nome: 'palmeira', svg: `<g>
+ <ellipse cx="110" cy="200" rx="80" ry="8" fill="#E8C98A"/>
+ <path d="M104 200 Q96 140 110 70 L120 70 Q108 140 118 200 Z" fill="#B07A45"/>
+ <path d="M100 120 H116 M102 150 H118 M100 176 H118" stroke="#8A5A33" stroke-width="3"/>
+ <path d="M114 70 Q70 40 24 70 Q70 56 114 74 Z" fill="#3FA84A"/>
+ <path d="M114 70 Q160 40 204 72 Q160 58 114 74 Z" fill="#3FA84A"/>
+ <path d="M114 70 Q90 20 50 20 Q90 36 112 72 Z" fill="#4CAF50"/>
+ <path class="balanca" d="M114 70 Q140 20 180 22 Q140 38 116 72 Z" fill="#4CAF50"/>
+ <circle cx="108" cy="78" r="7" fill="#8A5A33"/><circle cx="120" cy="80" r="7" fill="#8A5A33"/>
+</g>` },
+cacatua: { nome: 'poleiro', svg: `<g>
+ <rect x="104" y="60" width="12" height="140" fill="#B07A45"/>
+ <ellipse cx="110" cy="202" rx="50" ry="8" fill="#8A5A33"/>
+ <rect x="40" y="70" width="140" height="12" rx="6" fill="#C8925A"/>
+ <path d="M50 82 Q50 102 64 102 Q78 102 78 82 Z" fill="#3E7FD6"/><path d="M142 82 Q142 102 156 102 Q170 102 170 82 Z" fill="#E8463C"/>
+ <circle cx="58" cy="86" r="4" fill="#FFD23F"/><circle cx="66" cy="88" r="4" fill="#FFD23F"/>
+ <path d="M160 70 V40" stroke="#8A8A8A" stroke-width="3"/>
+ <circle class="balanca" cx="160" cy="44" r="9" fill="#FFD23F"/>
+</g>` },
+perdiz: { nome: 'campo de trigo', svg: `<g>
+ <rect x="0" y="176" width="220" height="29" rx="6" fill="#C8A26A"/>
+ <path d="M20 190 V100 M40 190 V90 M60 190 V110 M160 190 V104 M180 190 V88 M200 190 V100" stroke="#D9A83A" stroke-width="4"/>
+ <ellipse cx="20" cy="96" rx="6" ry="14" fill="#F2C24A"/><ellipse cx="40" cy="86" rx="6" ry="14" fill="#F2C24A"/><ellipse cx="60" cy="106" rx="6" ry="14" fill="#F2C24A"/>
+ <ellipse cx="160" cy="100" rx="6" ry="14" fill="#F2C24A"/><ellipse class="balanca" cx="180" cy="84" rx="6" ry="14" fill="#F2C24A"/><ellipse cx="200" cy="96" rx="6" ry="14" fill="#F2C24A"/>
+ <circle cx="100" cy="40" r="18" fill="#FFD23F"/>
+ <circle cx="88" cy="184" r="6" fill="#E8463C"/>
 </g>` }
 });

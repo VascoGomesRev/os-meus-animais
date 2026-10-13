@@ -78,5 +78,40 @@ canario: { nome: 'poleiro', svg: `<g>
  <path class="balanca" d="M46 106 L46 140 M174 106 L174 140" stroke="#D4A017" stroke-width="3"/>
  <path d="M34 140 L58 140 L54 154 L38 154 Z M162 140 L186 140 L182 154 L166 154 Z" fill="#4A90D9"/>
  <circle cx="96" cy="58" r="5" fill="#F7849E"/><circle cx="122" cy="66" r="5" fill="#FFD600"/><circle cx="112" cy="50" r="4" fill="#FFFFFF"/>
+</g>` },
+ponei: { nome: 'padoque', svg: `<g>
+ <ellipse cx="110" cy="200" rx="100" ry="14" fill="#9ED36A"/>
+ <rect x="22" y="110" width="12" height="92" rx="4" fill="#B87A3E"/><rect x="104" y="110" width="12" height="92" rx="4" fill="#B87A3E"/><rect x="186" y="110" width="12" height="92" rx="4" fill="#B87A3E"/>
+ <rect x="16" y="126" width="188" height="12" rx="5" fill="#D9A066"/><rect x="16" y="160" width="188" height="12" rx="5" fill="#D9A066"/>
+ <ellipse cx="150" cy="196" rx="26" ry="10" fill="#F2D06B"/><ellipse cx="150" cy="188" rx="20" ry="9" fill="#F7DC85"/>
+ <circle cx="60" cy="194" r="5" fill="#F7849E"/><circle cx="78" cy="198" r="4" fill="#FFFFFF"/>
+ <path class="balanca" d="M110 110 L110 84 L132 92 L110 100" fill="#F7A8C8" stroke="#B87A3E" stroke-width="3"/>
+</g>` },
+furao: { nome: 'túnel', svg: `<g>
+ <ellipse cx="110" cy="204" rx="96" ry="10" fill="#CFE8B0"/>
+ <path d="M20 200 L20 130 Q20 90 60 90 L160 90 Q200 90 200 130 L200 200 Z" fill="#4A90D9"/>
+ <path d="M60 90 L60 200 M100 90 L100 200 M140 90 L140 200" stroke="#3672B5" stroke-width="5"/>
+ <ellipse cx="170" cy="164" rx="28" ry="36" fill="#2A4F7A"/>
+ <ellipse cx="50" cy="164" rx="22" ry="30" fill="#2A4F7A"/>
+ <path class="balanca" d="M110 90 Q120 70 136 76" stroke="#F7849E" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <circle cx="138" cy="76" r="8" fill="#FFD600"/>
+</g>` },
+chinchila: { nome: 'caixa de areia', svg: `<g>
+ <ellipse cx="110" cy="205" rx="92" ry="9" fill="#E6E9EE"/>
+ <rect x="24" y="130" width="172" height="72" rx="12" fill="#8E6BBF"/>
+ <rect x="34" y="120" width="152" height="24" rx="10" fill="#F2D9A0"/>
+ <circle cx="70" cy="126" r="10" fill="#F7E3B5"/><circle cx="140" cy="124" r="12" fill="#F7E3B5"/>
+ <rect x="24" y="168" width="172" height="8" fill="#A585D1"/>
+ <path class="balanca" d="M172 120 L180 80 L196 92" stroke="#B87A3E" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <circle cx="58" cy="190" r="5" fill="#FFD600"/><circle cx="162" cy="190" r="5" fill="#F7849E"/>
+</g>` },
+cagado: { nome: 'tanque', svg: `<g>
+ <ellipse cx="110" cy="200" rx="100" ry="14" fill="#9C8A78"/>
+ <ellipse cx="110" cy="182" rx="94" ry="26" fill="#7FC8E8"/>
+ <ellipse cx="110" cy="176" rx="80" ry="18" fill="#A6DCF2"/>
+ <ellipse cx="130" cy="170" rx="34" ry="18" fill="#9AA3AE"/><ellipse cx="124" cy="164" rx="20" ry="8" fill="#B8C0CA"/>
+ <ellipse cx="60" cy="182" rx="18" ry="6" fill="#5CB85C"/>
+ <path d="M30 170 L26 110 M40 172 L46 120 M184 170 L190 116" stroke="#3E9E32" stroke-width="5" stroke-linecap="round"/>
+ <ellipse class="balanca" cx="26" cy="108" rx="5" ry="14" fill="#8A5A33"/><ellipse cx="190" cy="114" rx="5" ry="14" fill="#8A5A33"/>
 </g>` }
 });

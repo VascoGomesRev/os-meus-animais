@@ -143,5 +143,155 @@ dinossauro: { nome: 'vulcão', svg: `<g>
  <path d="M90 70 L130 70 L122 90 L112 82 L104 94 L96 84 Z" fill="#F26B2E"/>
  <ellipse class="balanca" cx="110" cy="40" rx="24" ry="14" fill="#B8B8B8"/><ellipse cx="128" cy="22" rx="16" ry="10" fill="#CCCCCC"/>
  <path d="M24 204 Q30 170 50 160 Q44 190 44 204 Z" fill="#4CA64C"/><path d="M196 204 Q190 170 170 160 Q176 190 176 204 Z" fill="#4CA64C"/>
+</g>` },
+chita: { nome: 'erva alta', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#D9B85A"/>
+ <circle cx="40" cy="50" r="18" fill="#FFD84D"/>
+ <path d="M14 204 L24 110 L34 204 M34 204 L48 90 L58 204 M58 204 L70 120 L80 204 M140 204 L152 116 L162 204 M162 204 L176 92 L186 204 M186 204 L198 120 L208 204" fill="#E8C75E"/>
+ <path class="balanca" d="M80 204 L94 100 L104 204 M110 204 L124 108 L134 204" fill="#F0D470"/>
+</g>` },
+hiena: { nome: 'relva seca', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="16" fill="#C9A86A"/>
+ <circle cx="168" cy="54" r="20" fill="#FFB84D"/>
+ <path d="M20 202 Q24 170 30 160 Q34 180 36 202 Z M44 202 Q50 176 58 168 Q58 186 58 202 Z M160 202 Q166 172 174 164 Q174 184 176 202 Z M184 202 Q192 178 200 172 Q198 190 198 202 Z" fill="#B89050"/>
+ <path d="M150 200 L154 150 L160 150 L164 200 Z" fill="#8A5A33"/><ellipse cx="157" cy="144" rx="44" ry="12" fill="#9AAE4A"/>
+ <ellipse cx="110" cy="196" rx="40" ry="8" fill="#A88A50"/>
+ <path class="balanca" d="M96 196 Q100 176 108 172 Q106 186 108 196 Z" fill="#D8B870"/>
+</g>` },
+antilope: { nome: 'colina', svg: `<g>
+ <path d="M6 206 Q60 110 130 140 Q180 120 214 206 Z" fill="#9CC25A"/>
+ <path d="M6 206 Q70 160 120 176 Q170 160 214 206 Z" fill="#B4D46A"/>
+ <circle cx="60" cy="50" r="18" fill="#FFD84D"/>
+ <path d="M146 136 L148 112 L152 112 L154 136 Z" fill="#8A5A33"/>
+ <ellipse class="balanca" cx="150" cy="106" rx="24" ry="10" fill="#6E9E3A"/>
+</g>` },
+gnu: { nome: 'pasto', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="16" fill="#A8C860"/>
+ <path d="M10 204 Q40 150 80 170 Q120 140 160 166 Q190 150 210 204 Z" fill="#94B850"/>
+ <ellipse cx="60" cy="50" rx="24" ry="12" fill="#FFFFFF"/><ellipse cx="78" cy="44" rx="16" ry="10" fill="#FFFFFF"/>
+ <ellipse cx="160" cy="70" rx="20" ry="10" fill="#FFFFFF"/>
+ <path class="balanca" d="M30 204 L34 184 L38 204 M180 204 L184 182 L188 204 M100 204 L104 186 L108 204" fill="#7AA040"/>
+</g>` },
+bufalo: { nome: 'lagoa', svg: `<g>
+ <ellipse cx="110" cy="200" rx="104" ry="18" fill="#7FAE4E"/>
+ <ellipse cx="110" cy="194" rx="80" ry="14" fill="#5AB0D8"/>
+ <ellipse cx="96" cy="192" rx="30" ry="4" fill="#8ACBE8"/>
+ <path d="M20 200 L22 140 L26 200 M30 200 L34 150 L36 200 M190 200 L194 136 L198 200" stroke="#5A8A30" stroke-width="3" fill="none"/>
+ <ellipse class="balanca" cx="23" cy="140" rx="4" ry="10" fill="#8A5A33"/><ellipse cx="195" cy="136" rx="4" ry="10" fill="#8A5A33"/>
+ <ellipse cx="150" cy="190" rx="10" ry="4" fill="#4CA64C"/>
+</g>` },
+orangotango: { nome: 'ninho de folhas', svg: `<g>
+ <ellipse cx="110" cy="204" rx="100" ry="10" fill="#4F8F3A"/>
+ <rect x="100" y="80" width="20" height="124" rx="8" fill="#7A5230"/>
+ <path d="M110 120 L50 90 M110 120 L170 90" stroke="#7A5230" stroke-width="8" stroke-linecap="round"/>
+ <ellipse cx="110" cy="90" rx="74" ry="24" fill="#3E8E3E"/>
+ <ellipse cx="110" cy="80" rx="50" ry="14" fill="#8A6A3A"/>
+ <path d="M64 78 Q110 98 156 78" stroke="#6A4A22" stroke-width="5" fill="none"/>
+ <ellipse class="balanca" cx="70" cy="66" rx="16" ry="8" fill="#5CBF5C"/><ellipse cx="150" cy="66" rx="16" ry="8" fill="#5CBF5C"/><ellipse cx="110" cy="60" rx="18" ry="8" fill="#4CA64C"/>
+</g>` },
+chimpanze: { nome: 'bananeira', svg: `<g>
+ <ellipse cx="110" cy="204" rx="100" ry="12" fill="#5A9E3A"/>
+ <path d="M100 204 L104 80 L116 80 L120 204 Z" fill="#8AAE4A"/>
+ <path d="M110 84 Q60 40 20 70 Q60 70 110 92 Z" fill="#4CB04C"/>
+ <path class="balanca" d="M110 84 Q160 40 200 70 Q160 70 110 92 Z" fill="#5CC05C"/>
+ <path d="M110 80 Q90 30 110 14 Q124 40 112 80 Z" fill="#3E9E3E"/>
+ <path d="M114 96 Q140 100 140 130 Q130 120 116 116 Z" fill="#FFD84D"/>
+ <path d="M114 104 Q132 112 130 136 Q122 124 114 120 Z" fill="#F5C232"/>
+</g>` },
+lemure: { nome: 'ilha', svg: `<g>
+ <ellipse cx="110" cy="200" rx="106" ry="18" fill="#5AB0D8"/>
+ <ellipse cx="110" cy="192" rx="74" ry="16" fill="#F0D89A"/>
+ <path d="M100 194 Q96 140 112 96" stroke="#8A5A33" stroke-width="10" fill="none" stroke-linecap="round"/>
+ <path d="M112 96 Q80 76 56 96 Q84 90 112 100 Z M112 96 Q144 74 170 94 Q142 90 112 100 Z" fill="#4CA64C"/>
+ <path class="balanca" d="M112 96 Q104 64 124 50 Q120 76 114 98 Z" fill="#5CBF5C"/>
+ <circle cx="118" cy="104" r="5" fill="#8A5A33"/>
+ <ellipse cx="40" cy="198" rx="12" ry="3" fill="#8ACBE8"/>
+</g>` },
+tatu: { nome: 'areia', svg: `<g>
+ <path d="M4 206 Q50 160 110 172 Q170 160 216 206 Z" fill="#E8C88A"/>
+ <ellipse cx="110" cy="200" rx="106" ry="10" fill="#D8B070"/>
+ <circle cx="170" cy="50" r="20" fill="#FFD84D"/>
+ <rect x="36" y="140" width="14" height="50" rx="7" fill="#6EAE4A"/><rect x="24" y="152" width="10" height="20" rx="5" fill="#6EAE4A"/><rect class="balanca" x="52" y="146" width="10" height="20" rx="5" fill="#6EAE4A"/>
+ <ellipse cx="160" cy="190" rx="12" ry="6" fill="#B89060"/>
+</g>` },
+tamandua: { nome: 'cupinzeiro', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#B4C860"/>
+ <path d="M70 204 Q74 120 100 60 Q110 40 120 60 Q146 120 150 204 Z" fill="#C8783E"/>
+ <path d="M84 204 Q86 150 100 120 M134 204 Q132 150 120 120" stroke="#A85E2A" stroke-width="4" fill="none"/>
+ <circle cx="104" cy="140" r="4" fill="#5A3010"/><circle cx="118" cy="110" r="4" fill="#5A3010"/><circle cx="112" cy="174" r="4" fill="#5A3010"/>
+ <path class="balanca" d="M30 204 L34 180 L38 204 M180 204 L184 178 L188 204" fill="#7AA040"/>
+</g>` },
+jaguar: { nome: 'cascata', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#4F8F3A"/>
+ <path d="M30 204 L40 50 Q70 30 90 50 L90 204 Z M130 204 L130 50 Q150 30 180 50 L190 204 Z" fill="#8A8A96"/>
+ <rect x="88" y="48" width="44" height="150" fill="#6EC4EA"/>
+ <path d="M98 60 L98 180 M110 56 L110 190 M122 60 L122 180" stroke="#BDE6F8" stroke-width="4" stroke-linecap="round"/>
+ <ellipse class="balanca" cx="110" cy="196" rx="36" ry="10" fill="#FFFFFF"/>
+ <circle cx="40" cy="60" r="16" fill="#3E8E3E"/><circle cx="182" cy="60" r="16" fill="#3E8E3E"/>
+</g>` },
+'pantera-negra': { nome: 'tronco', svg: `<g>
+ <ellipse cx="110" cy="204" rx="100" ry="10" fill="#3E7E3A"/>
+ <rect x="14" y="150" width="192" height="44" rx="22" fill="#8A5A33"/>
+ <ellipse cx="192" cy="172" rx="16" ry="22" fill="#C99A62"/><ellipse cx="192" cy="172" rx="8" ry="12" fill="#A8784A"/>
+ <path d="M40 162 L90 162 M110 182 L160 182" stroke="#6A4222" stroke-width="4" stroke-linecap="round"/>
+ <path class="balanca" d="M60 150 Q56 126 72 116 Q72 136 66 150 Z" fill="#5CBF5C"/>
+ <rect x="24" y="60" width="14" height="94" rx="6" fill="#6A4428"/><rect x="183" y="50" width="14" height="104" rx="6" fill="#6A4428"/><circle cx="30" cy="60" r="28" fill="#2E6E2E"/><circle cx="190" cy="50" r="30" fill="#2E6E2E"/>
+</g>` },
+tapir: { nome: 'riacho', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#5A9E3A"/>
+ <path d="M6 190 Q60 170 110 190 Q160 210 214 186 L214 200 Q160 216 110 200 Q60 182 6 202 Z" fill="#5AB0D8"/>
+ <ellipse cx="60" cy="186" rx="14" ry="2.5" fill="#BDE6F8"/><ellipse cx="160" cy="198" rx="14" ry="2.5" fill="#BDE6F8"/>
+ <rect x="24" y="90" width="12" height="90" rx="5" fill="#7A5230"/><circle cx="30" cy="70" r="30" fill="#3E8E3E"/>
+ <path class="balanca" d="M184 186 Q176 140 196 120 Q196 150 192 186 Z" fill="#4CA64C"/>
+</g>` },
+gazela: { nome: 'arbusto', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#E2C27A"/>
+ <circle cx="60" cy="168" r="30" fill="#7BAE3E"/><circle cx="96" cy="156" r="36" fill="#8CC24A"/><circle cx="140" cy="164" r="32" fill="#7BAE3E"/><circle cx="168" cy="178" r="22" fill="#8CC24A"/>
+ <circle cx="80" cy="150" r="5" fill="#F26B8A"/><circle cx="120" cy="140" r="5" fill="#F26B8A"/><circle class="balanca" cx="150" cy="160" r="5" fill="#F26B8A"/>
+ <circle cx="176" cy="50" r="18" fill="#FFD84D"/>
+</g>` },
+okapi: { nome: 'bosque', svg: `<g>
+ <ellipse cx="110" cy="204" rx="104" ry="12" fill="#3E7E3A"/>
+ <rect x="24" y="70" width="14" height="134" rx="6" fill="#6A4428"/><rect x="104" y="50" width="14" height="154" rx="6" fill="#6A4428"/><rect x="180" y="80" width="14" height="124" rx="6" fill="#6A4428"/>
+ <circle cx="31" cy="64" r="28" fill="#2E7E3E"/><circle cx="111" cy="44" r="34" fill="#3E8E3E"/><circle cx="187" cy="72" r="26" fill="#2E7E3E"/>
+ <ellipse class="balanca" cx="70" cy="196" rx="16" ry="8" fill="#5CBF5C"/><ellipse cx="150" cy="196" rx="16" ry="8" fill="#5CBF5C"/>
+</g>` },
+babuino: { nome: 'pedregulho', svg: `<g>
+ <ellipse cx="110" cy="204" rx="104" ry="12" fill="#D8B870"/>
+ <path d="M30 204 Q20 120 80 90 Q140 70 180 120 Q200 160 190 204 Z" fill="#A89C90"/>
+ <path d="M60 130 Q90 110 120 120 M120 160 Q150 150 170 170" stroke="#8A7E74" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <ellipse cx="150" cy="110" rx="18" ry="8" fill="#BCB0A4"/>
+ <path class="balanca" d="M16 204 L20 182 L24 204 M196 204 L200 184 L204 204" fill="#9CB850"/>
+ <circle cx="40" cy="50" r="16" fill="#FFD84D"/>
+</g>` },
+capivara: { nome: 'margem', svg: `<g>
+ <path d="M4 206 L4 170 Q60 160 100 176 L100 206 Z" fill="#7FAE4E"/>
+ <path d="M100 206 L100 180 Q160 170 216 180 L216 206 Z" fill="#5AB0D8"/>
+ <ellipse cx="150" cy="192" rx="20" ry="3" fill="#BDE6F8"/>
+ <ellipse cx="186" cy="186" rx="14" ry="5" fill="#4CA64C"/><circle cx="186" cy="182" r="4" fill="#F7B7C4"/>
+ <path d="M20 172 L22 120 L26 172 M40 170 L44 130 L46 170 M70 170 L72 126 L76 172" stroke="#5A8A30" stroke-width="3" fill="none"/>
+ <ellipse class="balanca" cx="22" cy="118" rx="4" ry="10" fill="#8A5A33"/><ellipse cx="73" cy="124" rx="4" ry="10" fill="#8A5A33"/>
+</g>` },
+iguana: { nome: 'palmeira', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#E8D08A"/>
+ <path d="M104 204 Q100 140 116 70 L124 72 Q112 140 118 204 Z" fill="#A8784A"/>
+ <path d="M106 180 L116 180 M108 150 L118 150 M110 120 L120 120 M114 92 L122 92" stroke="#8A5A33" stroke-width="3"/>
+ <path d="M120 70 Q80 50 50 80 Q84 66 120 76 Z M120 70 Q160 46 190 76 Q156 64 120 76 Z M120 70 Q100 30 70 30 Q100 44 118 72 Z" fill="#3E9E3E"/>
+ <path class="balanca" d="M120 70 Q140 30 170 30 Q142 46 122 74 Z" fill="#4CB04C"/>
+ <circle cx="114" cy="78" r="6" fill="#8A5A33"/><circle cx="126" cy="80" r="6" fill="#8A5A33"/>
+</g>` },
+'dragao-de-komodo': { nome: 'praia', svg: `<g>
+ <rect x="4" y="150" width="212" height="30" rx="10" fill="#5AB0D8"/>
+ <ellipse cx="110" cy="196" rx="108" ry="18" fill="#F0D89A"/>
+ <path class="balanca" d="M30 160 Q40 154 50 160 M120 158 Q130 152 140 158" stroke="#BDE6F8" stroke-width="3" fill="none" stroke-linecap="round"/>
+ <circle cx="170" cy="60" r="20" fill="#FFD84D"/>
+ <ellipse cx="50" cy="196" rx="8" ry="5" fill="#F7B7C4"/><ellipse cx="170" cy="200" rx="10" ry="5" fill="#C9B080"/>
+</g>` },
+facoceiro: { nome: 'baobá', svg: `<g>
+ <ellipse cx="110" cy="202" rx="104" ry="14" fill="#E2C27A"/>
+ <path d="M80 204 Q74 140 86 80 L134 80 Q146 140 140 204 Z" fill="#B08A6A"/>
+ <path d="M90 80 L70 50 M104 80 L98 40 M116 80 L122 40 M130 80 L150 50" stroke="#B08A6A" stroke-width="8" stroke-linecap="round"/>
+ <circle cx="70" cy="46" r="14" fill="#7BAE3E"/><circle cx="98" cy="36" r="14" fill="#8CC24A"/><circle cx="122" cy="36" r="14" fill="#7BAE3E"/><circle class="balanca" cx="150" cy="46" r="14" fill="#8CC24A"/>
+ <path d="M100 120 Q104 160 98 196 M122 110 Q118 150 124 196" stroke="#987258" stroke-width="3" fill="none"/>
 </g>` }
 });

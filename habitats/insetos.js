@@ -106,5 +106,115 @@ besouro: { nome: 'tronco', svg: `<g>
  <path d="M90 134 Q80 170 104 190 Q116 160 90 134 Z" fill="#6CC04A"/>
  <path class="balanca" d="M170 140 Q190 170 180 198 Q160 176 170 140 Z" fill="#7CCB4E"/>
  <path d="M40 150 Q20 120 40 100 Q54 126 40 150 Z" fill="#5DA83E"/>
+</g>` },
+grilo: { nome: 'relva ao luar', svg: `<g>
+ <rect x="10" y="30" width="200" height="175" rx="20" fill="#2F3A6E"/>
+ <circle cx="160" cy="66" r="24" fill="#FFF3B0"/>
+ <circle cx="50" cy="56" r="3" fill="#fff"/><circle cx="96" cy="44" r="2.5" fill="#fff"/><circle cx="120" cy="80" r="2" fill="#fff"/>
+ <path d="M10 205 L10 160 L22 186 L30 140 L42 184 L54 150 L66 186 L80 136 L92 184 L106 150 L118 186 L132 140 L144 184 L158 150 L170 186 L184 140 L196 184 L210 156 L210 205 Z" fill="#3E7F3A"/>
+ <path class="balanca" d="M40 205 Q36 150 50 120" stroke="#5DA83E" stroke-width="5" fill="none" stroke-linecap="round"/>
+</g>` },
+vespa: { nome: 'vespeiro', svg: `<g>
+ <rect x="20" y="20" width="180" height="16" rx="8" fill="#8C5634"/>
+ <ellipse cx="110" cy="116" rx="70" ry="84" fill="#D9CBB0"/>
+ <path d="M48 80 Q110 64 172 80 M42 112 Q110 96 178 112 M46 146 Q110 130 174 146 M60 176 Q110 162 160 176" stroke="#BFAE8C" stroke-width="5" fill="none"/>
+ <ellipse cx="110" cy="190" rx="16" ry="10" fill="#5A4630"/>
+ <rect x="104" y="30" width="12" height="20" fill="#8C5634"/>
+ <ellipse cx="110" cy="205" rx="90" ry="5" fill="#8CCF5E"/>
+ <path class="balanca" d="M160 28 Q180 10 196 26 Q178 40 160 28 Z" fill="#6CC04A"/>
+</g>` },
+mosquito: { nome: 'charco', svg: `<g>
+ <ellipse cx="110" cy="180" rx="100" ry="26" fill="#6FB8D9"/>
+ <ellipse cx="80" cy="176" rx="30" ry="6" fill="#9CD3EA"/>
+ <ellipse cx="150" cy="186" rx="20" ry="4" fill="#9CD3EA"/>
+ <path d="M30 170 Q26 110 36 80 M44 172 Q46 120 54 96" stroke="#5DA83E" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <ellipse cx="36" cy="80" rx="6" ry="16" fill="#8C5634"/><ellipse cx="54" cy="96" rx="6" ry="14" fill="#8C5634"/>
+ <path class="balanca" d="M180 172 Q176 120 190 96" stroke="#5DA83E" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <ellipse cx="140" cy="168" rx="18" ry="6" fill="#6CC04A"/>
+</g>` },
+traca: { nome: 'armário', svg: `<g>
+ <rect x="30" y="20" width="160" height="182" rx="10" fill="#B07A4A"/>
+ <rect x="42" y="32" width="136" height="160" rx="6" fill="#F3E6CF"/>
+ <rect x="42" y="60" width="136" height="6" fill="#8C5634"/>
+ <path d="M70 66 v20 l-10 10 h20 Z M150 66 v20 l-10 10 h20 Z" stroke="#7A5A44" stroke-width="2" fill="#7A5A44"/>
+ <rect x="56" y="96" width="32" height="70" rx="6" fill="#8FB3E0"/>
+ <rect class="balanca" x="132" y="96" width="34" height="80" rx="6" fill="#E88FA8"/>
+ <ellipse cx="110" cy="184" rx="22" ry="8" fill="#E86A5A"/><circle cx="110" cy="180" r="10" fill="#F08A7A"/>
+</g>` },
+'bicho-da-seda': { nome: 'amoreira', svg: `<g>
+ <rect x="98" y="120" width="24" height="85" rx="8" fill="#8C5634"/>
+ <circle cx="110" cy="80" r="66" fill="#5DA83E"/>
+ <circle cx="60" cy="100" r="34" fill="#6CC04A"/><circle cx="160" cy="100" r="34" fill="#6CC04A"/>
+ <circle cx="80" cy="60" r="6" fill="#5A2A5E"/><circle cx="140" cy="70" r="6" fill="#5A2A5E"/><circle cx="110" cy="110" r="6" fill="#5A2A5E"/><circle cx="60" cy="110" r="5" fill="#E04A6A"/>
+ <path class="balanca" d="M170 60 Q190 40 204 56 Q186 70 170 60 Z" fill="#7CCB4E"/>
+ <ellipse cx="110" cy="205" rx="90" ry="6" fill="#8CCF5E"/>
+</g>` },
+centopeia: { nome: 'casca de árvore', svg: `<g>
+ <rect x="20" y="40" width="180" height="162" rx="14" fill="#8C5634"/>
+ <path d="M40 50 Q50 120 38 196 M80 46 Q92 110 78 196 M124 46 Q134 120 122 196 M168 50 Q176 120 164 196" stroke="#6B4028" stroke-width="6" fill="none"/>
+ <ellipse cx="100" cy="110" rx="14" ry="20" fill="#5A3420"/>
+ <path class="balanca" d="M150 60 Q170 40 186 56 Q168 72 150 60 Z" fill="#8FB34A"/>
+ <circle cx="60" cy="160" r="8" fill="#A9C46A"/><circle cx="68" cy="166" r="6" fill="#A9C46A"/>
+</g>` },
+escorpiao: { nome: 'deserto', svg: `<g>
+ <path d="M10 205 Q60 160 110 180 Q160 150 210 175 L210 205 Z" fill="#F1CF8A"/>
+ <path d="M120 180 Q140 100 180 110 Q200 140 196 182 Z" fill="#C99A5E"/>
+ <rect x="40" y="90" width="18" height="96" rx="9" fill="#5DA83E"/>
+ <path d="M40 140 h-14 v-24" stroke="#5DA83E" stroke-width="14" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <path class="balanca" d="M58 124 h12 v-20" stroke="#5DA83E" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <circle cx="170" cy="50" r="22" fill="#FFD84A"/>
+</g>` },
+lesma: { nome: 'alface', svg: `<g>
+ <ellipse cx="110" cy="200" rx="96" ry="8" fill="#8B5A3C"/>
+ <path d="M30 196 Q10 120 70 100 Q110 40 150 100 Q210 120 190 196 Z" fill="#8FD45A"/>
+ <path d="M50 196 Q40 140 80 124 Q110 80 140 124 Q180 140 170 196 Z" fill="#B5E87E"/>
+ <path d="M110 196 V100 M110 160 L80 130 M110 150 L140 120" stroke="#E3F7C9" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path class="balanca" d="M150 100 Q180 60 200 80 Q190 110 150 100 Z" fill="#7CCB4E"/>
+</g>` },
+cigarra: { nome: 'árvore ao sol', svg: `<g>
+ <circle cx="180" cy="40" r="24" fill="#FFD84A"/>
+ <path d="M180 6 v8 M146 40 h8 M206 40 h8 M156 16 l6 6" stroke="#FFD84A" stroke-width="4" stroke-linecap="round"/>
+ <rect x="64" y="100" width="32" height="105" rx="10" fill="#9C6234"/>
+ <circle cx="80" cy="74" r="56" fill="#4E9A3A"/><circle cx="40" cy="96" r="30" fill="#5DA83E"/><circle cx="120" cy="96" r="30" fill="#5DA83E"/>
+ <path class="balanca" d="M120 60 Q140 40 156 56 Q138 72 120 60 Z" fill="#7CCB4E"/>
+ <ellipse cx="110" cy="205" rx="96" ry="6" fill="#E9C46A"/>
+</g>` },
+zangao: { nome: 'campo de flores', svg: `<g>
+ <path d="M10 205 Q110 150 210 205 Z" fill="#8CCF5E"/>
+ <path d="M40 200 V130 M90 196 V110 M150 196 V120 M190 200 V140" stroke="#4FA33A" stroke-width="5"/>
+ <circle cx="40" cy="126" r="16" fill="#FF8FB1"/><circle cx="40" cy="126" r="6" fill="#FFD84A"/>
+ <circle cx="90" cy="104" r="18" fill="#B98AE8"/><circle cx="90" cy="104" r="7" fill="#FFD84A"/>
+ <circle class="balanca" cx="150" cy="114" r="18" fill="#FF6B6B"/><circle cx="150" cy="114" r="7" fill="#FFD84A"/>
+ <circle cx="190" cy="136" r="14" fill="#7FC8F8"/><circle cx="190" cy="136" r="5" fill="#FFD84A"/>
+</g>` },
+'bicho-de-conta': { nome: 'vaso de flores', svg: `<g>
+ <ellipse cx="110" cy="205" rx="96" ry="6" fill="#8B5A3C"/>
+ <path d="M50 110 H170 L154 204 H66 Z" fill="#D9774A"/>
+ <rect x="42" y="100" width="136" height="22" rx="6" fill="#E88A5C"/>
+ <path d="M110 100 V40 M110 70 Q80 60 76 40 M110 80 Q140 70 146 50" stroke="#4FA33A" stroke-width="5" fill="none"/>
+ <circle cx="110" cy="34" r="16" fill="#FFD84A"/><circle cx="110" cy="34" r="6" fill="#E8693C"/>
+ <path class="balanca" d="M76 40 Q60 30 70 18 Q84 28 76 40 Z" fill="#7CCB4E"/>
+</g>` },
+lagartixa: { nome: 'muro', svg: `<g>
+ <rect x="16" y="30" width="188" height="175" rx="8" fill="#E2D6C0"/>
+ <path d="M16 74 H204 M16 118 H204 M16 162 H204 M70 30 V74 M140 30 V74 M40 74 V118 M110 74 V118 M180 74 V118 M70 118 V162 M140 118 V162 M40 162 V205 M110 162 V205 M180 162 V205" stroke="#C4B496" stroke-width="4"/>
+ <path class="balanca" d="M180 30 Q170 60 186 80 Q196 56 180 30 Z" fill="#6CC04A"/>
+ <path d="M30 30 Q36 50 26 66" stroke="#5DA83E" stroke-width="4" fill="none"/>
+</g>` },
+'besouro-veado': { nome: 'carvalho', svg: `<g>
+ <rect x="90" y="110" width="40" height="95" rx="10" fill="#7E4A2C"/>
+ <path d="M100 130 v50 M118 140 v40" stroke="#5A3420" stroke-width="4"/>
+ <circle cx="110" cy="70" r="58" fill="#3E7F3A"/><circle cx="56" cy="92" r="32" fill="#4E9A3A"/><circle cx="164" cy="92" r="32" fill="#4E9A3A"/>
+ <ellipse cx="70" cy="74" rx="7" ry="9" fill="#B07A4A"/><path d="M63 70 h14" stroke="#7E4A2C" stroke-width="5" stroke-linecap="round"/>
+ <ellipse class="balanca" cx="150" cy="110" rx="7" ry="9" fill="#B07A4A"/>
+ <ellipse cx="110" cy="205" rx="96" ry="6" fill="#8CCF5E"/>
+</g>` },
+tesourinha: { nome: 'jardim de pedras', svg: `<g>
+ <ellipse cx="110" cy="200" rx="100" ry="10" fill="#C9B98F"/>
+ <ellipse cx="60" cy="176" rx="44" ry="28" fill="#A8A29A"/>
+ <ellipse cx="150" cy="182" rx="40" ry="22" fill="#BDB7AE"/>
+ <ellipse cx="110" cy="150" rx="30" ry="22" fill="#948E86"/>
+ <path class="balanca" d="M190 190 Q186 150 200 130" stroke="#5DA83E" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path d="M24 196 Q20 166 30 150" stroke="#5DA83E" stroke-width="5" fill="none" stroke-linecap="round"/>
 </g>` }
 });

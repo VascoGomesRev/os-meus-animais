@@ -116,5 +116,86 @@ ganso: { nome: 'charco', svg: `<g>
  <rect x="32" y="110" width="5" height="50" rx="2" fill="#5E9E2E"/><rect x="44" y="120" width="5" height="40" rx="2" fill="#5E9E2E"/>
  <path class="balanca" d="M34 110 Q26 96 30 84" stroke="#5E9E2E" stroke-width="4" fill="none" stroke-linecap="round"/>
  <ellipse cx="150" cy="176" rx="12" ry="4" fill="#4CAF50"/>
+</g>` },
+touro: { nome: 'arena', svg: `<g>
+ <ellipse cx="110" cy="192" rx="96" ry="18" fill="#E8C48A"/>
+ <path d="M14 192 Q14 120 110 120 Q206 120 206 192" fill="none" stroke="#D2463C" stroke-width="12"/>
+ <path d="M14 192 Q14 140 110 140 Q206 140 206 192" fill="none" stroke="#FFFFFF" stroke-width="6"/>
+ <rect x="20" y="150" width="8" height="44" rx="3" fill="#8A5A34"/><rect x="192" y="150" width="8" height="44" rx="3" fill="#8A5A34"/>
+ <rect x="104" y="80" width="5" height="44" rx="2" fill="#6E4A2A"/>
+ <path class="balanca" d="M109 80 L140 88 L109 98 Z" fill="#D2463C"/>
+ <circle cx="70" cy="186" r="4" fill="#C9A06A"/><circle cx="150" cy="190" r="4" fill="#C9A06A"/>
+</g>` },
+cordeiro: { nome: 'prado', svg: `<g>
+ <ellipse cx="110" cy="196" rx="100" ry="16" fill="#8BC34A"/>
+ <path d="M10 196 Q50 60 110 120 Q170 60 210 196 Z" fill="#A5D46A"/>
+ <circle cx="50" cy="180" r="5" fill="#FFFFFF"/><circle cx="50" cy="180" r="2" fill="#F2C14E"/>
+ <circle cx="90" cy="188" r="5" fill="#F7849E"/><circle cx="150" cy="184" r="5" fill="#FFFFFF"/><circle cx="150" cy="184" r="2" fill="#F2C14E"/>
+ <circle cx="176" cy="190" r="5" fill="#F2C14E"/>
+ <path class="balanca" d="M120 190 L120 160" stroke="#5E9E2E" stroke-width="3"/><circle cx="120" cy="156" r="7" fill="#F7849E"/>
+</g>` },
+leitao: { nome: 'pocilga', svg: `<g>
+ <rect x="20" y="196" width="180" height="10" rx="5" fill="#8A5A34"/>
+ <path d="M40 120 L110 80 L180 120 Z" fill="#C0643A"/>
+ <rect x="50" y="118" width="120" height="80" rx="4" fill="#E8C48A"/>
+ <path d="M84 198 L84 160 Q110 136 136 160 L136 198 Z" fill="#6E4426"/>
+ <rect x="60" y="130" width="18" height="16" rx="2" fill="#8A5A34"/>
+ <ellipse cx="160" cy="196" rx="30" ry="7" fill="#A8703F"/>
+ <path class="balanca" d="M150 112 Q156 96 150 84" stroke="#C0C0C0" stroke-width="4" fill="none" stroke-linecap="round"/>
+</g>` },
+bezerro: { nome: 'manjedoura', svg: `<g>
+ <rect x="20" y="196" width="180" height="10" rx="5" fill="#8BC34A"/>
+ <rect x="50" y="160" width="8" height="40" rx="3" fill="#8A5A34"/><rect x="162" y="160" width="8" height="40" rx="3" fill="#8A5A34"/>
+ <path d="M40 120 L180 120 L160 166 L60 166 Z" fill="#B98A5A"/>
+ <path d="M60 120 Q80 96 100 118 Q120 92 140 118 Q160 100 170 120 Z" fill="#F2D06B"/>
+ <path d="M60 130 L160 130 M64 146 L156 146" stroke="#8A5A34" stroke-width="4"/>
+ <path class="balanca" d="M100 118 L92 100" stroke="#E0B040" stroke-width="3"/>
+</g>` },
+potro: { nome: 'picadeiro', svg: `<g>
+ <ellipse cx="110" cy="198" rx="100" ry="12" fill="#6FAE3A"/>
+ <circle cx="166" cy="70" r="20" fill="#F2C14E"/>
+ <rect x="30" y="150" width="8" height="50" rx="3" fill="#FFFFFF"/><rect x="100" y="150" width="8" height="50" rx="3" fill="#FFFFFF"/><rect x="170" y="150" width="8" height="50" rx="3" fill="#FFFFFF"/>
+ <rect x="22" y="160" width="176" height="7" rx="3" fill="#FFFFFF"/><rect x="22" y="178" width="176" height="7" rx="3" fill="#FFFFFF"/>
+ <ellipse class="balanca" cx="60" cy="90" rx="24" ry="10" fill="#FFFFFF"/>
+</g>` },
+mula: { nome: 'moinho', svg: `<g>
+ <rect x="20" y="196" width="180" height="10" rx="5" fill="#8BC34A"/>
+ <path d="M84 198 L94 90 L126 90 L136 198 Z" fill="#F4EAD0"/>
+ <path d="M90 92 L110 66 L130 92 Z" fill="#C0643A"/>
+ <rect x="100" y="162" width="20" height="36" rx="10" fill="#8A5A34"/>
+ <circle cx="110" cy="120" r="7" fill="#8A5A34"/>
+ <g class="balanca" transform="rotate(45 110 110)"><rect x="106" y="50" width="8" height="120" rx="3" fill="#8A5A34"/><rect x="50" y="106" width="120" height="8" rx="3" fill="#8A5A34"/><rect x="114" y="54" width="14" height="48" rx="2" fill="#FFFFFF"/><rect x="92" y="118" width="14" height="48" rx="2" fill="#FFFFFF"/><rect x="54" y="92" width="48" height="14" rx="2" fill="#FFFFFF"/><rect x="118" y="114" width="48" height="14" rx="2" fill="#FFFFFF"/></g>
+ <circle cx="110" cy="110" r="7" fill="#5A3A20"/>
+ <ellipse cx="170" cy="196" rx="20" ry="8" fill="#F2D06B"/>
+</g>` },
+bode: { nome: 'palheiro', svg: `<g>
+ <rect x="20" y="196" width="180" height="10" rx="5" fill="#8BC34A"/>
+ <path d="M40 200 Q40 90 110 70 Q180 90 180 200 Z" fill="#F2D06B"/>
+ <path d="M60 140 Q110 126 160 140 M54 170 Q110 156 166 170 M70 110 Q110 98 150 110" stroke="#D9A83A" stroke-width="4" fill="none"/>
+ <rect x="106" y="40" width="8" height="34" rx="3" fill="#8A5A34"/>
+ <path class="balanca" d="M60 200 L56 180 M160 200 L166 182" stroke="#E0B040" stroke-width="3"/>
+</g>` },
+codorniz: { nome: 'campo de trigo', svg: `<g>
+ <rect x="16" y="196" width="188" height="10" rx="5" fill="#C9A06A"/>
+ <path d="M30 198 L30 120 M54 198 L54 110 M78 198 L78 124 M142 198 L142 124 M166 198 L166 110 M190 198 L190 120" stroke="#D9A83A" stroke-width="4"/>
+ <ellipse cx="30" cy="114" rx="6" ry="14" fill="#F2C14E"/><ellipse cx="54" cy="104" rx="6" ry="14" fill="#F2C14E"/><ellipse cx="78" cy="118" rx="6" ry="14" fill="#F2C14E"/>
+ <ellipse cx="142" cy="118" rx="6" ry="14" fill="#F2C14E"/><ellipse cx="166" cy="104" rx="6" ry="14" fill="#F2C14E"/><ellipse class="balanca" cx="190" cy="114" rx="6" ry="14" fill="#F2C14E"/>
+ <path d="M90 198 Q110 180 130 198 Z" fill="#E8C48A"/>
+</g>` },
+'galinha-da-india': { nome: 'celeiro', svg: `<g>
+ <rect x="20" y="196" width="180" height="10" rx="5" fill="#8BC34A"/>
+ <path d="M40 110 L60 70 L160 70 L180 110 Z" fill="#5A6670"/>
+ <rect x="44" y="108" width="132" height="92" rx="4" fill="#C0643A"/>
+ <rect x="86" y="80" width="48" height="22" rx="3" fill="#FFF4D6"/>
+ <rect x="84" y="140" width="52" height="60" rx="3" fill="#7A3A20"/>
+ <path d="M84 140 L136 200 M136 140 L84 200" stroke="#FFFFFF" stroke-width="4"/>
+ <path class="balanca" d="M60 70 L60 52 L74 58 L60 64" fill="#F2C14E" stroke="#5A6670" stroke-width="2"/>
+</g>` },
+faisao: { nome: 'bosque', svg: `<g>
+ <rect x="16" y="196" width="188" height="10" rx="5" fill="#6FAE3A"/>
+ <rect x="44" y="140" width="12" height="60" rx="4" fill="#8A5A34"/><rect x="164" y="130" width="12" height="70" rx="4" fill="#8A5A34"/><rect x="104" y="150" width="10" height="50" rx="4" fill="#8A5A34"/>
+ <circle cx="50" cy="120" r="30" fill="#3E8E4A"/><circle cx="170" cy="104" r="34" fill="#2E7A3E"/><circle cx="110" cy="134" r="22" fill="#5EA84A"/>
+ <circle class="balanca" cx="40" cy="110" r="5" fill="#E0403A"/>
+ <ellipse cx="80" cy="198" rx="14" ry="6" fill="#4C9A3A"/><ellipse cx="140" cy="198" rx="14" ry="6" fill="#4C9A3A"/>
 </g>` }
 });

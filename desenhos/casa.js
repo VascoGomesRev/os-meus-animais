@@ -72,5 +72,60 @@ canario: `<g class="corpo">
  ${olhos(84,126,86)}${bochechas(64,146,106)}
  <path d="M94 104 L126 104 L110 122 Z" fill="#F28C28"/>
  <path d="M96 106 L124 106" stroke="#D86F15" stroke-width="2" stroke-linecap="round"/>
+</g>`,
+ponei: `<g class="corpo">
+ <path class="cauda" d="M150 160 Q192 150 186 196 Q172 176 156 178 Z" fill="#F7A8C8"/>
+ <ellipse cx="110" cy="164" rx="48" ry="30" fill="#EED3A6"/>
+ <rect x="76" y="176" width="16" height="26" rx="6" fill="#EED3A6"/><rect x="128" y="176" width="16" height="26" rx="6" fill="#EED3A6"/>
+ <rect x="76" y="194" width="16" height="10" rx="3" fill="#8A6A4A"/><rect x="128" y="194" width="16" height="10" rx="3" fill="#8A6A4A"/>
+ <path class="orelha" d="M62 52 L66 18 L88 42 Z" fill="#E2C08C"/>
+ <path class="orelha" d="M158 52 L154 18 L132 42 Z" fill="#E2C08C"/>
+ <ellipse cx="110" cy="90" rx="58" ry="52" fill="#F5DEB3"/>
+ <path d="M58 70 Q40 110 54 150 Q66 120 64 96 Z M162 70 Q180 110 166 150 Q154 120 156 96 Z" fill="#F7A8C8"/>
+ <path d="M72 52 Q110 18 148 52 Q136 70 122 58 Q112 74 100 58 Q86 70 72 52 Z" fill="#FFD966"/>
+ <path d="M90 46 Q110 30 130 46" stroke="#F7A8C8" stroke-width="7" fill="none" stroke-linecap="round"/>
+ ${olhos(88,132,92)}${bochechas(68,152,114)}
+ <ellipse cx="110" cy="122" rx="28" ry="18" fill="#FBEBD0"/>
+ <circle cx="100" cy="118" r="3.5" fill="#8A6A4A"/><circle cx="120" cy="118" r="3.5" fill="#8A6A4A"/>
+ ${sorriso(110,128)}
+</g>`,
+furao: `<g class="corpo">
+ <path class="cauda" d="M146 176 Q190 180 200 150" stroke="#6B4A33" stroke-width="16" stroke-linecap="round" fill="none"/>
+ <ellipse cx="110" cy="168" rx="62" ry="26" fill="#C9A27A"/>
+ <ellipse cx="110" cy="176" rx="34" ry="14" fill="#F3E3CC"/>
+ <ellipse cx="66" cy="196" rx="13" ry="8" fill="#6B4A33"/><ellipse cx="96" cy="198" rx="13" ry="8" fill="#6B4A33"/>
+ <ellipse cx="128" cy="198" rx="13" ry="8" fill="#6B4A33"/><ellipse cx="156" cy="196" rx="13" ry="8" fill="#6B4A33"/>
+ <circle class="orelha" cx="66" cy="50" r="15" fill="#E8D4B8"/>
+ <circle class="orelha" cx="154" cy="50" r="15" fill="#E8D4B8"/>
+ <ellipse cx="110" cy="92" rx="56" ry="48" fill="#F3E3CC"/>
+ <path d="M58 90 Q70 70 98 84 Q110 92 122 84 Q150 70 162 90 Q150 108 124 100 Q110 96 96 100 Q70 108 58 90 Z" fill="#5A3E2B"/>
+ ${olhos(86,134,90,10,12)}${bochechas(70,150,116)}
+ <ellipse cx="110" cy="108" rx="7" ry="5" fill="#E86F8A"/>${sorriso(110,114)}
+</g>`,
+chinchila: `<g class="corpo">
+ <g class="cauda"><circle cx="156" cy="172" r="16" fill="#7E8794"/><circle cx="174" cy="162" r="16" fill="#7E8794"/><circle cx="186" cy="146" r="15" fill="#7E8794"/></g>
+ <ellipse cx="110" cy="166" rx="50" ry="36" fill="#A9B1BC"/>
+ <ellipse cx="110" cy="176" rx="28" ry="20" fill="#E6E9EE"/>
+ <ellipse cx="86" cy="198" rx="14" ry="8" fill="#9AA3AE"/><ellipse cx="134" cy="198" rx="14" ry="8" fill="#9AA3AE"/>
+ <g class="orelha"><ellipse cx="62" cy="40" rx="26" ry="30" fill="#A9B1BC"/><ellipse cx="62" cy="42" rx="16" ry="20" fill="#F2B8C6"/></g>
+ <g class="orelha"><ellipse cx="158" cy="40" rx="26" ry="30" fill="#A9B1BC"/><ellipse cx="158" cy="42" rx="16" ry="20" fill="#F2B8C6"/></g>
+ <circle cx="110" cy="96" r="56" fill="#B8C0CA"/>
+ ${olhos(88,132,92)}${bochechas(70,150,114)}
+ <ellipse cx="110" cy="116" rx="18" ry="12" fill="#E6E9EE"/>
+ <path d="M105 110 L115 110 L110 116 Z" fill="#E86F8A"/>${sorriso(110,120)}
+ <path d="M86 116 L52 110 M86 122 L52 126 M134 116 L168 110 M134 122 L168 126" stroke="#5E6670" stroke-width="2" stroke-linecap="round"/>
+</g>`,
+cagado: `<g class="corpo">
+ <ellipse class="cauda" cx="182" cy="182" rx="12" ry="6" fill="#7DAA4E"/>
+ <ellipse cx="62" cy="196" rx="16" ry="10" fill="#7DAA4E"/><ellipse cx="158" cy="196" rx="16" ry="10" fill="#7DAA4E"/>
+ <ellipse cx="110" cy="172" rx="70" ry="30" fill="#E6C25A"/>
+ <path d="M44 172 Q50 116 110 112 Q170 116 176 172 Z" fill="#2F5A2A"/>
+ <path d="M90 128 L130 128 L140 150 L110 166 L80 150 Z" fill="#477D3A"/>
+ <path d="M58 166 L76 136 M162 166 L144 136 M80 150 L60 160 M140 150 L160 160" stroke="#1E3D1B" stroke-width="3" stroke-linecap="round"/>
+ <ellipse cx="110" cy="80" rx="52" ry="46" fill="#8BBF5A"/>
+ <ellipse cx="62" cy="76" rx="7" ry="11" fill="#E05A3A"/><ellipse cx="158" cy="76" rx="7" ry="11" fill="#E05A3A"/>
+ ${olhos(90,130,74)}${bochechas(76,144,98)}
+ <circle cx="104" cy="94" r="2.5" fill="#2B1B12"/><circle cx="116" cy="94" r="2.5" fill="#2B1B12"/>
+ ${sorriso(110,104)}
 </g>`
 });

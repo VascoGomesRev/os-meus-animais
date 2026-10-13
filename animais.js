@@ -135,10 +135,10 @@ const ANIMAIS = [
   { id: 'chinchila',         nome: 'chinchila',         grupo: 'casa',     cena: 'casa',     som: false, move: 'salta' },
   { id: 'cagado',            nome: 'cágado',            grupo: 'casa',     cena: 'casa',     som: false, move: 'anda' },
   // Quinta
-  { id: 'touro',             nome: 'touro',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'touro',             nome: 'touro',             grupo: 'quinta',   cena: 'quinta',   som: false,  move: 'anda' },
   { id: 'cordeiro',          nome: 'cordeiro',          grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
   { id: 'leitao',            nome: 'leitão',            grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
-  { id: 'bezerro',           nome: 'bezerro',           grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'bezerro',           nome: 'bezerro',           grupo: 'quinta',   cena: 'quinta',   som: false,  move: 'anda' },
   { id: 'potro',             nome: 'potro',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
   { id: 'mula',              nome: 'mula',              grupo: 'quinta',   cena: 'quinta',   som: false, move: 'anda' },
   { id: 'bode',              nome: 'bode',              grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
