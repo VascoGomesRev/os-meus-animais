@@ -96,19 +96,24 @@ function alternarFavorito() {
   const c = $('#coracao');
   mostrarCoracao();
   c.classList.remove('pulso'); void c.offsetWidth; c.classList.add('pulso');
+  if (favoritos.has(a.id)) chuvaDeCoracoes();
   try { navigator.vibrate && navigator.vibrate(40); } catch (e) {}
 }
-let tFav = null, tFavIni = 0;
-function comecarSegurar() {
-  cancelarSegurar();
-  tFavIni = Date.now();
-  tFav = setInterval(() => {
-    const p = Math.min(100, (Date.now() - tFavIni) / 20);   // 2 segundos
-    $('#coracao').style.setProperty('--p', p);
-    if (p >= 100) { cancelarSegurar(); alternarFavorito(); }
-  }, 50);
+function chuvaDeCoracoes() {                 // corações a subir do animal quando fica favorito
+  const r = $('#bicho').getBoundingClientRect();
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    h.className = 'coracao-voa';
+    h.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + 'px';
+    h.style.top = (r.top + r.height * (0.3 + Math.random() * 0.4)) + 'px';
+    h.style.setProperty('--dx', ((Math.random() - 0.5) * 120).toFixed(0) + 'px');
+    h.style.animationDelay = (i * 90) + 'ms';
+    h.style.fontSize = (22 + Math.random() * 22) + 'px';
+    h.textContent = '❤';
+    $('#app').appendChild(h);
+    setTimeout(() => h.remove(), 1800);
+  }
 }
-function cancelarSegurar() { if (tFav) { clearInterval(tFav); tFav = null; } $('#coracao').style.setProperty('--p', 0); }
 function fazerOrdem() { const base = animaisAtivos(); ordem = modo === 'aleatorio' ? baralhar(base) : base.slice(); pos = 0; }
 
 /* ---------- Menu de grupos ---------- */
@@ -278,27 +283,32 @@ $('#app').addEventListener('pointerdown', e => {
   if (e.isPrimary === false) return;       // segundo dedo
   if (e.target.closest('.seta,#pais,#casa-btn')) return;
   if (e.target.closest('#habitat')) { irAoHabitat(); return; }
-  comecarSegurar();                        // 2 segundos premido → favorito
   tocarAnimal();
 });
-['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => $('#app').addEventListener(ev, cancelarSegurar));
 $('#casa-btn').addEventListener('pointerdown', e => { e.stopPropagation(); abrirMenu(); });
 $('#ant').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(-1); });
 $('#seg').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(1); });
 
-/* ---------- Roda dentada: 3 segundos premida abre a área dos pais ---------- */
+/* ---------- Roda dentada: premida 2 s e largada → favorito; premida 3 s → área dos pais ---------- */
 let tPais = null, tIni = 0;
 function anel(p) { $('#pais').style.setProperty('--p', p); }
 $('#pais').addEventListener('pointerdown', e => {
   e.stopPropagation(); tIni = Date.now();
   tPais = setInterval(() => {
-    const p = Math.min(100, (Date.now() - tIni) / 30);   // 3 segundos
-    anel(p);
-    if (p >= 100) { cancelarPais(); abrirPainel(); }
+    const ms = Date.now() - tIni;
+    $('#coracao').style.setProperty('--p', Math.min(100, ms / 20));              // coração enche nos primeiros 2 s
+    anel(ms < 2000 ? 0 : Math.min(100, (ms - 2000) / 10));                       // anel da roda enche dos 2 aos 3 s
+    if (ms >= 3000) { cancelarPais(); abrirPainel(); }
   }, 50);
 });
-function cancelarPais() { clearInterval(tPais); tPais = null; anel(0); }
-['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => $('#pais').addEventListener(ev, cancelarPais));
+function cancelarPais(largou) {
+  const ms = Date.now() - tIni;
+  clearInterval(tPais); tPais = null; anel(0);
+  $('#coracao').style.setProperty('--p', 0);
+  if (largou && ms >= 2000 && ms < 3000) alternarFavorito();
+}
+$('#pais').addEventListener('pointerup', () => { if (tPais) cancelarPais(true); });
+['pointerleave', 'pointercancel'].forEach(ev => $('#pais').addEventListener(ev, () => { if (tPais) cancelarPais(false); }));
 
 /* ---------- Área dos pais ---------- */
 function marcaOrdem() {

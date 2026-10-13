@@ -104,6 +104,8 @@ button{font:inherit;color:inherit}
 #coracao .anel{position:absolute;inset:0;border-radius:50%;background:conic-gradient(#E8457A calc(var(--p,0)*1%),transparent 0);-webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%)}
 #coracao.pulso svg{animation:pulso .6s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pulso{0%{transform:scale(1)}40%{transform:scale(1.8)}100%{transform:scale(1)}}
+.coracao-voa{position:absolute;color:#E8457A;pointer-events:none;z-index:5;opacity:0;animation:coracaoVoa 1.5s ease-out forwards;text-shadow:0 2px 0 #fff}
+@keyframes coracaoVoa{0%{transform:translate(0,0) scale(.4);opacity:0}15%{opacity:1}100%{transform:translate(var(--dx,0),-45vh) scale(1.2);opacity:0}}
 .grupo.favoritos svg{width:min(18vh,11vw);height:min(18vh,11vw);margin:min(2vh,1.5vw)}
 #casa-btn{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:calc(10px + env(safe-area-inset-left,0px));width:44px;height:44px;border:0;border-radius:50%;background:#FFFFFF66;display:grid;place-items:center;z-index:4;touch-action:none}
 #casa-btn svg{width:24px;height:24px;opacity:.65}
@@ -152,7 +154,7 @@ button{font:inherit;color:inherit}
 <div id="inicio" class="cobre">
   <div>
     <h1>Os Meus Animais</h1>
-    <p>Toca no animal para ouvir o nome e o som. As setas mudam de animal. Segura o animal 2 segundos para o pôr nos favoritos. Para entrar na área dos pais, mantém premida a roda dentada no canto durante 3 segundos.</p>
+    <p>Toca no animal para ouvir o nome e o som. As setas mudam de animal. Roda dentada no canto: premida 2 segundos e largada põe o animal nos favoritos; premida 3 segundos abre a área dos pais.</p>
     <button id="comecar">Começar</button>
   </div>
 </div>

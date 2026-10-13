@@ -3,12 +3,12 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-13-15feb6bc";
+var VERSAO = "2026-10-13-6f074cac";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "40292d29"
+  "h": "318d6910"
  },
  {
   "u": "animais.js",
@@ -16,7 +16,7 @@ var FICHEIROS = [
  },
  {
   "u": "app.js",
-  "h": "e6bfaa6c"
+  "h": "dd1a476c"
  },
  {
   "u": "creditos.json",
@@ -116,7 +116,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "40292d29"
+  "h": "318d6910"
  },
  {
   "u": "manifest.webmanifest",
@@ -408,7 +408,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "e571d037"
+  "h": "338ff359"
  }
 ];
 
