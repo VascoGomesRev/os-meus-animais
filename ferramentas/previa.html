@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pré-visualização dos desenhos</title>
+<style>
+body{margin:0;padding:16px;background:#FFF8EE;font-family:"Nunito","Segoe UI",sans-serif;color:#3A2618}
+h1{font-size:20px;margin:0 0 12px}
+h2{font-size:16px;margin:24px 0 8px;border-bottom:2px solid #EAD9C2}
+.grelha{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.cartao{background:#fff;border:1px solid #EAD9C2;border-radius:12px;padding:8px;text-align:center}
+.cartao b{display:block;font-size:15px;margin-bottom:4px}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.par svg{width:100%;aspect-ratio:1;overflow:visible;border-radius:8px;filter:drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)}
+.par small{display:block;font-size:12px;color:#7a5a3a}
+.falta{color:#B7472A;font-weight:700}
+.som{margin-top:4px;font-size:12px}
+.som button{font:inherit;border:1px solid #EAD9C2;background:#fff;border-radius:8px;padding:2px 8px;cursor:pointer}
+.olhos{transform-box:fill-box;transform-origin:center;animation:piscar 4.2s infinite}
+.cauda{transform-box:fill-box;transform-origin:0% 100%;animation:abanar 1.6s ease-in-out infinite}
+.cauda-peixe{transform-box:fill-box;transform-origin:0% 50%;animation:abanar 1.2s ease-in-out infinite}
+.asa{transform-box:fill-box;transform-origin:10% 20%;animation:asa 2.4s ease-in-out infinite}
+.orelha{transform-box:fill-box;transform-origin:50% 0%;animation:orelha 3s ease-in-out infinite}
+.bolha{animation:bolha 3s linear infinite;opacity:0}
+.balanca{transform-box:fill-box;transform-origin:50% 100%;animation:balancar 3s ease-in-out infinite}
+@keyframes piscar{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}}
+@keyframes abanar{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(12deg)}}
+@keyframes asa{0%,100%{transform:rotate(0)}50%{transform:rotate(-8deg)}}
+@keyframes orelha{0%,80%,100%{transform:rotate(0)}88%{transform:rotate(-10deg)}94%{transform:rotate(6deg)}}
+@keyframes bolha{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-70px);opacity:0}}
+@keyframes balancar{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+</style>
+</head>
+<body>
+<h1>Pré-visualização: animal + habitat por grupo</h1>
+<div id="tudo"></div>
+<script src="../gerado.js"></script>
+<script src="../animais.js"></script>
+<script src="../desenhos.js"></script>
+<script src="../desenhos/casa.js"></script><script src="../desenhos/quinta.js"></script><script src="../desenhos/floresta.js"></script><script src="../desenhos/selva.js"></script>
+<script src="../desenhos/gelo.js"></script><script src="../desenhos/mar.js"></script><script src="../desenhos/aves.js"></script><script src="../desenhos/insetos.js"></script>
+<script src="../habitats.js"></script>
+<script src="../habitats/casa.js"></script><script src="../habitats/quinta.js"></script><script src="../habitats/floresta.js"></script><script src="../habitats/selva.js"></script>
+<script src="../habitats/gelo.js"></script><script src="../habitats/mar.js"></script><script src="../habitats/aves.js"></script><script src="../habitats/insetos.js"></script>
+<script>
+const FUNDO = { casa: '#FFE9C7', quinta: '#BFE6FF', agua: '#9EDCF6', floresta: '#CDE6B5', savana: '#F6DFA4', gelo: '#DDEFF9', ceu: '#CFE8FF', relva: '#D6EFB0' };
+const svg = (interior, fundo) => `<svg viewBox="0 0 220 220" style="background:${fundo}">${interior}</svg>`;
+let html = '';
+for (const g of Object.keys(GRUPOS)) {
+  html += `<h2>${GRUPOS[g]}</h2><div class="grelha">`;
+  for (const a of ANIMAIS.filter(x => x.grupo === g)) {
+    const h = HABITATS[a.id], f = FUNDO[a.cena];
+    html += `<div class="cartao"><b>${a.nome}</b><div class="par">
+      <div>${DESENHOS[a.id] ? svg(DESENHOS[a.id], f) : '<span class="falta">sem desenho</span>'}<small>${a.move}</small></div>
+      <div>${h ? svg(h.svg, f) : '<span class="falta">sem habitat</span>'}<small>${h ? h.nome : '—'}</small></div></div>
+      <div class="som">${a.som ? (MEDIA_EMBUTIDA.sons.includes(a.id) ? `<button onclick="new Audio('../sons/${a.id}.mp3').play()">▶ som</button>` : '<span class="falta">som em falta</span>') : 'sem som'}</div></div>`;
+  }
+  html += '</div>';
+}
+document.getElementById('tudo').innerHTML = html;
+</script>
+</body>
+</html>

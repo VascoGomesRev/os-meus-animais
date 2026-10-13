@@ -82,11 +82,62 @@ function mostrar(dir) {
   const a = ordem[pos];
   $('#cena').className = 'cena cena-' + a.cena;
   const b = $('#bicho');
+  b.getAnimations().forEach(x => x.cancel());      // cancela uma viagem ao habitat a meio
   b.className = a.cena === 'agua' ? 'nada' : '';
-  b.innerHTML = `<svg viewBox="0 0 220 220" aria-hidden="true">${DESENHOS[a.id]}</svg>`;
+  b.innerHTML = `<svg viewBox="0 0 220 220" aria-hidden="true">${DESENHOS[a.id] || ''}</svg>`;
   b.setAttribute('aria-label', a.nome);
   if (dir) { void b.offsetWidth; b.classList.add(dir > 0 ? 'entrar-dir' : 'entrar-esq'); }
+  const h = HABITATS[a.id], el = $('#habitat');
+  if (h) {
+    el.innerHTML = `<svg viewBox="0 0 220 220" aria-hidden="true">${h.svg}</svg>`;
+    el.setAttribute('aria-label', h.nome);
+    el.hidden = false;
+  } else { el.hidden = true; el.innerHTML = ''; }
   $('#nome').classList.remove('ver');
+}
+
+/* ---------- Viagem ao habitat: o animal vai até lá (salta, anda, voa ou nada), fica um pouco e volta ---------- */
+function pontosViagem(move, dx, dy, escala) {
+  const P = [], n = 24;
+  for (let i = 0; i <= n; i++) {
+    const t = i / n, x = dx * t, k = 1 + (escala - 1) * t;
+    let y = dy * t;
+    if (move === 'salta') y -= Math.abs(Math.sin(t * Math.PI * 3)) * 45;        // três saltos
+    else if (move === 'voa') y -= Math.sin(t * Math.PI) * 140;                  // arco por cima
+    else if (move === 'nada') y += Math.sin(t * Math.PI * 4) * 12;              // ondula
+    else y -= Math.abs(Math.sin(t * Math.PI * 6)) * 8;                          // anda: passinhos
+    P.push({ transform: `translate(calc(-50% + ${x.toFixed(1)}px), ${y.toFixed(1)}px) scale(${k.toFixed(3)})` });
+  }
+  return P;
+}
+async function irAoHabitat() {
+  if (ocupado) return;
+  const a = ordem[pos], h = HABITATS[a.id];
+  if (!h) return;
+  ocupado = true;
+  const meu = ++sequencia;
+  const b = $('#bicho'), el = $('#habitat'), n = $('#nome');
+  el.classList.remove('toque'); void el.offsetWidth; el.classList.add('toque');
+  n.textContent = h.nome; n.classList.add('ver');
+  b.classList.remove('entrar-dir', 'entrar-esq');
+  const rb = b.getBoundingClientRect(), rh = el.getBoundingClientRect();
+  const escala = 0.55;
+  const dx = (rh.left + rh.width / 2) - (rb.left + rb.width / 2);
+  const dy = (rh.bottom - rh.height * 0.1) - rb.bottom;
+  const pontos = pontosViagem(a.move, dx, dy, escala);
+  const dur = a.move === 'voa' ? 1100 : 1000;
+  const ida = b.animate(pontos, { duration: dur, easing: 'ease-in-out', fill: 'forwards' });
+  falar(h.nome);
+  await ida.finished.catch(() => {});
+  if (meu !== sequencia) return;
+  await new Promise(r => setTimeout(r, 1800));
+  if (meu !== sequencia) return;
+  const volta = b.animate(pontos.slice().reverse(), { duration: dur, easing: 'ease-in-out' });
+  await volta.finished.catch(() => {});
+  if (meu !== sequencia) return;
+  ida.cancel();
+  n.classList.remove('ver');
+  ocupado = false;
 }
 let ultimaSeta = 0;
 function mudar(d) {
@@ -172,6 +223,7 @@ document.addEventListener('touchmove', e => { if (!e.target.closest('#painel')) 
 $('#app').addEventListener('pointerdown', e => {
   if (e.isPrimary === false) return;       // segundo dedo
   if (e.target.closest('.seta,#pais')) return;
+  if (e.target.closest('#habitat')) { irAoHabitat(); return; }
   tocarAnimal();
 });
 $('#ant').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(-1); });
@@ -200,7 +252,19 @@ $('#ord-grupos').onclick = () => { modo = 'grupos'; guardaLS('modo', modo); marc
 $('#ord-aleat').onclick = () => { modo = 'aleatorio'; guardaLS('modo', modo); marcaOrdem(); fazerOrdem(); mostrar(); };
 $('#testar-voz').onclick = () => falar('cão');
 $('#fechar').onclick = () => { $('#painel').hidden = true; mostrar(); };
-function abrirPainel() { pararSom(); escolherVoz(); desenharLista(); $('#painel').hidden = false; }
+function abrirPainel() { pararSom(); escolherVoz(); desenharLista(); mostrarCreditos(); $('#painel').hidden = false; }
+
+async function mostrarCreditos() {
+  const el = $('#creditos');
+  try {
+    const lista = await fetch('creditos.json').then(r => r.ok ? r.json() : []);
+    if (!lista.length) { el.textContent = 'Ainda sem sons embutidos.'; return; }
+    const nomes = Object.fromEntries(ANIMAIS.map(a => [a.id, a.nome]));
+    const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    el.innerHTML = '<ul style="padding-left:18px;margin:0">' + lista.map(c =>
+      `<li><b>${esc(nomes[c.animal] || c.animal)}</b> (${esc(c.tipo)}): «${esc(c.titulo)}», ${esc(c.autor)}, <a href="${esc(c.licencaUrl || c.origem)}" target="_blank" rel="noopener">${esc(c.licenca)}</a> — <a href="${esc(c.origem)}" target="_blank" rel="noopener">origem</a>${c.alteracoes ? ' (' + esc(c.alteracoes) + ')' : ''}</li>`).join('') + '</ul>';
+  } catch (e) { el.textContent = 'Não foi possível ler os créditos.'; }
+}
 
 function desenharLista() {
   const tipos = [['som', 'Som', 'audio/*'], ['voz', 'Voz gravada', 'audio/*']];

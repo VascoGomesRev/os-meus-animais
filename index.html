@@ -34,7 +34,19 @@ button{font:inherit;color:inherit}
 .cena-quinta{background:radial-gradient(130% 60% at 50% 105%,#8FCF6B 0 55%,transparent 56%),linear-gradient(#BFE6FF,#E6F6FF)}
 .cena-agua{background:linear-gradient(#9EDCF6,#4BAFDD)}
 .cena-agua::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16%;background:#E9D7A6;border-radius:50% 50% 0 0/30% 30% 0 0}
-#bicho{position:absolute;left:50%;bottom:4%;height:78%;aspect-ratio:1;transform:translateX(-50%);max-width:none}
+.cena-floresta{background:radial-gradient(60% 45% at 18% 60%,#4E9A4A 0 50%,transparent 51%),radial-gradient(70% 50% at 78% 58%,#5EAE55 0 50%,transparent 51%),linear-gradient(#DDEFCB 0 66%,#8CC26C 66% 100%)}
+.cena-savana{background:radial-gradient(22vh 22vh at 80% 22%,#FFD77A 0 48%,transparent 50%),linear-gradient(#FFE0A3 0 64%,#E8B65A 64% 100%)}
+.cena-gelo{background:radial-gradient(80% 30% at 30% 72%,#FFFFFF 0 50%,transparent 51%),linear-gradient(#CFE8FF 0 62%,#EAF6FF 62% 100%)}
+.cena-ceu{background:radial-gradient(18vh 10vh at 25% 25%,#fff 0 50%,transparent 52%),radial-gradient(14vh 8vh at 70% 18%,#fff 0 50%,transparent 52%),linear-gradient(#8FD0FF 0 70%,#B9E4A8 70% 100%)}
+.cena-relva{background:radial-gradient(3vh 3vh at 15% 80%,#FF8FB1 0 45%,transparent 47%),radial-gradient(3vh 3vh at 86% 86%,#FFD84D 0 45%,transparent 47%),linear-gradient(#DFF5FF 0 55%,#9ED66C 55% 100%)}
+#bicho{position:absolute;left:50%;bottom:4%;height:72%;aspect-ratio:1;transform:translateX(-50%);transform-origin:50% 100%;max-width:none}
+/* Habitat: o sítio do animal; ao tocar, o animal vai lá e volta */
+#habitat{position:absolute;bottom:3%;left:calc(3vw + min(30vh,150px) + env(safe-area-inset-left,0px));width:min(34vh,24vw);aspect-ratio:1;z-index:2;touch-action:none;animation:chamar 7s ease-in-out infinite;transform-origin:50% 100%}
+#habitat svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 6px 8px var(--sombra))}
+#habitat.toque{animation:chamar .5s}
+.balanca{transform-box:fill-box;transform-origin:50% 100%;animation:balancar 3s ease-in-out infinite}
+@keyframes chamar{0%,88%,100%{transform:scale(1)}92%{transform:scale(1.08)}96%{transform:scale(.98)}}
+@keyframes balancar{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
 #bicho svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 0 #fff) drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 10px 12px var(--sombra))}
 #bicho .corpo{transform-box:view-box;transform-origin:50% 100%}
 .olhos{transform-box:fill-box;transform-origin:center;animation:piscar 4.2s infinite}
@@ -108,6 +120,7 @@ button{font:inherit;color:inherit}
 <body>
 <div id="app">
   <div id="cena" class="cena cena-casa"></div>
+  <div id="habitat" role="button" aria-label="" hidden></div>
   <div id="bicho" role="img" aria-label=""></div>
   <div id="nome" aria-live="polite"></div>
   <button id="ant" class="seta" aria-label="Animal anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg></button>
@@ -141,6 +154,10 @@ button{font:inherit;color:inherit}
   <h3>Sons e voz gravada</h3>
   <p>A app já traz o som de alguns animais; um som carregado aqui substitui-o. Se gravares a tua voz a dizer o nome, a app usa a gravação em vez da voz sintética. Fica tudo guardado só neste telemóvel.</p>
   <div class="lista" id="lista"></div>
+
+  <h3>Créditos</h3>
+  <p>Os sons vêm do Wikimedia Commons, com licenças livres. Autores e licenças:</p>
+  <div id="creditos" style="font-size:13px;line-height:1.5;max-width:70ch"></div>
 
   <h3>Aplicação</h3>
   <p>Versão <b id="versao">—</b><br><span id="estado-offline">A verificar…</span></p>
