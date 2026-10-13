@@ -1,0 +1,9 @@
+# Descargas originais (antes da conversão) — não vão para o GitHub
+originais/
+
+# Dependências Node das ferramentas
+node_modules/
+
+# Lixo do sistema
+Thumbs.db
+.DS_Store
