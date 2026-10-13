@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* Gera dois ficheiros a partir do que existe na pasta da app:
    - sw.js     → service worker: guarda todos os ficheiros para a app funcionar sem internet
-   - gerado.js → VERSAO (data + hash do conteúdo) e MEDIA_EMBUTIDA (fotos e sons que existem em fotos/ e sons/)
+   - gerado.js → VERSAO (data + hash do conteúdo) e MEDIA_EMBUTIDA (sons que existem em sons/)
    Correr sempre que se altere um ficheiro da app, antes do commit:   node ferramentas/gerar-sw.js
    Cada ficheiro leva a sua «revisão» (hash do conteúdo), por isso uma atualização só descarrega
    no telemóvel os ficheiros que mudaram. */
@@ -11,9 +11,9 @@ const path = require('path');
 const crypto = require('crypto');
 
 const RAIZ = path.resolve(__dirname, '..');
-const PASTAS_MEDIA = ['icones', 'fontes', 'fotos', 'sons'];
+const PASTAS_MEDIA = ['icones', 'fontes', 'sons', 'desenhos', 'habitats'];
 const TOPO = /\.(html|js|webmanifest|json)$/i;        // ficheiros da raiz que entram na cache
-const MEDIA = /\.(png|webp|mp3|woff2)$/i;             // ficheiros das pastas de media que entram na cache
+const MEDIA = /\.(png|mp3|woff2|js)$/i;               // ficheiros das subpastas que entram na cache
 const GERADOS = new Set(['sw.js', 'gerado.js']);       // saídas deste script
 
 const ler = f => { try { return fs.readFileSync(path.join(RAIZ, f), 'utf8'); } catch (e) { return null; } };
@@ -121,7 +121,7 @@ function gerar({ escrever = true } = {}) {
   const anterior = (ler('gerado.js') || '').match(/VERSAO = "([^"]+)"/);
   const versao = anterior && anterior[1].endsWith('-' + hashGlobal) ? anterior[1] : new Date().toISOString().slice(0, 10) + '-' + hashGlobal;
 
-  const media = { fotos: idsEm('fotos', '.webp'), sons: idsEm('sons', '.mp3') };
+  const media = { sons: idsEm('sons', '.mp3') };
   const gerado = '/* GERADO por ferramentas/gerar-sw.js — não editar à mão. Para atualizar: node ferramentas/gerar-sw.js */\n' +
     'const VERSAO = "' + versao + '";\n' +
     'const MEDIA_EMBUTIDA = ' + JSON.stringify(media) + ';\n';
@@ -148,6 +148,6 @@ if (require.main === module) {
   const r = gerar();
   console.log('Versão da app:       ' + r.versao);
   console.log('Ficheiros na cache:  ' + r.ficheiros.length + ' (' + (r.tamanho / 1024 / 1024).toFixed(2) + ' MB)');
-  console.log('Fotos embutidas:     ' + r.media.fotos.length + '   Sons embutidos: ' + r.media.sons.length);
+  console.log('Sons embutidos:      ' + r.media.sons.length);
   console.log(r.mudou ? 'sw.js e gerado.js atualizados.' : 'sw.js e gerado.js já estavam atualizados.');
 }

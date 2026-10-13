@@ -3,24 +3,56 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-13-d1b0dba3";
+var VERSAO = "2026-10-13-858ee181";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "70d9282d"
+  "h": "90c110a0"
  },
  {
   "u": "animais.js",
-  "h": "4a37019f"
+  "h": "f4171154"
  },
  {
   "u": "app.js",
-  "h": "e8de054f"
+  "h": "f5f45e0b"
  },
  {
   "u": "desenhos.js",
   "h": "f22e637d"
+ },
+ {
+  "u": "desenhos/aves.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/casa.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/floresta.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/gelo.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/insetos.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/mar.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/quinta.js",
+  "h": "a9b7e0b5"
+ },
+ {
+  "u": "desenhos/selva.js",
+  "h": "a9b7e0b5"
  },
  {
   "u": "fontes/baloo2.woff2",
@@ -29,6 +61,42 @@ var FICHEIROS = [
  {
   "u": "fontes/nunito.woff2",
   "h": "76388dbf"
+ },
+ {
+  "u": "habitats.js",
+  "h": "1d5d8857"
+ },
+ {
+  "u": "habitats/aves.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/casa.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/floresta.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/gelo.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/insetos.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/mar.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/quinta.js",
+  "h": "2be6c4b2"
+ },
+ {
+  "u": "habitats/selva.js",
+  "h": "2be6c4b2"
  },
  {
   "u": "icones/icon-192.png",
@@ -44,7 +112,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "70d9282d"
+  "h": "90c110a0"
  },
  {
   "u": "manifest.webmanifest",
@@ -52,7 +120,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "9c1d0a96"
+  "h": "03daf071"
  }
 ];
 

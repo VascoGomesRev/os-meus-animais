@@ -1,9 +1,10 @@
 /* Dados dos animais.
-   id    → nome dos ficheiros fotos/<id>.webp e sons/<id>.mp3 (só letras minúsculas sem acentos, números e hífen)
+   id    → nome do ficheiro sons/<id>.mp3 e chave em DESENHOS/HABITATS (só letras minúsculas sem acentos, números e hífen)
    nome  → como aparece escrito e como é dito (minúsculas, sem artigo: «cão», não «o cão»)
    grupo → ordem «por grupos» e organização dos créditos (ver GRUPOS)
-   cena  → fundo desenhado quando não há foto: casa, quinta, agua, floresta, savana, gelo, ceu, relva
-   som   → true se o animal tem um som característico (toca se existir sons/<id>.mp3 ou um som carregado pelos pais) */
+   cena  → fundo desenhado: casa, quinta, agua, floresta, savana, gelo, ceu, relva
+   som   → true se o animal tem um som característico (toca se existir sons/<id>.mp3 ou um som carregado pelos pais)
+   move  → como vai até ao habitat: salta, anda, voa, nada */
 'use strict';
 
 const GRUPOS = {
@@ -18,9 +19,112 @@ const GRUPOS = {
 };
 
 const ANIMAIS = [
-  { id: 'cao',   nome: 'cão',   grupo: 'casa',   cena: 'casa',   som: true },
-  { id: 'gato',  nome: 'gato',  grupo: 'casa',   cena: 'casa',   som: true },
-  { id: 'vaca',  nome: 'vaca',  grupo: 'quinta', cena: 'quinta', som: true },
-  { id: 'pato',  nome: 'pato',  grupo: 'quinta', cena: 'quinta', som: true },
-  { id: 'peixe', nome: 'peixe', grupo: 'mar',    cena: 'agua',   som: false }
+  // Casa
+  { id: 'cao',               nome: 'cão',               grupo: 'casa',     cena: 'casa',     som: true,  move: 'salta' },
+  { id: 'gato',              nome: 'gato',              grupo: 'casa',     cena: 'casa',     som: true,  move: 'salta' },
+  { id: 'hamster',           nome: 'hamster',           grupo: 'casa',     cena: 'casa',     som: false, move: 'salta' },
+  { id: 'coelho',            nome: 'coelho',            grupo: 'casa',     cena: 'casa',     som: false, move: 'salta' },
+  { id: 'rato',              nome: 'rato',              grupo: 'casa',     cena: 'casa',     som: true,  move: 'salta' },
+  { id: 'porquinho-da-india', nome: 'porquinho-da-índia', grupo: 'casa',   cena: 'casa',     som: true,  move: 'salta' },
+  { id: 'periquito',         nome: 'periquito',         grupo: 'casa',     cena: 'casa',     som: true,  move: 'voa' },
+  { id: 'canario',           nome: 'canário',           grupo: 'casa',     cena: 'casa',     som: true,  move: 'voa' },
+  // Quinta
+  { id: 'vaca',              nome: 'vaca',              grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'porco',             nome: 'porco',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'ovelha',            nome: 'ovelha',            grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
+  { id: 'cabra',             nome: 'cabra',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
+  { id: 'cavalo',            nome: 'cavalo',            grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
+  { id: 'burro',             nome: 'burro',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'galinha',           nome: 'galinha',           grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'galo',              nome: 'galo',              grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'pinto',             nome: 'pinto',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'salta' },
+  { id: 'pato',              nome: 'pato',              grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'peru',              nome: 'peru',              grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  { id: 'ganso',             nome: 'ganso',             grupo: 'quinta',   cena: 'quinta',   som: true,  move: 'anda' },
+  // Floresta
+  { id: 'urso',              nome: 'urso',              grupo: 'floresta', cena: 'floresta', som: true,  move: 'anda' },
+  { id: 'raposa',            nome: 'raposa',            grupo: 'floresta', cena: 'floresta', som: false, move: 'salta' },
+  { id: 'lobo',              nome: 'lobo',              grupo: 'floresta', cena: 'floresta', som: true,  move: 'salta' },
+  { id: 'veado',             nome: 'veado',             grupo: 'floresta', cena: 'floresta', som: false, move: 'salta' },
+  { id: 'esquilo',           nome: 'esquilo',           grupo: 'floresta', cena: 'floresta', som: false, move: 'salta' },
+  { id: 'ourico',            nome: 'ouriço',            grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  { id: 'javali',            nome: 'javali',            grupo: 'floresta', cena: 'floresta', som: true,  move: 'anda' },
+  { id: 'texugo',            nome: 'texugo',            grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  { id: 'castor',            nome: 'castor',            grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  { id: 'toupeira',          nome: 'toupeira',          grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  { id: 'morcego',           nome: 'morcego',           grupo: 'floresta', cena: 'floresta', som: false, move: 'voa' },
+  { id: 'lince',             nome: 'lince',             grupo: 'floresta', cena: 'floresta', som: false, move: 'salta' },
+  { id: 'panda',             nome: 'panda',             grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  { id: 'coala',             nome: 'coala',             grupo: 'floresta', cena: 'floresta', som: false, move: 'anda' },
+  // Selva e savana
+  { id: 'leao',              nome: 'leão',              grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'tigre',             nome: 'tigre',             grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'elefante',          nome: 'elefante',          grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'girafa',            nome: 'girafa',            grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'zebra',             nome: 'zebra',             grupo: 'selva',    cena: 'savana',   som: false, move: 'salta' },
+  { id: 'macaco',            nome: 'macaco',            grupo: 'selva',    cena: 'savana',   som: true,  move: 'salta' },
+  { id: 'gorila',            nome: 'gorila',            grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'hipopotamo',        nome: 'hipopótamo',        grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'rinoceronte',       nome: 'rinoceronte',       grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'crocodilo',         nome: 'crocodilo',         grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'cobra',             nome: 'cobra',             grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  { id: 'leopardo',          nome: 'leopardo',          grupo: 'selva',    cena: 'savana',   som: false, move: 'salta' },
+  { id: 'camelo',            nome: 'camelo',            grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'lama',              nome: 'lama',              grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'canguru',           nome: 'canguru',           grupo: 'selva',    cena: 'savana',   som: false, move: 'salta' },
+  { id: 'preguica',          nome: 'preguiça',          grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'suricata',          nome: 'suricata',          grupo: 'selva',    cena: 'savana',   som: false, move: 'salta' },
+  { id: 'camaleao',          nome: 'camaleão',          grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'lagarto',           nome: 'lagarto',           grupo: 'selva',    cena: 'savana',   som: false, move: 'anda' },
+  { id: 'dinossauro',        nome: 'dinossauro',        grupo: 'selva',    cena: 'savana',   som: true,  move: 'anda' },
+  // Gelo
+  { id: 'urso-polar',        nome: 'urso-polar',        grupo: 'gelo',     cena: 'gelo',     som: false, move: 'anda' },
+  { id: 'pinguim',           nome: 'pinguim',           grupo: 'gelo',     cena: 'gelo',     som: true,  move: 'anda' },
+  { id: 'foca',              nome: 'foca',              grupo: 'gelo',     cena: 'gelo',     som: true,  move: 'anda' },
+  { id: 'morsa',             nome: 'morsa',             grupo: 'gelo',     cena: 'gelo',     som: false, move: 'anda' },
+  { id: 'rena',              nome: 'rena',              grupo: 'gelo',     cena: 'gelo',     som: false, move: 'salta' },
+  // Mar e rio
+  { id: 'peixe',             nome: 'peixe',             grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'baleia',            nome: 'baleia',            grupo: 'mar',      cena: 'agua',     som: true,  move: 'nada' },
+  { id: 'golfinho',          nome: 'golfinho',          grupo: 'mar',      cena: 'agua',     som: true,  move: 'nada' },
+  { id: 'tubarao',           nome: 'tubarão',           grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'polvo',             nome: 'polvo',             grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'caranguejo',        nome: 'caranguejo',        grupo: 'mar',      cena: 'agua',     som: false, move: 'anda' },
+  { id: 'lagosta',           nome: 'lagosta',           grupo: 'mar',      cena: 'agua',     som: false, move: 'anda' },
+  { id: 'estrela-do-mar',    nome: 'estrela-do-mar',    grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'cavalo-marinho',    nome: 'cavalo-marinho',    grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'alforreca',         nome: 'alforreca',         grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'tartaruga',         nome: 'tartaruga',         grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'lontra',            nome: 'lontra',            grupo: 'mar',      cena: 'agua',     som: false, move: 'nada' },
+  { id: 'sapo',              nome: 'sapo',              grupo: 'mar',      cena: 'agua',     som: true,  move: 'salta' },
+  // Aves
+  { id: 'passaro',           nome: 'pássaro',           grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'pomba',             nome: 'pomba',             grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'gaivota',           nome: 'gaivota',           grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'coruja',            nome: 'coruja',            grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'cisne',             nome: 'cisne',             grupo: 'aves',     cena: 'ceu',      som: false, move: 'nada' },
+  { id: 'pelicano',          nome: 'pelicano',          grupo: 'aves',     cena: 'ceu',      som: false, move: 'voa' },
+  { id: 'flamingo',          nome: 'flamingo',          grupo: 'aves',     cena: 'ceu',      som: false, move: 'anda' },
+  { id: 'avestruz',          nome: 'avestruz',          grupo: 'aves',     cena: 'ceu',      som: false, move: 'anda' },
+  { id: 'tucano',            nome: 'tucano',            grupo: 'aves',     cena: 'ceu',      som: false, move: 'voa' },
+  { id: 'papagaio',          nome: 'papagaio',          grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'aguia',             nome: 'águia',             grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'pica-pau',          nome: 'pica-pau',          grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  { id: 'pavao',             nome: 'pavão',             grupo: 'aves',     cena: 'ceu',      som: true,  move: 'anda' },
+  { id: 'cegonha',           nome: 'cegonha',           grupo: 'aves',     cena: 'ceu',      som: true,  move: 'voa' },
+  // Insetos e pequenos
+  { id: 'borboleta',         nome: 'borboleta',         grupo: 'insetos',  cena: 'relva',    som: false, move: 'voa' },
+  { id: 'abelha',            nome: 'abelha',            grupo: 'insetos',  cena: 'relva',    som: true,  move: 'voa' },
+  { id: 'joaninha',          nome: 'joaninha',          grupo: 'insetos',  cena: 'relva',    som: false, move: 'voa' },
+  { id: 'caracol',           nome: 'caracol',           grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'formiga',           nome: 'formiga',           grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'aranha',            nome: 'aranha',            grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'lagarta',           nome: 'lagarta',           grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'minhoca',           nome: 'minhoca',           grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'gafanhoto',         nome: 'gafanhoto',         grupo: 'insetos',  cena: 'relva',    som: true,  move: 'salta' },
+  { id: 'libelinha',         nome: 'libelinha',         grupo: 'insetos',  cena: 'relva',    som: false, move: 'voa' },
+  { id: 'mosca',             nome: 'mosca',             grupo: 'insetos',  cena: 'relva',    som: true,  move: 'voa' },
+  { id: 'pirilampo',         nome: 'pirilampo',         grupo: 'insetos',  cena: 'relva',    som: false, move: 'voa' },
+  { id: 'besouro',           nome: 'besouro',           grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' },
+  { id: 'louva-a-deus',      nome: 'louva-a-deus',      grupo: 'insetos',  cena: 'relva',    som: false, move: 'anda' }
 ];

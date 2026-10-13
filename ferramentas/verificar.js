@@ -5,8 +5,8 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const vm = require('vm');
 const { gerar, RAIZ } = require('./gerar-sw.js');
+const { carregarDados } = require('./dados.js');
 
 const erros = [], avisos = [];
 const erro = m => erros.push(m);
@@ -18,11 +18,11 @@ const CENAS = new Set(['casa', 'quinta', 'agua', 'floresta', 'savana', 'gelo', '
 // 1. Dados da app (gerado.js, animais.js e desenhos.js são scripts clássicos: corremos-os num contexto isolado)
 let dados = null;
 try {
-  dados = vm.runInNewContext(ler('gerado.js') + '\n' + ler('animais.js') + '\n' + ler('desenhos.js') + '\n;({ ANIMAIS, GRUPOS, DESENHOS, MEDIA_EMBUTIDA, VERSAO })', {});
-} catch (e) { erro('não consegui carregar gerado.js / animais.js / desenhos.js: ' + e.message); }
+  dados = carregarDados();
+} catch (e) { erro('não consegui carregar os ficheiros de dados (gerado.js, animais.js, desenhos*, habitats*): ' + e.message); }
 
 if (dados) {
-  const { ANIMAIS, GRUPOS, DESENHOS, MEDIA_EMBUTIDA } = dados;
+  const { ANIMAIS, GRUPOS, DESENHOS, HABITATS, MEDIA_EMBUTIDA } = dados;
   const ids = new Set();
   for (const a of ANIMAIS) {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(a.id)) erro(`id inválido «${a.id}» (só minúsculas sem acentos, números e hífen)`);
@@ -32,21 +32,29 @@ if (dados) {
     if (!(a.grupo in GRUPOS)) erro(`${a.id}: grupo desconhecido «${a.grupo}»`);
     if (!CENAS.has(a.cena)) erro(`${a.id}: cena desconhecida «${a.cena}»`);
     if (typeof a.som !== 'boolean') erro(`${a.id}: «som» tem de ser true ou false`);
+    if (!['salta', 'anda', 'voa', 'nada'].includes(a.move)) erro(`${a.id}: «move» desconhecido «${a.move}»`);
+    const h = HABITATS[a.id];
+    if (!h) aviso(`${a.id}: ainda sem habitat`);
+    else {
+      if (!h.nome || h.nome !== h.nome.toLowerCase()) erro(`${a.id}: habitat sem nome válido (minúsculas)`);
+      if (!h.svg || /<svg[\s>]/i.test(h.svg) || /<(style|script|image)/i.test(h.svg) || /\sid=/.test(h.svg)) erro(`${a.id}: svg do habitat inválido (sem <svg>, <style>, <script>, <image> nem ids)`);
+    }
     const d = DESENHOS[a.id];
-    if (!d) erro(`${a.id}: não tem desenho em desenhos.js`);
+    if (!d) aviso(`${a.id}: ainda sem desenho`);
     else {
       if (/<svg[\s>]/i.test(d)) erro(`${a.id}: o desenho não pode incluir a tag <svg> (só o interior)`);
+      if (/<(style|script|image)/i.test(d) || /\sid=/.test(d)) erro(`${a.id}: o desenho não pode ter <style>, <script>, <image> nem ids`);
       if (!/class="corpo"/.test(d)) erro(`${a.id}: o desenho não tem <g class="corpo">`);
       if (!/class="olhos"/.test(d)) aviso(`${a.id}: o desenho não tem olhos com a classe «olhos» (normalmente via olhos())`);
     }
     if (a.som && !MEDIA_EMBUTIDA.sons.includes(a.id)) aviso(`${a.id}: tem som característico mas ainda não existe sons/${a.id}.mp3`);
     if (!a.som && MEDIA_EMBUTIDA.sons.includes(a.id)) erro(`${a.id}: som:false mas existe sons/${a.id}.mp3`);
-    if (!MEDIA_EMBUTIDA.fotos.includes(a.id)) aviso(`${a.id}: ainda sem foto (fotos/${a.id}.webp) — usa a cena desenhada`);
   }
-  for (const id of Object.keys(DESENHOS)) if (!ids.has(id)) erro(`desenhos.js tem «${id}», que não está em animais.js`);
+  for (const id of Object.keys(DESENHOS)) if (!ids.has(id)) erro(`há um desenho «${id}» que não está em animais.js`);
+  for (const id of Object.keys(HABITATS)) if (!ids.has(id)) erro(`há um habitat «${id}» que não está em animais.js`);
 
   // 2. Ficheiros de media: nome e extensão
-  for (const [pasta, ext] of [['fotos', '.webp'], ['sons', '.mp3']]) {
+  for (const [pasta, ext] of [['sons', '.mp3']]) {
     if (!existe(pasta)) continue;
     for (const n of fs.readdirSync(path.join(RAIZ, pasta))) {
       if (n.startsWith('.')) continue;
@@ -55,16 +63,15 @@ if (dados) {
     }
   }
 
-  // 3. Créditos: cada foto e som embutido tem entrada em creditos.json
+  // 3. Créditos: cada som embutido tem entrada em creditos.json
   if (existe('creditos.json')) {
     try {
       const cr = JSON.parse(ler('creditos.json'));
       const com = new Set(cr.map(c => c.ficheiro));
-      for (const id of MEDIA_EMBUTIDA.fotos) if (!com.has(`fotos/${id}.webp`)) erro(`fotos/${id}.webp sem entrada em creditos.json`);
       for (const id of MEDIA_EMBUTIDA.sons) if (!com.has(`sons/${id}.mp3`)) erro(`sons/${id}.mp3 sem entrada em creditos.json`);
       for (const c of cr) if (c.ficheiro && !existe(c.ficheiro)) aviso(`creditos.json refere ${c.ficheiro}, que não existe`);
     } catch (e) { erro('creditos.json inválido: ' + e.message); }
-  } else if (MEDIA_EMBUTIDA.fotos.length || MEDIA_EMBUTIDA.sons.length) erro('há fotos/sons embutidos mas não existe creditos.json');
+  } else if (MEDIA_EMBUTIDA.sons.length) erro('há sons embutidos mas não existe creditos.json');
 }
 
 // 4. Manifest e ícones

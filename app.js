@@ -5,14 +5,14 @@
    - desenhos.js → DESENHOS e os ajudantes olhos(), bochechas(), sorriso() */
 'use strict';
 
-const EMBUTIDO = typeof MEDIA_EMBUTIDA !== 'undefined' ? MEDIA_EMBUTIDA : { fotos: [], sons: [] };
+const EMBUTIDO = typeof MEDIA_EMBUTIDA !== 'undefined' ? MEDIA_EMBUTIDA : { sons: [] };
 const VERSAO_APP = typeof VERSAO !== 'undefined' ? VERSAO : 'desenvolvimento';
 
 const $ = s => document.querySelector(s);
 const guardaLS = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 const leLS = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
 
-/* ---------- IndexedDB: fotos, sons e vozes carregados pelos pais ---------- */
+/* ---------- IndexedDB: sons e vozes carregados pelos pais ---------- */
 let bd = null;
 function abrirBD() {
   return new Promise(res => {
@@ -50,12 +50,11 @@ function bdSet(k, v) {               // v = null apaga
 const urls = {};      // 'id:tipo' → URL a usar (blob: dos pais, caminho embutido, ou null)
 const proprios = {};  // 'id:tipo' → true se veio dos pais (IndexedDB)
 function urlEmbutida(id, t) {
-  if (t === 'foto' && EMBUTIDO.fotos.includes(id)) return 'fotos/' + id + '.webp';
   if (t === 'som' && EMBUTIDO.sons.includes(id)) return 'sons/' + id + '.mp3';
   return null;
 }
 async function carregarMedia() {
-  for (const a of ANIMAIS) for (const t of ['foto', 'som', 'voz']) {
+  for (const a of ANIMAIS) for (const t of ['som', 'voz']) {
     const k = a.id + ':' + t;
     const b = await bdGet(k);
     proprios[k] = !!b;
@@ -82,10 +81,8 @@ function fazerOrdem() { ordem = modo === 'aleatorio' ? baralhar(ANIMAIS) : ANIMA
 function mostrar(dir) {
   const a = ordem[pos];
   $('#cena').className = 'cena cena-' + a.cena;
-  const f = urls[a.id + ':foto'], img = $('#foto');
-  if (f) { img.src = f; img.hidden = false; } else { img.removeAttribute('src'); img.hidden = true; }
   const b = $('#bicho');
-  b.className = (f ? 'com-foto ' : '') + (a.cena === 'agua' ? 'nada' : '');
+  b.className = a.cena === 'agua' ? 'nada' : '';
   b.innerHTML = `<svg viewBox="0 0 220 220" aria-hidden="true">${DESENHOS[a.id]}</svg>`;
   b.setAttribute('aria-label', a.nome);
   if (dir) { void b.offsetWidth; b.classList.add(dir > 0 ? 'entrar-dir' : 'entrar-esq'); }
@@ -206,7 +203,7 @@ $('#fechar').onclick = () => { $('#painel').hidden = true; mostrar(); };
 function abrirPainel() { pararSom(); escolherVoz(); desenharLista(); $('#painel').hidden = false; }
 
 function desenharLista() {
-  const tipos = [['foto', 'Foto', 'image/*'], ['som', 'Som', 'audio/*'], ['voz', 'Voz gravada', 'audio/*']];
+  const tipos = [['som', 'Som', 'audio/*'], ['voz', 'Voz gravada', 'audio/*']];
   $('#lista').innerHTML = ANIMAIS.map(a => {
     const botoes = tipos.filter(([t]) => t !== 'som' || a.som).map(([t, rot, ac]) => {
       const k = a.id + ':' + t, tem = !!urls[k], teu = !!proprios[k];

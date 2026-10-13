@@ -16,7 +16,7 @@
 @font-face{font-family:"Nunito";font-style:normal;font-weight:200 1000;font-display:swap;src:url("fontes/nunito.woff2") format("woff2")}
 [hidden]{display:none!important}
 
-/* Ecrã único em horizontal: palco a toda a largura, setas laterais, animal kawaii por cima da foto */
+/* Ecrã único em horizontal: palco a toda a largura, setas laterais, animal kawaii na cena desenhada */
 :root{
   --tinta:#3A2618; --papel:#FFFFFF; --sombra:rgba(58,38,24,.28);
   --seta:#FFFFFFE6; --seta-tinta:#E8663D; --painel:#FFF8EE; --linha:#EAD9C2; --ok:#3E9B5A;
@@ -34,10 +34,7 @@ button{font:inherit;color:inherit}
 .cena-quinta{background:radial-gradient(130% 60% at 50% 105%,#8FCF6B 0 55%,transparent 56%),linear-gradient(#BFE6FF,#E6F6FF)}
 .cena-agua{background:linear-gradient(#9EDCF6,#4BAFDD)}
 .cena-agua::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16%;background:#E9D7A6;border-radius:50% 50% 0 0/30% 30% 0 0}
-#foto{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-width:none}
-#foto[hidden]{display:none}
 #bicho{position:absolute;left:50%;bottom:4%;height:78%;aspect-ratio:1;transform:translateX(-50%);max-width:none}
-#bicho.com-foto{height:52%;bottom:2%}
 #bicho svg{width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 0 #fff) drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 10px 12px var(--sombra))}
 #bicho .corpo{transform-box:view-box;transform-origin:50% 100%}
 .olhos{transform-box:fill-box;transform-origin:center;animation:piscar 4.2s infinite}
@@ -111,7 +108,6 @@ button{font:inherit;color:inherit}
 <body>
 <div id="app">
   <div id="cena" class="cena cena-casa"></div>
-  <img id="foto" alt="" hidden>
   <div id="bicho" role="img" aria-label=""></div>
   <div id="nome" aria-live="polite"></div>
   <button id="ant" class="seta" aria-label="Animal anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg></button>
@@ -142,8 +138,8 @@ button{font:inherit;color:inherit}
   <p id="voz-estado">A verificar vozes…</p>
   <button class="btn" id="testar-voz">Testar voz</button>
 
-  <h3>Fotos, sons e voz gravada</h3>
-  <p>A app já traz fotos e sons para alguns animais; o que carregares aqui substitui-os. Se gravares a tua voz a dizer o nome, a app usa a gravação em vez da voz sintética. Fica tudo guardado só neste telemóvel.</p>
+  <h3>Sons e voz gravada</h3>
+  <p>A app já traz o som de alguns animais; um som carregado aqui substitui-o. Se gravares a tua voz a dizer o nome, a app usa a gravação em vez da voz sintética. Fica tudo guardado só neste telemóvel.</p>
   <div class="lista" id="lista"></div>
 
   <h3>Aplicação</h3>
@@ -153,6 +149,23 @@ button{font:inherit;color:inherit}
 <script src="gerado.js"></script>
 <script src="animais.js"></script>
 <script src="desenhos.js"></script>
+<script src="desenhos/casa.js"></script>
+<script src="desenhos/quinta.js"></script>
+<script src="desenhos/floresta.js"></script>
+<script src="desenhos/selva.js"></script>
+<script src="desenhos/gelo.js"></script>
+<script src="desenhos/mar.js"></script>
+<script src="desenhos/aves.js"></script>
+<script src="desenhos/insetos.js"></script>
+<script src="habitats.js"></script>
+<script src="habitats/casa.js"></script>
+<script src="habitats/quinta.js"></script>
+<script src="habitats/floresta.js"></script>
+<script src="habitats/selva.js"></script>
+<script src="habitats/gelo.js"></script>
+<script src="habitats/mar.js"></script>
+<script src="habitats/aves.js"></script>
+<script src="habitats/insetos.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
