@@ -3,24 +3,24 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-13-f7c13e04";
+var VERSAO = "2026-10-13-15feb6bc";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "26650f3a"
+  "h": "40292d29"
  },
  {
   "u": "animais.js",
-  "h": "5d0fd8ba"
+  "h": "df03df11"
  },
  {
   "u": "app.js",
-  "h": "fa2970e0"
+  "h": "e6bfaa6c"
  },
  {
   "u": "creditos.json",
-  "h": "220327e6"
+  "h": "baea435c"
  },
  {
   "u": "desenhos.js",
@@ -116,7 +116,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "26650f3a"
+  "h": "40292d29"
  },
  {
   "u": "manifest.webmanifest",
@@ -157,10 +157,6 @@ var FICHEIROS = [
  {
   "u": "sons/cabra.mp3",
   "h": "3223c523"
- },
- {
-  "u": "sons/cacatua.mp3",
-  "h": "29cae2a3"
  },
  {
   "u": "sons/cachalote.mp3",
@@ -299,10 +295,6 @@ var FICHEIROS = [
   "h": "f744b986"
  },
  {
-  "u": "sons/mosquito.mp3",
-  "h": "29ffb2b3"
- },
- {
   "u": "sons/orca.mp3",
   "h": "d49692cf"
  },
@@ -416,7 +408,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "1391487c"
+  "h": "e571d037"
  }
 ];
 

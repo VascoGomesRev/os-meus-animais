@@ -22,7 +22,7 @@ Fonte: https://docs.github.com/en/pages/getting-started-with-github-pages/config
 4. Carrega em **Começar**. A app passa a ecrã inteiro, em horizontal.
 
 **Verificar:**
-- Mantém a roda dentada (canto superior direito) premida 2 segundos → abre a área dos pais. Em «Aplicação» tem de dizer **«Pronta para funcionar sem internet ✓»**. Se disser «A guardar os ficheiros…», espera uns segundos e volta a abrir.
+- Mantém a roda dentada (canto superior direito) premida 3 segundos → abre a área dos pais. Em «Aplicação» tem de dizer **«Pronta para funcionar sem internet ✓»**. Se disser «A guardar os ficheiros…», espera uns segundos e volta a abrir.
 - Põe o telemóvel em **modo avião**, fecha a app e volta a abri-la: tem de funcionar na mesma.
 - Roda o telemóvel para vertical: aparece «Roda o telemóvel».
 

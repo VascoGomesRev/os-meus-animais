@@ -726,17 +726,6 @@
   "alteracoes": "cortado a 2,5 s (a partir de 10 s), volume normalizado, mono"
  },
  {
-  "ficheiro": "sons/cacatua.mp3",
-  "animal": "cacatua",
-  "tipo": "som",
-  "titulo": "Cacatua sanguinea - Little Corella XC459074.mp3",
-  "autor": "James Ray",
-  "licenca": "CC BY-SA 4.0",
-  "licencaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-  "origem": "https://commons.wikimedia.org/wiki/File%3ACacatua%20sanguinea%20-%20Little%20Corella%20XC459074.mp3",
-  "alteracoes": "cortado a 2,5 s (a partir de 24 s), volume normalizado, mono"
- },
- {
   "ficheiro": "sons/perdiz.mp3",
   "animal": "perdiz",
   "tipo": "som",
@@ -768,17 +757,6 @@
   "licencaUrl": "https://creativecommons.org/licenses/by/2.5",
   "origem": "https://commons.wikimedia.org/wiki/File:Characterization-and-Generation-of-Male-Courtship-Song-in-Cotesia-congregata-(Hymenoptera-pone.0062051.s001.oga",
   "alteracoes": "troço de 3,0 s a partir de 4,0 s, volume normalizado, mono"
- },
- {
-  "ficheiro": "sons/mosquito.mp3",
-  "animal": "mosquito",
-  "tipo": "som",
-  "titulo": "Mosquito attack.ogg",
-  "autor": "Yesthatbruce",
-  "licenca": "CC0",
-  "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-  "origem": "https://commons.wikimedia.org/wiki/File:Mosquito_attack.ogg",
-  "alteracoes": "troço de 2,5 s a partir de 3,0 s, volume normalizado, mono"
  },
  {
   "ficheiro": "sons/cigarra.mp3",

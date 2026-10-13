@@ -76,7 +76,39 @@ function baralhar(v) {
   for (let i = v.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [v[i], v[j]] = [v[j], v[i]]; }
   return v;
 }
-function animaisAtivos() { return grupoAtivo ? ANIMAIS.filter(a => a.grupo === grupoAtivo) : ANIMAIS; }
+function animaisAtivos() {
+  if (grupoAtivo === 'favoritos') return ANIMAIS.filter(a => favoritos.has(a.id));
+  return grupoAtivo ? ANIMAIS.filter(a => a.grupo === grupoAtivo) : ANIMAIS;
+}
+
+/* ---------- Favoritos: segurar o animal 2 segundos marca ou desmarca ---------- */
+const favoritos = new Set((leLS('favoritos') || '').split(',').filter(Boolean));
+function guardarFavoritos() { guardaLS('favoritos', [...favoritos].join(',')); }
+function mostrarCoracao() {
+  const a = ordem[pos], c = $('#coracao');
+  c.style.setProperty('--f', a && favoritos.has(a.id) ? 1 : 0);
+  c.style.setProperty('--p', 0);
+}
+function alternarFavorito() {
+  const a = ordem[pos]; if (!a) return;
+  if (favoritos.has(a.id)) favoritos.delete(a.id); else favoritos.add(a.id);
+  guardarFavoritos();
+  const c = $('#coracao');
+  mostrarCoracao();
+  c.classList.remove('pulso'); void c.offsetWidth; c.classList.add('pulso');
+  try { navigator.vibrate && navigator.vibrate(40); } catch (e) {}
+}
+let tFav = null, tFavIni = 0;
+function comecarSegurar() {
+  cancelarSegurar();
+  tFavIni = Date.now();
+  tFav = setInterval(() => {
+    const p = Math.min(100, (Date.now() - tFavIni) / 20);   // 2 segundos
+    $('#coracao').style.setProperty('--p', p);
+    if (p >= 100) { cancelarSegurar(); alternarFavorito(); }
+  }, 50);
+}
+function cancelarSegurar() { if (tFav) { clearInterval(tFav); tFav = null; } $('#coracao').style.setProperty('--p', 0); }
 function fazerOrdem() { const base = animaisAtivos(); ordem = modo === 'aleatorio' ? baralhar(base) : base.slice(); pos = 0; }
 
 /* ---------- Menu de grupos ---------- */
@@ -85,16 +117,18 @@ function desenharMenu() {
   const svg = id => `<svg viewBox="0 0 220 220" aria-hidden="true">${DESENHOS[id] || ''}</svg>`;
   $('#grupos').innerHTML = Object.keys(GRUPOS).map(g =>
     `<button class="grupo" data-grupo="${g}">${svg(ICONE_GRUPO[g])}<b>${GRUPOS[g]}</b></button>`).join('') +
-    `<button class="grupo todos" data-grupo="">${svg('gato')}<b>Todos</b></button>`;
+    `<button class="grupo todos" data-grupo="">${svg('gato')}<b>Todos</b></button>` +
+    `<button class="grupo favoritos" data-grupo="favoritos" ${favoritos.size ? '' : 'hidden'}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6.2a5.3 5.3 0 0 1 9.3 5.8C19 16.4 12 21 12 21z" fill="#E8457A"/></svg><b>Favoritos</b></button>`;
   $('#grupos').querySelectorAll('.grupo').forEach(b => b.addEventListener('pointerup', () => escolherGrupo(b.dataset.grupo || null)));
 }
 function escolherGrupo(g) {
+  if (g === 'favoritos' && !favoritos.size) return;
   grupoAtivo = g;
   pararSom();
   fazerOrdem(); mostrar();
   $('#menu').hidden = true;
 }
-function abrirMenu() { pararSom(); $('#nome').classList.remove('ver'); $('#menu').hidden = false; }
+function abrirMenu() { pararSom(); $('#nome').classList.remove('ver'); desenharMenu(); $('#menu').hidden = false; }
 
 /* ---------- Mostrar o animal atual ---------- */
 function mostrar(dir) {
@@ -113,6 +147,7 @@ function mostrar(dir) {
     el.hidden = false;
   } else { el.hidden = true; el.innerHTML = ''; }
   $('#nome').classList.remove('ver');
+  mostrarCoracao();
 }
 
 /* ---------- Viagem ao habitat: o animal vai até lá (salta, anda, voa ou nada), fica um pouco e volta ---------- */
@@ -243,19 +278,21 @@ $('#app').addEventListener('pointerdown', e => {
   if (e.isPrimary === false) return;       // segundo dedo
   if (e.target.closest('.seta,#pais,#casa-btn')) return;
   if (e.target.closest('#habitat')) { irAoHabitat(); return; }
+  comecarSegurar();                        // 2 segundos premido → favorito
   tocarAnimal();
 });
+['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => $('#app').addEventListener(ev, cancelarSegurar));
 $('#casa-btn').addEventListener('pointerdown', e => { e.stopPropagation(); abrirMenu(); });
 $('#ant').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(-1); });
 $('#seg').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(1); });
 
-/* ---------- Roda dentada: 2 segundos premida abre a área dos pais ---------- */
+/* ---------- Roda dentada: 3 segundos premida abre a área dos pais ---------- */
 let tPais = null, tIni = 0;
 function anel(p) { $('#pais').style.setProperty('--p', p); }
 $('#pais').addEventListener('pointerdown', e => {
   e.stopPropagation(); tIni = Date.now();
   tPais = setInterval(() => {
-    const p = Math.min(100, (Date.now() - tIni) / 20);
+    const p = Math.min(100, (Date.now() - tIni) / 30);   // 3 segundos
     anel(p);
     if (p >= 100) { cancelarPais(); abrirPainel(); }
   }, 50);
