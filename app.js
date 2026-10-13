@@ -70,12 +70,31 @@ function definirProprio(k, ficheiro) {      // ficheiro = null → apaga o dos p
 
 /* ---------- Ordem dos animais ---------- */
 let modo = leLS('modo') || 'grupos', ordem = [], pos = 0;
+let grupoAtivo = null;                     // null = todos os animais; senão a chave do grupo escolhido no menu
 function baralhar(v) {
   v = v.slice();
   for (let i = v.length - 1; i > 0; i--) { const j = Math.random() * (i + 1) | 0; [v[i], v[j]] = [v[j], v[i]]; }
   return v;
 }
-function fazerOrdem() { ordem = modo === 'aleatorio' ? baralhar(ANIMAIS) : ANIMAIS.slice(); pos = 0; }
+function animaisAtivos() { return grupoAtivo ? ANIMAIS.filter(a => a.grupo === grupoAtivo) : ANIMAIS; }
+function fazerOrdem() { const base = animaisAtivos(); ordem = modo === 'aleatorio' ? baralhar(base) : base.slice(); pos = 0; }
+
+/* ---------- Menu de grupos ---------- */
+const ICONE_GRUPO = { casa: 'cao', quinta: 'vaca', floresta: 'raposa', selva: 'leao', gelo: 'pinguim', mar: 'peixe', aves: 'papagaio', insetos: 'joaninha' };
+function desenharMenu() {
+  const svg = id => `<svg viewBox="0 0 220 220" aria-hidden="true">${DESENHOS[id] || ''}</svg>`;
+  $('#grupos').innerHTML = Object.keys(GRUPOS).map(g =>
+    `<button class="grupo" data-grupo="${g}">${svg(ICONE_GRUPO[g])}<b>${GRUPOS[g]}</b></button>`).join('') +
+    `<button class="grupo todos" data-grupo="">${svg('gato')}<b>Todos</b></button>`;
+  $('#grupos').querySelectorAll('.grupo').forEach(b => b.addEventListener('pointerup', () => escolherGrupo(b.dataset.grupo || null)));
+}
+function escolherGrupo(g) {
+  grupoAtivo = g;
+  pararSom();
+  fazerOrdem(); mostrar();
+  $('#menu').hidden = true;
+}
+function abrirMenu() { pararSom(); $('#nome').classList.remove('ver'); $('#menu').hidden = false; }
 
 /* ---------- Mostrar o animal atual ---------- */
 function mostrar(dir) {
@@ -149,7 +168,7 @@ function mudar(d) {
   if (pos >= ordem.length) {
     if (modo === 'aleatorio') {            // volta a baralhar, sem repetir o último
       const ult = ordem[ordem.length - 1];
-      do { ordem = baralhar(ANIMAIS); } while (ordem.length > 1 && ordem[0] === ult);
+      do { ordem = baralhar(animaisAtivos()); } while (ordem.length > 1 && ordem[0] === ult);
     }
     pos = 0;
   }
@@ -222,10 +241,11 @@ async function tocarAnimal() {
 document.addEventListener('touchmove', e => { if (!e.target.closest('#painel')) e.preventDefault(); }, { passive: false });
 $('#app').addEventListener('pointerdown', e => {
   if (e.isPrimary === false) return;       // segundo dedo
-  if (e.target.closest('.seta,#pais')) return;
+  if (e.target.closest('.seta,#pais,#casa-btn')) return;
   if (e.target.closest('#habitat')) { irAoHabitat(); return; }
   tocarAnimal();
 });
+$('#casa-btn').addEventListener('pointerdown', e => { e.stopPropagation(); abrirMenu(); });
 $('#ant').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(-1); });
 $('#seg').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(1); });
 
@@ -322,6 +342,7 @@ function registarSW() {
 $('#comecar').addEventListener('click', async () => {
   comecou = true;
   $('#inicio').hidden = true;
+  $('#menu').hidden = false;
   try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) {}   // desbloqueia o TTS
   try { await document.documentElement.requestFullscreen({ navigationUI: 'hide' }); } catch (e) {}
   try { await screen.orientation.lock('landscape'); } catch (e) {}
@@ -335,6 +356,7 @@ document.addEventListener('visibilitychange', () => {
 
 (async () => {
   $('#versao').textContent = VERSAO_APP;
+  desenharMenu();
   marcaOrdem(); fazerOrdem(); mostrar();
   try { speechSynthesis.onvoiceschanged = escolherVoz; } catch (e) {}
   escolherVoz();

@@ -88,6 +88,17 @@ button{font:inherit;color:inherit}
 #pais .anel{position:absolute;inset:0;border-radius:50%;background:conic-gradient(var(--seta-tinta) calc(var(--p,0)*1%),transparent 0);
   -webkit-mask:radial-gradient(circle,transparent 58%,#000 60%);mask:radial-gradient(circle,transparent 58%,#000 60%)}
 .cobre{position:fixed;inset:0;z-index:10;display:grid;place-items:center;padding:16px;text-align:center}
+/* Menu de grupos */
+#menu{z-index:9;background:#FFE9C7;padding:calc(10px + env(safe-area-inset-top,0px)) 3vw;overflow:hidden}
+#menu h2{font-family:var(--f-titulo);font-weight:800;font-size:min(7vh,34px);margin:0 0 1vh;line-height:1}
+.grupos{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5vh 1.5vw;width:100%;max-width:1100px}
+.grupo{border:0;border-radius:3vh;background:#fff;box-shadow:0 .8vh 0 var(--sombra);padding:1vh .5vw .6vh;display:grid;justify-items:center;gap:.3vh;touch-action:none;cursor:pointer}
+.grupo:active{transform:translateY(.4vh);box-shadow:0 .4vh 0 var(--sombra)}
+.grupo svg{width:min(22vh,14vw);height:min(22vh,14vw);overflow:visible;filter:drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)}
+.grupo b{font-family:var(--f-titulo);font-weight:800;font-size:min(4.2vh,22px);line-height:1;color:var(--tinta)}
+.grupo.todos{background:var(--seta-tinta)}.grupo.todos b{color:#fff}
+#casa-btn{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));left:calc(10px + env(safe-area-inset-left,0px));width:44px;height:44px;border:0;border-radius:50%;background:#FFFFFF66;display:grid;place-items:center;z-index:4;touch-action:none}
+#casa-btn svg{width:24px;height:24px;opacity:.65}
 #inicio{background:#FFE9C7}
 #inicio h1{font-family:var(--f-titulo);font-weight:800;font-size:clamp(34px,9vh,64px);margin:0;line-height:1;text-wrap:balance}
 #inicio p{margin:.4em 0 1.2em;font-size:15px;max-width:44ch;line-height:1.5}
@@ -125,6 +136,7 @@ button{font:inherit;color:inherit}
   <div id="nome" aria-live="polite"></div>
   <button id="ant" class="seta" aria-label="Animal anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg></button>
   <button id="seg" class="seta" aria-label="Animal seguinte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4 8 8-8 8"/></svg></button>
+  <button id="casa-btn" aria-label="Escolher grupo de animais"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2618" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></button>
   <button id="pais" aria-label="Área dos pais: manter premido 2 segundos"><span class="anel"></span><svg viewBox="0 0 24 24" fill="none" stroke="#3A2618" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 </div>
 
@@ -133,6 +145,13 @@ button{font:inherit;color:inherit}
     <h1>Os Meus Animais</h1>
     <p>Toca no animal para ouvir o nome e o som. As setas mudam de animal. Para entrar na área dos pais, mantém premida a roda dentada no canto durante 2 segundos.</p>
     <button id="comecar">Começar</button>
+  </div>
+</div>
+
+<div id="menu" class="cobre" hidden>
+  <div style="width:100%;display:grid;justify-items:center">
+    <h2>Que animais queres ver?</h2>
+    <div class="grupos" id="grupos"></div>
   </div>
 </div>
 

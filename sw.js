@@ -3,20 +3,20 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-13-338dbdd8";
+var VERSAO = "2026-10-13-8c92f4b0";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "145f0bdf"
+  "h": "26650f3a"
  },
  {
   "u": "animais.js",
-  "h": "f4171154"
+  "h": "a469a296"
  },
  {
   "u": "app.js",
-  "h": "a1b4bb99"
+  "h": "fa2970e0"
  },
  {
   "u": "creditos.json",
@@ -32,11 +32,11 @@ var FICHEIROS = [
  },
  {
   "u": "desenhos/casa.js",
-  "h": "45011656"
+  "h": "0300d66e"
  },
  {
   "u": "desenhos/floresta.js",
-  "h": "795d76d2"
+  "h": "84c986dc"
  },
  {
   "u": "desenhos/gelo.js",
@@ -44,7 +44,7 @@ var FICHEIROS = [
  },
  {
   "u": "desenhos/insetos.js",
-  "h": "a8a04e31"
+  "h": "bc8f66da"
  },
  {
   "u": "desenhos/mar.js",
@@ -52,11 +52,11 @@ var FICHEIROS = [
  },
  {
   "u": "desenhos/quinta.js",
-  "h": "161eb3d4"
+  "h": "69e99e00"
  },
  {
   "u": "desenhos/selva.js",
-  "h": "717599a4"
+  "h": "2cd68370"
  },
  {
   "u": "fontes/baloo2.woff2",
@@ -76,7 +76,7 @@ var FICHEIROS = [
  },
  {
   "u": "habitats/casa.js",
-  "h": "836230e4"
+  "h": "eb98f61f"
  },
  {
   "u": "habitats/floresta.js",
@@ -116,7 +116,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "145f0bdf"
+  "h": "26650f3a"
  },
  {
   "u": "manifest.webmanifest",
@@ -288,7 +288,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "e9a8b909"
+  "h": "7c7fa4ef"
  }
 ];
 
