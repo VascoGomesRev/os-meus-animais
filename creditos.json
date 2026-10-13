@@ -58,12 +58,12 @@
   "ficheiro": "sons/vaca.mp3",
   "animal": "vaca",
   "tipo": "som",
-  "titulo": "Cow in Vezo.ogg",
-  "autor": "Gasybeaugosse2020",
-  "licenca": "CC0",
-  "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-  "origem": "https://commons.wikimedia.org/wiki/File%3ACow%20in%20Vezo.ogg",
-  "alteracoes": "volume normalizado, mono"
+  "titulo": "Mudchute cow 1.ogg",
+  "autor": "Secretlondon",
+  "licenca": "CC BY-SA 3.0",
+  "licencaUrl": "http://creativecommons.org/licenses/by-sa/3.0/",
+  "origem": "https://commons.wikimedia.org/wiki/File%3AMudchute%20cow%201.ogg",
+  "alteracoes": "cortado a 2,2 s, volume normalizado, mono"
  },
  {
   "ficheiro": "sons/porco.mp3",
@@ -157,12 +157,12 @@
   "ficheiro": "sons/pato.mp3",
   "animal": "pato",
   "tipo": "som",
-  "titulo": "Duck in Vezo.ogg",
-  "autor": "Gasybeaugosse2020",
-  "licenca": "CC0",
-  "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-  "origem": "https://commons.wikimedia.org/wiki/File%3ADuck%20in%20Vezo.ogg",
-  "alteracoes": "volume normalizado, mono"
+  "titulo": "Anas platyrhynchos - Mallard - XC62258.ogg",
+  "autor": "Jonathon Jongsma",
+  "licenca": "CC BY-SA 3.0",
+  "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "origem": "https://commons.wikimedia.org/wiki/File%3AAnas%20platyrhynchos%20-%20Mallard%20-%20XC62258.ogg",
+  "alteracoes": "cortado a 1,6 s, volume normalizado, mono"
  },
  {
   "ficheiro": "sons/peru.mp3",
@@ -179,12 +179,12 @@
   "ficheiro": "sons/ganso.mp3",
   "animal": "ganso",
   "tipo": "som",
-  "titulo": "Goose in Vezo.ogg",
-  "autor": "Gasybeaugosse2020",
-  "licenca": "CC0",
-  "licencaUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
-  "origem": "https://commons.wikimedia.org/wiki/File%3AGoose%20in%20Vezo.ogg",
-  "alteracoes": "volume normalizado, mono"
+  "titulo": "Geese Honking (loud).ogg",
+  "autor": "U.S. Fish and Wildlife Service",
+  "licenca": "Public domain",
+  "licencaUrl": "",
+  "origem": "https://commons.wikimedia.org/wiki/File%3AGeese%20Honking%20(loud).ogg",
+  "alteracoes": "cortado a 2,5 s, volume normalizado, mono"
  },
  {
   "ficheiro": "sons/urso.mp3",
