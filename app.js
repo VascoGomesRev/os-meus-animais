@@ -243,7 +243,7 @@ function registarSW() {
       });
     }
     reg.addEventListener('updatefound', () => {
-      const n = reg.installing; if (!n) return;
+      const n = reg.installing; if (!n || !haviaControlador) return;   // na 1.ª instalação não é uma atualização
       estadoOffline('A descarregar uma versão nova…');
       n.addEventListener('statechange', () => {
         if (n.state === 'activated') estadoOffline('Versão nova instalada ✓ Fecha e volta a abrir a app para a usar.');
