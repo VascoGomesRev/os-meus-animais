@@ -1,0 +1,14 @@
+{
+  "name": "os-meus-animais-ferramentas",
+  "private": true,
+  "description": "Scripts de apoio da app Os Meus Animais (service worker, ícones, verificação, conversão de media)",
+  "scripts": {
+    "servir": "node servir.js",
+    "gerar": "node gerar-sw.js",
+    "verificar": "node verificar.js",
+    "icones": "node gerar-icones.js"
+  },
+  "dependencies": {
+    "sharp": "^0.35.5"
+  }
+}
