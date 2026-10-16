@@ -20,7 +20,10 @@ const GRUPOS = {
 
 const ANIMAIS = [
   { id: 'cao',  nome: 'cão',  grupo: 'casa', som: true },
-  { id: 'gato', nome: 'gato', grupo: 'casa', som: true }
+  { id: 'gato', nome: 'gato', grupo: 'casa', som: true },
+  { id: 'coelho', nome: 'coelho', grupo: 'casa', som: false },
+  { id: 'sapo', nome: 'sapo', grupo: 'floresta', som: true },
+  { id: 'girafa', nome: 'girafa', grupo: 'selva', som: false }
 ];
 
 /* Cada animais/<id>.js acrescenta aqui o seu módulo: MODULOS.<id> = { icone, montar } */

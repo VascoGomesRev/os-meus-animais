@@ -1,10 +1,19 @@
 # Regras para criar um animal
 
-Versão 2 — revista depois do teste com o **cão** e o **gato** (16-10-2026). Cada animal novo segue estas regras.
+Versão 3 — revista depois do cão e do gato e depois do coelho, do sapo e da girafa (16-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
-**Referências:** `animais/cao.js` (rua de Lisboa, casota) e `animais/gato.js` (sala, cesto) são os exemplos de qualidade. Antes de começar um animal novo, ler um deles por inteiro.
-Custo de referência: cada um levou cerca de 65 minutos a um agente Opus e ficou com 110–125 KB.
+**Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
+
+| Ficheiro | Cenário → habitat | Bom exemplo de |
+|---|---|---|
+| `animais/cao.js` | rua de Lisboa → casota | esqueleto 2,5D, andar com patas presas ao chão, entrar por uma porta |
+| `animais/gato.js` | sala → cesto | salto para dentro de um recipiente, enrolar-se, cauda expressiva |
+| `animais/coelho.js` | prado e horta → toca | salto de coelho, orelhas em «fita», mergulhar num buraco e espreitar |
+| `animais/sapo.js` | charco → nenúfar | corpo de elipsoides, língua elástica, água que reage (ondas, gotas) |
+| `animais/girafa.js` | savana → acácia | animal alto, pescoço segmentado com padrão contínuo, andar a passo travado, comer da árvore |
+
+Custo de referência: 45–65 minutos de um agente Opus por animal; ficheiros de 110–125 KB.
 
 ---
 
@@ -89,6 +98,15 @@ Regras do contrato:
 | Olhos meio fechados parecem zangados | Inclinar a pálpebra ao contrário da inclinação do olho |
 | Boca em sincronia com o som | Usar o `silabas` que o motor passa ao `fazerSom` (medido pelo `limpar-voz.js`); nunca pôr tempos fixos no módulo |
 | Testar comportamentos | Deixar `controlo._teste` (forçar comportamento ou acontecimento, ver o estado); o motor ignora-o |
+| Feições de uma cabeça que roda | Prender olhos, nariz e boca a uma esfera: x = R·sen(ângulo + rumo da cabeça). O olho do lado de lá encolhe e desaparece atrás da cabeça; nunca o deixar meio transparente («olho fantasma») |
+| Animal redondo (sapo, pássaro, peixe) | Peças como elipsoides 3D projetados em elipses (círculo de raio 1 com `transform`), ordenados por profundidade; brilho sempre do lado da luz |
+| Perfil que estreita ao virar | Abaixo de 0,4 de escala horizontal, esbater o perfil com `opacity`, senão as patas parecem paus |
+| Membros com IK | Verificar em todas as poses que o membro chega ao alvo: um braço curto parece pousado mas a mão flutua quando o corpo sobe |
+| Andar por distância | O último passo acaba quando o corpo pára; senão os pés ficam no ar e o assentar soma quase 1 s |
+| Padrão num corpo segmentado (girafa, cobra) | Um só padrão «desenrolado»; cada segmento mostra a sua fatia (recorte fixo); juntas tapadas com uma tampa redonda sem contorno |
+| Entrar num buraco de lado (toca) | Recorte = (lado de lá do plano do buraco) ∪ boca da toca; a cabeça com recorte separado do corpo, para as orelhas poderem sair por cima; sombra própria para a cabeça lá dentro |
+| Comportamentos que se encadeiam | Cada comportamento começa por repor orelhas e cara à pose neutra |
+| Promessa de `irAoHabitat` que nunca resolve | Guardar o estado (`modo`) e não deixar outro comportamento substituir a tarefa da ida a meio |
 
 ---
 
@@ -105,6 +123,7 @@ O SVG tem sempre `viewBox="0 0 1600 900"` e `preserveAspectRatio="xMidYMid slice
 | Cantos de cima (120 × 120) | Botões da casa, do coração e da roda dentada |
 
 Tamanhos: o animal parado ocupa cerca de **300–420 de altura** (ao toque de um dedo pequeno, e bem visível); o habitat tem de ser grande o bastante para o animal caber lá dentro **à mesma escala** (o animal não encolhe ao entrar). Zona de toque do habitat: pelo menos 260 × 260.
+Animais altos (girafa, elefante, avestruz) podem ir até ~650 de altura, com os pés a y ≤ 795 (no telemóvel só se vê até ~810) e a cabeça fora da zona do nome e das setas. Testar o animal **dentro do habitat** também em 4:3: no sapo a seta tapava-lhe os olhos.
 
 Para testar as medidas, ver o cenário em **915 × 412** (telemóvel) e em **1024 × 768** (tablet).
 
@@ -164,7 +183,8 @@ Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas *
 
 1. Servidor: `node ferramentas/servir.js 3000` (no Claude Code: `preview_start` com `name: "app"`).
 2. Abrir `http://localhost:3000/?animal=<id>`: abre logo esse animal, sem ecrã inicial e sem service worker. Na consola ficam `window.controlo` (o objeto devolvido por `montar`) e `window.relogio`.
-3. Se o painel do browser estiver escondido o tempo não avança. Para fotografar uma animação a meio: `controlo.irAoHabitat(); relogio.avancar(800)` → screenshot → `relogio.avancar(800)` → screenshot… No fim, `relogio.automatico()`. `avancar` corre quadros de 16,7 ms e arredonda para cima (`avancar(20)` = 2 quadros); para ver quadro a quadro usar `avancar(16)`.
+3. Se o painel do browser estiver escondido o tempo não avança e as capturas de ecrã falham. Para ver imagens: `node ferramentas/fotografar.js` (em segundo plano) e, na consola, enviar o SVG do palco (instruções no topo do ficheiro): grava PNG em `originais/fotos/`. Para ver ao perto, mudar o `viewBox` do SVG pela consola antes de fotografar.
+   O tempo não avança sozinho. Para fotografar uma animação a meio: `controlo.irAoHabitat(); relogio.avancar(800)` → screenshot → `relogio.avancar(800)` → screenshot… No fim, `relogio.automatico()`. `avancar` corre quadros de 16,7 ms e arredonda para cima (`avancar(20)` = 2 quadros); para ver quadro a quadro usar `avancar(16)`.
    Com o painel escondido a transição entre animais (setas) também fica parada a meio: é normal, no telemóvel não acontece.
    Se dois agentes usam o browser ao mesmo tempo, cada um abre o seu separador (`tabs_create`) e passa sempre o `tabId`.
 4. Ver sempre em 915 × 412 e em 1024 × 768.

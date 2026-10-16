@@ -179,7 +179,7 @@ let temporizadorHabitat = null;
 function mostrar(dir) {
   const a = ordem[pos];
   pararSom();
-  clearTimeout(temporizadorHabitat);
+  pararVolta();
   const velho = palcoAtual, velhoControlo = controlo;
   const palco = document.createElement('div');
   palco.className = 'palco';
@@ -216,12 +216,14 @@ async function irAoHabitat() {
   estado = 'dentro';
   agendarVolta();
 }
-function agendarVolta() {
-  clearTimeout(temporizadorHabitat);
-  temporizadorHabitat = setTimeout(voltarDoHabitat, TEMPO_NO_HABITAT);
+function agendarVolta() {                 // conta pelo relógio das animações: pára com a app escondida e nos testes com relogio.avancar
+  pararVolta();
+  let t = 0;
+  temporizadorHabitat = relogio.aCada(dt => { t += dt; if (t >= TEMPO_NO_HABITAT) { pararVolta(); voltarDoHabitat(); } });
 }
+function pararVolta() { if (temporizadorHabitat) { temporizadorHabitat(); temporizadorHabitat = null; } }
 async function voltarDoHabitat() {
-  clearTimeout(temporizadorHabitat);
+  pararVolta();
   if (!controlo || estado !== 'dentro') return;
   const c = controlo;
   estado = 'voltando';
@@ -295,7 +297,7 @@ async function tocarAnimal() {
   if (ocupado || !controlo || estado === 'indo' || estado === 'voltando') return;
   ocupado = true;
   const meu = ++sequencia, a = ordem[pos], c = controlo, n = $('#nome');
-  if (estado === 'dentro') clearTimeout(temporizadorHabitat);
+  if (estado === 'dentro') pararVolta();
   n.textContent = a.nome; n.classList.add('ver');
   try { c.reagir(); } catch (e) { console.error(e); }
   const v = urls[a.id + ':voz'];
