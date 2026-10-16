@@ -1,0 +1,198 @@
+# Regras para criar um animal
+
+Versão 2 — revista depois do teste com o **cão** e o **gato** (16-10-2026). Cada animal novo segue estas regras.
+Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
+
+**Referências:** `animais/cao.js` (rua de Lisboa, casota) e `animais/gato.js` (sala, cesto) são os exemplos de qualidade. Antes de começar um animal novo, ler um deles por inteiro.
+Custo de referência: cada um levou cerca de 65 minutos a um agente Opus e ficou com 110–125 KB.
+
+---
+
+## 1. O que é um animal na app
+
+Cada animal é **um ficheiro só**: `animais/<id>.js`. Esse ficheiro desenha e anima tudo o que se vê:
+
+| Parte | O que é | Exemplo (cão) |
+|---|---|---|
+| Cenário | Fundo completo, a ecrã inteiro, com vida própria | Rua: passeio, casas, candeeiro, árvore, nuvens |
+| Animal | Personagem articulado (cabeça, orelhas, patas, cauda… mexem-se em separado) | Cão |
+| Habitat | O sítio do animal, **parte do cenário** (não é um autocolante por cima) | Casota no jardim |
+
+O resto da app (nome escrito, voz, som, setas, menu, favoritos, área dos pais) é do motor, `app.js`. **Um módulo nunca mexe em `app.js`, `index.html`, `animais.js` nem nos módulos dos outros animais.**
+
+Para pôr um animal novo na app:
+1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo`, `som`, `habitat`).
+2. Criar `animais/<id>.js` seguindo estas regras.
+3. Acrescentar `<script src="animais/<id>.js"></script>` no `index.html`, antes de `app.js`.
+4. Se tiver som: `sons/<id>.mp3` e créditos (ver `ferramentas/GUIA-SONS.md`; os sons antigos estão em `arquivo/sons/`).
+5. `node ferramentas/gerar-sw.js` e depois `node ferramentas/verificar.js` → tem de dar 0 erros.
+
+---
+
+## 2. Contrato do módulo (o que o motor espera)
+
+```js
+'use strict';
+MODULOS.cao = {
+  icone: `…`,              // interior de um SVG 220×220 (sem a tag <svg>), parado: é o cartão do menu
+  montar(raiz, ajudas) {   // raiz = <div> vazio a ecrã inteiro; ajudas = { relogio, reduzido }
+    // cria o <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"> e põe-no em raiz
+    return {
+      animal,              // elemento SVG do animal (zona de toque)
+      habitat,             // elemento SVG do habitat (zona de toque)
+      reagir() {},         // a criança tocou no animal: reação alegre (o motor diz o nome ao mesmo tempo)
+      fazerSom(ms) {},     // o som do animal começou agora e dura ms: boca a ladrar/miar em sincronia
+      irAoHabitat() {},    // devolve Promise: resolve quando o animal está instalado no habitat
+      voltar() {},         // devolve Promise: resolve quando o animal voltou ao sítio e à animação normal
+      destruir() {}        // desliga o relógio e tudo o que o módulo criou
+    };
+  }
+};
+```
+
+O que o motor faz com isto:
+
+| A criança… | Estado | O motor chama |
+|---|---|---|
+| toca no animal (ou no cenário) | fora | `reagir()`, diz o nome, depois toca o som e chama `fazerSom(ms)` |
+| toca no habitat | fora | diz o nome do habitat, `await irAoHabitat()` |
+| toca no animal | dentro do habitat | `reagir()` e `fazerSom(ms)` **com o animal dentro do habitat** (tem de reagir lá dentro, sem sair) |
+| toca no habitat, ou passam 7 s | dentro do habitat | `await voltar()` |
+| carrega numa seta | qualquer | monta o animal seguinte noutro palco, faz a transição e chama `destruir()` no antigo |
+
+Regras do contrato:
+- `reagir()` e `fazerSom()` podem ser chamados várias vezes seguidas e a meio de outra reação: nunca podem deixar o animal num estado partido (pose a meio, peça fora do sítio).
+- Enquanto vai ou volta do habitat o motor não chama `reagir()`; mas `destruir()` pode chegar a qualquer momento.
+- Durante a transição entre animais há **dois módulos montados ao mesmo tempo**: todos os `id` no SVG (gradientes, máscaras, clipPaths) começam por `<id>-` (ex.: `cao-pelo`, `gato-sombra`).
+- No topo do ficheiro só se define `MODULOS.<id>`. Nada de mexer no `document` fora de `montar()` (as ferramentas carregam o ficheiro em Node, sem browser).
+
+---
+
+## 3. Animação: relógio único
+
+- **Tudo** se anima a partir de `ajudas.relogio.aCada(dt => …)` (dt em milissegundos). `aCada` devolve a função que o desliga; `destruir()` chama-a.
+- Proibido: `setTimeout`/`setInterval`, animações CSS, `element.animate()`, SMIL (`<animate>`). Pausas e esperas contam-se com o `dt` do relógio. Assim tudo pára quando a app está escondida e os testes podem avançar o tempo à mão.
+- Os movimentos têm de depender do tempo (`dt`), não do número de quadros: um telemóvel lento a 30 fps faz o mesmo movimento, só com menos quadros.
+- Cada peça mexe-se com `setAttribute('transform', …)` em grupos `<g>` (rodar à volta da articulação, deslocar, escalar). Mudar o `d` de um `path` só para coisas pequenas (boca, pálpebra, língua).
+
+### Técnicas que resultaram (cão e gato)
+
+| Problema | Solução |
+|---|---|
+| Virar-se de verdade, sem espelhar | **Esqueleto 2,5D** (cão): pontos 3D simples projetados no ecrã; a pose é um ângulo e vira de lado → frente → costas. Alternativa (gato): cabeça sempre de frente, feições deslizam em camadas, e o perfil do corpo estreita enquanto alarga um corpo de frente |
+| Pés a deslizar | **Andar por distância**: cada pata planta-se num ponto fixo do mundo e só se levanta quando chega a vez dela (pares diagonais); passo de emergência quando a pata já não chega. Patas com IK de 2–3 segmentos. Medir: o x de uma pata apoiada não pode mudar |
+| Pose nova com um pé noutro sítio | O pé levanta-se e pousa; nunca interpolar a posição de um pé que está no chão. Poses vizinhas (agachar, aterrar) têm os pés no mesmo x |
+| Costuras nas articulações | Desenhar em dois passes: primeiro os contornos de todas as peças, depois os enchimentos por cima |
+| Animal dentro do habitat | Habitat em camadas (trás → animal → frente). Duas formas: o animal passa para dentro do grupo do habitat entre as camadas (gato), ou recortar com `clip-path` (evenodd: ecrã − parede + abertura) as peças que ficam para lá da porta (cão). Em ambas `animal` continua a ser um único `<g>` e o toque funciona |
+| Entrar por uma porta | O animal tem de caber agachado no momento em que a atravessa: ver de 50 em 50 ms |
+| Cauda que roda para o lado errado | Interpolar ângulos num intervalo contínuo (ex. −270…90), não entre 178 e −96 |
+| Olhos meio fechados parecem zangados | Inclinar a pálpebra ao contrário da inclinação do olho |
+| Boca em sincronia com o som | Analisar o `sons/<id>.mp3` (onde estão os latidos/miaus) e pôr esses tempos no módulo; para outra duração (som dos pais), distribuir por igual |
+| Testar comportamentos | Deixar `controlo._teste` (forçar comportamento ou acontecimento, ver o estado); o motor ignora-o |
+
+---
+
+## 4. Ecrã: medidas e zonas livres
+
+O SVG tem sempre `viewBox="0 0 1600 900"` e `preserveAspectRatio="xMidYMid slice"`.
+
+| Zona (coordenadas do SVG) | Regra |
+|---|---|
+| Todo o 0–1600 × 0–900 | O cenário cobre tudo, sem buracos (as bordas veem-se em ecrãs largos ou quadrados) |
+| x 200–1400, y 90–810 | **Área sempre visível** em qualquer telemóvel ou tablet deitado: o animal, o habitat e o percurso entre eles ficam aqui dentro |
+| x < 420 e x > 1180, com y 280–620 | Setas da app por cima: não pôr aqui o animal nem o habitat |
+| x 560–1040, y < 270 | Nome escrito do animal aparece aqui (pode haver céu/parede, mas nada importante) |
+| Cantos de cima (120 × 120) | Botões da casa, do coração e da roda dentada |
+
+Tamanhos: o animal parado ocupa cerca de **300–420 de altura** (ao toque de um dedo pequeno, e bem visível); o habitat tem de ser grande o bastante para o animal caber lá dentro **à mesma escala** (o animal não encolhe ao entrar). Zona de toque do habitat: pelo menos 260 × 260.
+
+Para testar as medidas, ver o cenário em **915 × 412** (telemóvel) e em **1024 × 768** (tablet).
+
+---
+
+## 5. Nível de detalhe (o mínimo aceitável)
+
+Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas **muito trabalhado**. Nada de formas soltas e cores lisas sem volume.
+
+**Desenho**
+- Luz de um só lado em todo o cenário (ex.: sol vindo de cima à esquerda): sombras e brilhos coerentes.
+- Volume com gradientes suaves (2–3 tons por peça), sombra de contacto no chão por baixo do animal e dos objetos, contorno escuro quente e fino (não preto puro).
+- Pelo/pele com textura sugerida: madeixas, manchas, focinho de outra cor, almofadinhas das patas, unhas, bigodes, sobrancelhas.
+- Olhos expressivos: íris, pupila, dois brilhos, pálpebra que pisca (desce, não achata o olho).
+- Cenário com profundidade: pelo menos 3 planos (fundo distante, plano médio, chão em primeiro plano) e pormenores (texturas de tijolo, madeira, tecido, folhas, ervas).
+
+**Animal parado (nunca está estático)**
+- Respiração contínua (peito/barriga sobe e desce, ombros acompanham).
+- Piscar de olhos em intervalos aleatórios (2–6 s), às vezes duplo.
+- Cauda sempre com movimento (com «onda»: a ponta atrasa-se em relação à base).
+- Pelo menos **5 comportamentos ociosos** escolhidos ao acaso a cada 4–9 s, sem repetir o mesmo seguido. Ex. (cão): coçar a orelha com a pata, cheirar o chão, olhar para um pássaro, sentar e levantar, bocejar, inclinar a cabeça. Ex. (gato): lamber a pata e lavar a cara, espreguiçar, olhar para uma mosca, rodar as orelhas, sentar com a cauda à volta das patas.
+- Os olhos e a cabeça seguem de vez em quando algo que se mexe no cenário.
+
+**Cenário vivo**
+- Pelo menos 4 coisas em movimento lento no fundo (ex.: nuvens, folhas, cortinado, pássaro, luz/poeira, relógio). Calmas: não podem roubar a atenção ao animal.
+- Pelo menos 1 acontecimento raro (a cada 15–40 s) que o animal nota e segue com o olhar.
+
+**Movimento (princípios da animação)**
+- Antecipação antes de cada ação (agacha antes de saltar), acompanhamento depois (orelhas e cauda continuam a mexer depois de o corpo parar), arcos (nada se move em linha reta), abrandar no início e no fim (easing), compressão e estiramento suaves no salto e na aterragem.
+- Andar com **ciclo de passo verdadeiro**: patas alternadas (diagonal), corpo a subir e descer em cada passo, cabeça a balançar, cauda a acompanhar. Os pés não deslizam no chão.
+- Virar-se: o animal vira-se de verdade (vira a cabeça primeiro, depois o corpo), não espelha de repente.
+
+**Reação ao toque (`reagir`)**
+- Alegria visível em 100 ms: orelhas para cima, olhos maiores ou fechados de contente, cauda rápida, pequeno salto ou abanão.
+- `fazerSom(ms)`: a boca abre e fecha ao ritmo do som, a cabeça acompanha (ex.: «ão ão» = duas aberturas com a cabeça a dar um impulso).
+
+**Ida ao habitat (`irAoHabitat` / `voltar`)**
+- Duração: ida entre 2 e 4 s; volta entre 1,5 e 3 s. Movimento fluido do princípio ao fim, com o andar/salto completo.
+- O animal **entra de verdade**: o habitat tem camadas (parte de trás → animal → parte da frente) e o animal fica parcialmente tapado pelas partes da frente (ombreira da porta, borda do cesto). Nunca um desenho por cima do outro.
+- Pose final no habitat desenhada a propósito (ex.: cão deitado com a cabeça de fora da porta e as patas da frente cruzadas; gato enrolado no cesto com a cauda à volta), com respiração, piscar e pequenos movimentos lá dentro.
+- O habitat reage à chegada (a almofada afunda, a casota abana um pouco, sai pó ou uma folha).
+- `voltar()` sai do habitat com um movimento próprio (espreguiçar, sacudir-se) e regressa à posição inicial.
+
+---
+
+## 6. Desempenho e segurança
+
+- Tem de correr a 60 fps num telemóvel Android médio. Gradientes sim; **filtros SVG animados não** (desfoque, sombra com filtro em peças que se mexem). Sombras = elipses com gradiente.
+- Um único `<svg>` por módulo. Ficheiro com menos de 250 KB.
+- Sem imagens externas, sem internet, sem `<script>`, `<image>` ou `<foreignObject>`. Tudo desenhado em SVG no próprio ficheiro.
+- Comentários e nomes no código em português de Portugal.
+- Ícone do menu: no máximo 220 de altura (senão tapa o nome do grupo) e, de preferência, **sem gradientes com id**: o mesmo ícone pode aparecer em dois cartões e, se o primeiro estiver escondido, o segundo fica sem cor.
+
+---
+
+## 7. Como testar
+
+1. Servidor: `node ferramentas/servir.js 3000` (no Claude Code: `preview_start` com `name: "app"`).
+2. Abrir `http://localhost:3000/?animal=<id>`: abre logo esse animal, sem ecrã inicial e sem service worker. Na consola ficam `window.controlo` (o objeto devolvido por `montar`) e `window.relogio`.
+3. Se o painel do browser estiver escondido o tempo não avança. Para fotografar uma animação a meio: `controlo.irAoHabitat(); relogio.avancar(800)` → screenshot → `relogio.avancar(800)` → screenshot… No fim, `relogio.automatico()`. `avancar` corre quadros de 16,7 ms e arredonda para cima (`avancar(20)` = 2 quadros); para ver quadro a quadro usar `avancar(16)`.
+   Com o painel escondido a transição entre animais (setas) também fica parada a meio: é normal, no telemóvel não acontece.
+   Se dois agentes usam o browser ao mesmo tempo, cada um abre o seu separador (`tabs_create`) e passa sempre o `tabId`.
+4. Ver sempre em 915 × 412 e em 1024 × 768.
+5. Antes de entregar: `node ferramentas/gerar-sw.js` e `node ferramentas/verificar.js` (0 erros).
+
+---
+
+## 8. Lista de verificação antes de dar um animal por pronto
+
+- [ ] O animal reconhece-se à primeira (uma criança de 2 anos dizia o nome)
+- [ ] Respira, pisca, mexe a cauda e tem ≥ 5 comportamentos ociosos diferentes
+- [ ] Cenário com 3 planos, ≥ 4 coisas a mexer e 1 acontecimento raro
+- [ ] Ciclo de andar/salto com patas alternadas, sem pés a deslizar
+- [ ] Entra no habitat com camadas (frente tapa o animal) e tem pose final própria
+- [ ] Reage ao toque também dentro do habitat
+- [ ] Boca em sincronia com o som
+- [ ] Nada importante fora da área visível nem por baixo das setas/nome/botões
+- [ ] `reagir()` repetido 10 vezes depressa não estraga a pose
+- [ ] `destruir()` a meio da ida ao habitat não deixa erros na consola
+- [ ] 0 erros no `verificar.js`
+
+---
+
+## 9. Como pedir um animal novo a um agente
+
+Um agente Opus por animal. O pedido tem de dizer:
+1. O animal, o `id`, o `nome`, o nome do habitat e o cenário (ex.: «ovelha, `ovelha`, curral, pasto com colinas»).
+2. «Lê `REGRAS-ANIMAIS.md` e um dos exemplos (`animais/cao.js` ou `animais/gato.js`) antes de começar.»
+3. Só pode escrever `animais/<id>.js`; não mexe em `app.js`, `index.html`, `animais.js` nem nos outros animais (a linha em `animais.js` e o `<script>` no `index.html` acrescento-os eu antes de lançar o agente).
+4. Testar com o separador próprio do browser, em 915 × 412 e 1024 × 768, com pelo menos 3 voltas de correções vistas em imagens.
+5. Relatório final: o que fez, o que verificou, o que não conseguiu verificar e o que mudaria nestas regras.

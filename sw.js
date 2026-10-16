@@ -3,60 +3,32 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-13-6f074cac";
+var VERSAO = "2026-10-16-7cc81917";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "318d6910"
+  "h": "b67e8035"
  },
  {
   "u": "animais.js",
-  "h": "df03df11"
+  "h": "0f1909a3"
+ },
+ {
+  "u": "animais/cao.js",
+  "h": "4da58cd8"
+ },
+ {
+  "u": "animais/gato.js",
+  "h": "532be95c"
  },
  {
   "u": "app.js",
-  "h": "dd1a476c"
+  "h": "ce565b14"
  },
  {
   "u": "creditos.json",
-  "h": "baea435c"
- },
- {
-  "u": "desenhos.js",
-  "h": "f22e637d"
- },
- {
-  "u": "desenhos/aves.js",
-  "h": "067f15f4"
- },
- {
-  "u": "desenhos/casa.js",
-  "h": "2443511c"
- },
- {
-  "u": "desenhos/floresta.js",
-  "h": "3402bfc5"
- },
- {
-  "u": "desenhos/gelo.js",
-  "h": "9faaae27"
- },
- {
-  "u": "desenhos/insetos.js",
-  "h": "83684f88"
- },
- {
-  "u": "desenhos/mar.js",
-  "h": "8bb42bcf"
- },
- {
-  "u": "desenhos/quinta.js",
-  "h": "c676b2a9"
- },
- {
-  "u": "desenhos/selva.js",
-  "h": "3e235f44"
+  "h": "c5918870"
  },
  {
   "u": "fontes/baloo2.woff2",
@@ -65,42 +37,6 @@ var FICHEIROS = [
  {
   "u": "fontes/nunito.woff2",
   "h": "76388dbf"
- },
- {
-  "u": "habitats.js",
-  "h": "1d5d8857"
- },
- {
-  "u": "habitats/aves.js",
-  "h": "db6b9b00"
- },
- {
-  "u": "habitats/casa.js",
-  "h": "eb98f61f"
- },
- {
-  "u": "habitats/floresta.js",
-  "h": "3873015c"
- },
- {
-  "u": "habitats/gelo.js",
-  "h": "07c5f191"
- },
- {
-  "u": "habitats/insetos.js",
-  "h": "b418e789"
- },
- {
-  "u": "habitats/mar.js",
-  "h": "9db6c3c5"
- },
- {
-  "u": "habitats/quinta.js",
-  "h": "fbf736e4"
- },
- {
-  "u": "habitats/selva.js",
-  "h": "6675942a"
  },
  {
   "u": "icones/icon-192.png",
@@ -116,299 +52,23 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "318d6910"
+  "h": "b67e8035"
  },
  {
   "u": "manifest.webmanifest",
   "h": "d8505436"
  },
  {
-  "u": "sons/abelha.mp3",
-  "h": "7f723c65"
- },
- {
-  "u": "sons/aguia.mp3",
-  "h": "1d55dc97"
- },
- {
-  "u": "sons/andorinha.mp3",
-  "h": "08a151d7"
- },
- {
-  "u": "sons/arara.mp3",
-  "h": "f667ea0f"
- },
- {
-  "u": "sons/baleia.mp3",
-  "h": "41518340"
- },
- {
-  "u": "sons/beluga.mp3",
-  "h": "d88f5617"
- },
- {
-  "u": "sons/bode.mp3",
-  "h": "d5145d78"
- },
- {
-  "u": "sons/burro.mp3",
-  "h": "75c54419"
- },
- {
-  "u": "sons/cabra.mp3",
-  "h": "3223c523"
- },
- {
-  "u": "sons/cachalote.mp3",
-  "h": "bee88902"
- },
- {
   "u": "sons/cao.mp3",
   "h": "69877e72"
- },
- {
-  "u": "sons/cavalo.mp3",
-  "h": "804cf874"
- },
- {
-  "u": "sons/cegonha.mp3",
-  "h": "c1d7e60c"
- },
- {
-  "u": "sons/chimpanze.mp3",
-  "h": "a01ca5b4"
- },
- {
-  "u": "sons/cigarra.mp3",
-  "h": "df69c273"
- },
- {
-  "u": "sons/cobra.mp3",
-  "h": "6582285b"
- },
- {
-  "u": "sons/codorniz.mp3",
-  "h": "83706dc7"
- },
- {
-  "u": "sons/cordeiro.mp3",
-  "h": "ac5df6f5"
- },
- {
-  "u": "sons/coruja.mp3",
-  "h": "ff203983"
- },
- {
-  "u": "sons/corvo.mp3",
-  "h": "e53227d5"
- },
- {
-  "u": "sons/cuco.mp3",
-  "h": "22d9864e"
- },
- {
-  "u": "sons/elefante.mp3",
-  "h": "093dc9e5"
- },
- {
-  "u": "sons/faisao.mp3",
-  "h": "a787a130"
- },
- {
-  "u": "sons/falcao.mp3",
-  "h": "42c4ee91"
- },
- {
-  "u": "sons/foca.mp3",
-  "h": "c43e4ef2"
- },
- {
-  "u": "sons/gafanhoto.mp3",
-  "h": "5d278f36"
- },
- {
-  "u": "sons/gaivota.mp3",
-  "h": "8e4a90ce"
- },
- {
-  "u": "sons/galinha-da-india.mp3",
-  "h": "91786dd5"
- },
- {
-  "u": "sons/galinha.mp3",
-  "h": "ea8d1675"
- },
- {
-  "u": "sons/galo.mp3",
-  "h": "d5ec71e7"
- },
- {
-  "u": "sons/ganso.mp3",
-  "h": "f445358c"
  },
  {
   "u": "sons/gato.mp3",
   "h": "44a15c5b"
  },
  {
-  "u": "sons/golfinho.mp3",
-  "h": "97ced9cd"
- },
- {
-  "u": "sons/grilo.mp3",
-  "h": "ee81ae98"
- },
- {
-  "u": "sons/hiena.mp3",
-  "h": "1a066266"
- },
- {
-  "u": "sons/jacare.mp3",
-  "h": "df66ca40"
- },
- {
-  "u": "sons/javali.mp3",
-  "h": "6e5f78cc"
- },
- {
-  "u": "sons/leao.mp3",
-  "h": "2acbd737"
- },
- {
-  "u": "sons/leitao.mp3",
-  "h": "86b1bb35"
- },
- {
-  "u": "sons/lobo.mp3",
-  "h": "ff152219"
- },
- {
-  "u": "sons/macaco.mp3",
-  "h": "8886f945"
- },
- {
-  "u": "sons/melro.mp3",
-  "h": "bf896ecb"
- },
- {
-  "u": "sons/mocho.mp3",
-  "h": "f744b986"
- },
- {
-  "u": "sons/orca.mp3",
-  "h": "d49692cf"
- },
- {
-  "u": "sons/ovelha.mp3",
-  "h": "45d73a3b"
- },
- {
-  "u": "sons/papagaio.mp3",
-  "h": "99b7b34b"
- },
- {
-  "u": "sons/pardal.mp3",
-  "h": "964d27db"
- },
- {
-  "u": "sons/passaro.mp3",
-  "h": "7738f279"
- },
- {
-  "u": "sons/pato.mp3",
-  "h": "5e7d236d"
- },
- {
-  "u": "sons/pavao.mp3",
-  "h": "186de1e8"
- },
- {
-  "u": "sons/pega.mp3",
-  "h": "81ba5108"
- },
- {
-  "u": "sons/perdiz.mp3",
-  "h": "9cf86b1e"
- },
- {
-  "u": "sons/periquito.mp3",
-  "h": "f510183c"
- },
- {
-  "u": "sons/peru.mp3",
-  "h": "4a5b7ce2"
- },
- {
-  "u": "sons/pica-pau.mp3",
-  "h": "5d39b6fa"
- },
- {
-  "u": "sons/pinguim.mp3",
-  "h": "920fc378"
- },
- {
-  "u": "sons/pinto.mp3",
-  "h": "c2c24844"
- },
- {
-  "u": "sons/pomba.mp3",
-  "h": "9b6170f4"
- },
- {
-  "u": "sons/ponei.mp3",
-  "h": "11d0672e"
- },
- {
-  "u": "sons/porco.mp3",
-  "h": "5dd75f91"
- },
- {
-  "u": "sons/porquinho-da-india.mp3",
-  "h": "c45b492c"
- },
- {
-  "u": "sons/potro.mp3",
-  "h": "9dfdcf46"
- },
- {
-  "u": "sons/ra.mp3",
-  "h": "d78f4e5e"
- },
- {
-  "u": "sons/rato.mp3",
-  "h": "852de1b9"
- },
- {
-  "u": "sons/rouxinol.mp3",
-  "h": "ceb0e9b3"
- },
- {
-  "u": "sons/sapo.mp3",
-  "h": "e64eec59"
- },
- {
-  "u": "sons/tigre.mp3",
-  "h": "735585b4"
- },
- {
-  "u": "sons/urso.mp3",
-  "h": "7c06088d"
- },
- {
-  "u": "sons/vaca.mp3",
-  "h": "8f708ad2"
- },
- {
-  "u": "sons/vespa.mp3",
-  "h": "b09a1a1d"
- },
- {
-  "u": "sons/zangao.mp3",
-  "h": "6a1fca02"
- },
- {
   "u": "gerado.js",
-  "h": "338ff359"
+  "h": "e17c6bea"
  }
 ];
 

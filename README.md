@@ -4,11 +4,15 @@ App web instalável (PWA) para Android, para uma criança pequena aprender os no
 
 Toca no animal: aparece o nome escrito, a app diz o nome e toca o som do animal. Setas grandes mudam de animal. Depois de instalada funciona sem internet.
 
-**Estado:** em construção. O guia para publicar e instalar no telemóvel vai ficar em `GUIA-PUBLICACAO.md`.
+**Estado:** recomeço com animações detalhadas, um animal de cada vez (primeiro o cão e o gato). Guia para publicar e instalar no telemóvel: `GUIA-PUBLICACAO.md`.
 
-## Pastas (estrutura final prevista)
+## Pastas
 
-- `index.html`, `app.js`, `animais.js`, `desenhos.js` — a app
-- `fotos/`, `sons/`, `fontes/`, `icones/` — media embutida na app
-- `ferramentas/` — scripts de apoio (gerar o service worker, converter media, gerar créditos)
-- `CREDITOS.md` — autores e licenças das fotos e sons
+- `index.html`, `app.js` — a app e o motor (toques, voz, sons, setas, menu, favoritos, área dos pais)
+- `animais.js` — lista dos animais que estão na app
+- `animais/<id>.js` — um ficheiro por animal: cenário, animal, habitat e todas as animações
+- `REGRAS-ANIMAIS.md` — regras a cumprir para criar cada animal
+- `sons/`, `fontes/`, `icones/` — media embutida na app
+- `arquivo/` — os 200 animais antigos (lista, desenhos, habitats e sons), à espera de voltarem um a um; não entra na app
+- `ferramentas/` — scripts de apoio (servidor local, service worker, verificação, sons, créditos)
+- `CREDITOS.md` — autores e licenças dos sons

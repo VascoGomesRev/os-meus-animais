@@ -13,45 +13,40 @@ const erro = m => erros.push(m);
 const aviso = m => avisos.push(m);
 const ler = f => fs.readFileSync(path.join(RAIZ, f), 'utf8');
 const existe = f => fs.existsSync(path.join(RAIZ, f));
-const CENAS = new Set(['casa', 'quinta', 'agua', 'floresta', 'savana', 'gelo', 'ceu', 'relva']);
 
-// 1. Dados da app (gerado.js, animais.js e desenhos.js são scripts clássicos: corremos-os num contexto isolado)
+// 1. Dados da app (gerado.js, animais.js e animais/*.js são scripts clássicos: corremos-os num contexto isolado)
 let dados = null;
 try {
   dados = carregarDados();
-} catch (e) { erro('não consegui carregar os ficheiros de dados (gerado.js, animais.js, desenhos*, habitats*): ' + e.message); }
+} catch (e) { erro('não consegui carregar os ficheiros de dados (gerado.js, animais.js, animais/*.js): ' + e.message); }
 
 if (dados) {
-  const { ANIMAIS, GRUPOS, DESENHOS, HABITATS, MEDIA_EMBUTIDA } = dados;
+  const { ANIMAIS, GRUPOS, MODULOS, MEDIA_EMBUTIDA } = dados;
   const ids = new Set();
+  const html = ler('index.html');
   for (const a of ANIMAIS) {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(a.id)) erro(`id inválido «${a.id}» (só minúsculas sem acentos, números e hífen)`);
     if (ids.has(a.id)) erro(`id repetido «${a.id}»`);
     ids.add(a.id);
     if (!a.nome || a.nome !== a.nome.toLowerCase() || /^(o|a|os|as|um|uma) /.test(a.nome)) erro(`${a.id}: nome inválido «${a.nome}» (minúsculas, sem artigo)`);
     if (!(a.grupo in GRUPOS)) erro(`${a.id}: grupo desconhecido «${a.grupo}»`);
-    if (!CENAS.has(a.cena)) erro(`${a.id}: cena desconhecida «${a.cena}»`);
     if (typeof a.som !== 'boolean') erro(`${a.id}: «som» tem de ser true ou false`);
-    if (!['salta', 'anda', 'voa', 'nada'].includes(a.move)) erro(`${a.id}: «move» desconhecido «${a.move}»`);
-    const h = HABITATS[a.id];
-    if (!h) aviso(`${a.id}: ainda sem habitat`);
+    if (!a.habitat || a.habitat !== a.habitat.toLowerCase()) erro(`${a.id}: falta o nome do habitat (minúsculas, sem artigo)`);
+    const m = MODULOS[a.id];
+    if (!m) erro(`${a.id}: falta o módulo animais/${a.id}.js (MODULOS.${a.id})`);
     else {
-      if (!h.nome || h.nome !== h.nome.toLowerCase()) erro(`${a.id}: habitat sem nome válido (minúsculas)`);
-      if (!h.svg || /<svg[\s>]/i.test(h.svg) || /<(style|script|image)/i.test(h.svg) || /\sid=/.test(h.svg)) erro(`${a.id}: svg do habitat inválido (sem <svg>, <style>, <script>, <image> nem ids)`);
+      if (typeof m.montar !== 'function') erro(`${a.id}: o módulo não tem montar()`);
+      if (typeof m.icone !== 'string' || /<svg[\s>]/i.test(m.icone)) erro(`${a.id}: o ícone tem de ser o interior de um SVG 220×220, sem a tag <svg>`);
+      const cod = ler(`animais/${a.id}.js`);
+      for (const [, idSvg] of cod.matchAll(/\sid="([^"]+)"/g)) if (!idSvg.startsWith(a.id + '-') && !idSvg.includes('${')) erro(`${a.id}: id SVG «${idSvg}» tem de começar por «${a.id}-»`);
+      if (/<(script|image|foreignObject)/i.test(cod)) erro(`${a.id}: o módulo não pode ter <script>, <image> nem <foreignObject>`);
+      if (/https?:\/\//.test(cod.replace(/http:\/\/www\.w3\.org\/[^'"`]*/g, ''))) erro(`${a.id}: o módulo não pode ir buscar nada à internet`);
     }
-    const d = DESENHOS[a.id];
-    if (!d) aviso(`${a.id}: ainda sem desenho`);
-    else {
-      if (/<svg[\s>]/i.test(d)) erro(`${a.id}: o desenho não pode incluir a tag <svg> (só o interior)`);
-      if (/<(style|script|image)/i.test(d) || /\sid=/.test(d)) erro(`${a.id}: o desenho não pode ter <style>, <script>, <image> nem ids`);
-      if (!/class="corpo"/.test(d)) erro(`${a.id}: o desenho não tem <g class="corpo">`);
-      if (!/class="olhos"/.test(d)) aviso(`${a.id}: o desenho não tem olhos com a classe «olhos» (normalmente via olhos())`);
-    }
+    if (!html.includes(`<script src="animais/${a.id}.js"></script>`)) erro(`${a.id}: falta <script src="animais/${a.id}.js"></script> no index.html`);
     if (a.som && !MEDIA_EMBUTIDA.sons.includes(a.id)) aviso(`${a.id}: tem som característico mas ainda não existe sons/${a.id}.mp3`);
     if (!a.som && MEDIA_EMBUTIDA.sons.includes(a.id)) erro(`${a.id}: som:false mas existe sons/${a.id}.mp3`);
   }
-  for (const id of Object.keys(DESENHOS)) if (!ids.has(id)) erro(`há um desenho «${id}» que não está em animais.js`);
-  for (const id of Object.keys(HABITATS)) if (!ids.has(id)) erro(`há um habitat «${id}» que não está em animais.js`);
+  for (const id of Object.keys(MODULOS)) if (!ids.has(id)) erro(`há um módulo «${id}» que não está em animais.js`);
 
   // 2. Ficheiros de media: nome e extensão
   for (const [pasta, ext] of [['sons', '.mp3']]) {

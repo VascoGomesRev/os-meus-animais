@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* Gera os ícones PNG da app a partir do desenho do cão (desenhos.js), com o pacote «sharp».
+/* Gera os ícones PNG da app a partir do desenho antigo do cão (arquivo/desenhos.js), com o pacote «sharp».
    Uma vez, na pasta ferramentas:  npm install        Depois:  node ferramentas/gerar-icones.js
    O ícone «maskable» tem fundo até às bordas e o cão dentro da zona segura (círculo com 80 % do tamanho),
    porque o Android recorta os ícones em várias formas. */
@@ -10,7 +10,7 @@ const vm = require('vm');
 const sharp = require('sharp');
 
 const RAIZ = path.resolve(__dirname, '..');
-const { DESENHOS } = vm.runInNewContext(fs.readFileSync(path.join(RAIZ, 'desenhos.js'), 'utf8') + '\n;({ DESENHOS })', {});
+const { DESENHOS } = vm.runInNewContext(fs.readFileSync(path.join(RAIZ, 'arquivo', 'desenhos.js'), 'utf8') + '\n;({ DESENHOS })', {});
 const FUNDO = '#FFE9C7';
 // Contorno branco tipo autocolante (na app é feito pelo CSS; aqui usamos um filtro SVG)
 const FILTRO = '<filter id="c" x="-20%" y="-20%" width="140%" height="140%">' +

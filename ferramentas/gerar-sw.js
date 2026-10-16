@@ -11,7 +11,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 const RAIZ = path.resolve(__dirname, '..');
-const PASTAS_MEDIA = ['icones', 'fontes', 'sons', 'desenhos', 'habitats'];
+const PASTAS_MEDIA = ['icones', 'fontes', 'sons', 'animais'];
 const TOPO = /\.(html|js|webmanifest|json)$/i;        // ficheiros da raiz que entram na cache
 const MEDIA = /\.(png|mp3|woff2|js)$/i;               // ficheiros das subpastas que entram na cache
 const GERADOS = new Set(['sw.js', 'gerado.js']);       // saídas deste script

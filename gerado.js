@@ -1,3 +1,3 @@
 /* GERADO por ferramentas/gerar-sw.js — não editar à mão. Para atualizar: node ferramentas/gerar-sw.js */
-const VERSAO = "2026-10-13-6f074cac";
-const MEDIA_EMBUTIDA = {"sons":["abelha","aguia","andorinha","arara","baleia","beluga","bode","burro","cabra","cachalote","cao","cavalo","cegonha","chimpanze","cigarra","cobra","codorniz","cordeiro","coruja","corvo","cuco","elefante","faisao","falcao","foca","gafanhoto","gaivota","galinha","galinha-da-india","galo","ganso","gato","golfinho","grilo","hiena","jacare","javali","leao","leitao","lobo","macaco","melro","mocho","orca","ovelha","papagaio","pardal","passaro","pato","pavao","pega","perdiz","periquito","peru","pica-pau","pinguim","pinto","pomba","ponei","porco","porquinho-da-india","potro","ra","rato","rouxinol","sapo","tigre","urso","vaca","vespa","zangao"]};
+const VERSAO = "2026-10-16-7cc81917";
+const MEDIA_EMBUTIDA = {"sons":["cao","gato"]};
