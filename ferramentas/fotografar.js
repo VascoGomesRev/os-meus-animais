@@ -7,7 +7,9 @@
      relogio.avancar(1000); await foto('repouso'); controlo.irAoHabitat(); relogio.avancar(4000); await foto('habitat');
    Grava originais/fotos/<n>.png com o cenário inteiro (1600×900 reduzido a 800×450). Atenção: mostra o viewBox todo;
    no telemóvel corta-se em cima e em baixo e no tablet dos lados (ver REGRAS-ANIMAIS.md §4).
-   Com ?grelha=a,b,c,d junta várias fotos já gravadas numa grelha de 2 colunas em originais/fotos/grelha.jpg. */
+   Com ?grelha=a,b,c,d&nome=x junta várias fotos já gravadas numa grelha de 2 colunas em originais/fotos/x.jpg.
+   Dois agentes ao mesmo tempo: cada um usa a sua porta (node ferramentas/fotografar.js 3998) e o prefixo do seu animal nos nomes.
+   Confirmar sempre que o PNG apareceu: se a porta já estiver ocupada por outro programa, a resposta pode enganar. */
 'use strict';
 const http = require('http');
 const fs = require('fs');
@@ -27,7 +29,7 @@ http.createServer((req, res) => {
     const nomes = q.get('grelha').split(',').filter(nomeValido);
     const comp = nomes.map((n, i) => ({ input: path.join(DIR, n + '.png'), left: (i % 2) * 800, top: Math.floor(i / 2) * 450 }));
     sharp({ create: { width: 1600, height: Math.ceil(nomes.length / 2) * 450, channels: 3, background: '#fff' } })
-      .composite(comp).jpeg({ quality: 80 }).toFile(path.join(DIR, 'grelha.jpg'))
+      .composite(comp).jpeg({ quality: 80 }).toFile(path.join(DIR, (nomeValido(q.get('nome') || '') ? q.get('nome') : 'grelha') + '.jpg'))
       .then(() => res.end('grelha gravada'), e => { res.statusCode = 500; res.end(String(e)); });
     return;
   }

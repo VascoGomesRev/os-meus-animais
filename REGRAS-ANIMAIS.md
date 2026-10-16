@@ -12,8 +12,10 @@ Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/
 | `animais/coelho.js` | prado e horta → toca | salto de coelho, orelhas em «fita», mergulhar num buraco e espreitar |
 | `animais/sapo.js` | charco → nenúfar | corpo de elipsoides, língua elástica, água que reage (ondas, gotas) |
 | `animais/girafa.js` | savana → acácia | animal alto, pescoço segmentado com padrão contínuo, andar a passo travado, comer da árvore |
+| `animais/raposa.js` | bosque de outono → toca no carvalho | cabeça de elipsoides, orelhas que rodam, cauda enorme, salto de caça ao rato |
+| `animais/peixe.js` | recife de coral → anémona | nadar com onda do corpo, barbatanas 3D, tentáculos que envolvem o animal |
 
-Custo de referência: 45–65 minutos de um agente Opus por animal; ficheiros de 110–125 KB.
+Custo de referência: 40–65 minutos de um agente Opus por animal; ficheiros de 105–135 KB. O peixe tem ~920 elementos SVG e 37 tentáculos atualizados a cada quadro: é o mais pesado; confirmar no telemóvel.
 
 ---
 
@@ -106,6 +108,14 @@ Regras do contrato:
 | Padrão num corpo segmentado (girafa, cobra) | Um só padrão «desenrolado»; cada segmento mostra a sua fatia (recorte fixo); juntas tapadas com uma tampa redonda sem contorno |
 | Entrar num buraco de lado (toca) | Recorte = (lado de lá do plano do buraco) ∪ boca da toca; a cabeça com recorte separado do corpo, para as orelhas poderem sair por cima; sombra própria para a cabeça lá dentro |
 | Comportamentos que se encadeiam | Cada comportamento começa por repor orelhas e cara à pose neutra |
+| Elipsoide projetado | Usar a raiz quadrada simétrica da matriz 2×2 projetada (o brilho do gradiente não roda); ordenar por profundidade, mas fixar à mão a boca e a língua logo a seguir ao maxilar |
+| Silhueta de vários elipsoides com «cinturas» | Desenhar o invólucro convexo dos elipsoides rígidos |
+| Riscas e manchas num corpo que roda | Quadriláteros desenhados na superfície, só os virados para nós; sem clip-path nem ids |
+| Círculo de raio 1 escalado | O `stroke-width` também escala: dividir o traço pela escala |
+| Orelhas planas em matriz afim | Largura mínima ~0,34 (senão ficam um risco); a do lado de cá passa à frente do crânio de perfil |
+| Pé preso que muda de sítio | Juntar um arco de levantar `sin(π·w)` |
+| Cauda que se enrola | Distribuir a curva com expoente < 1 (0,6), senão só enrola junto ao corpo |
+| Comportamento interrompido | Limpar os efeitos que criou (bolhas, folhas, partículas) |
 | Promessa de `irAoHabitat` que nunca resolve | Guardar o estado (`modo`) e não deixar outro comportamento substituir a tarefa da ida a meio |
 
 ---

@@ -3,16 +3,16 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-16-f77514be";
+var VERSAO = "2026-10-16-18a633e0";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "9cc85cf1"
+  "h": "73628538"
  },
  {
   "u": "animais.js",
-  "h": "86bebb74"
+  "h": "19ab8b0a"
  },
  {
   "u": "animais/cao.js",
@@ -29,6 +29,14 @@ var FICHEIROS = [
  {
   "u": "animais/girafa.js",
   "h": "9dec4d4d"
+ },
+ {
+  "u": "animais/peixe.js",
+  "h": "571d9c0b"
+ },
+ {
+  "u": "animais/raposa.js",
+  "h": "4c56a58f"
  },
  {
   "u": "animais/sapo.js",
@@ -64,7 +72,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "9cc85cf1"
+  "h": "73628538"
  },
  {
   "u": "manifest.webmanifest",
@@ -75,20 +83,60 @@ var FICHEIROS = [
   "h": "e2c9cf77"
  },
  {
+  "u": "sons/coelho.mp3",
+  "h": "e5abb406"
+ },
+ {
   "u": "sons/gato.mp3",
   "h": "325347b6"
+ },
+ {
+  "u": "sons/girafa.mp3",
+  "h": "df1831cf"
+ },
+ {
+  "u": "sons/peixe.mp3",
+  "h": "bba757e1"
+ },
+ {
+  "u": "sons/raposa.mp3",
+  "h": "5108df0e"
+ },
+ {
+  "u": "sons/sapo.mp3",
+  "h": "416942bc"
  },
  {
   "u": "vozes/cao.mp3",
   "h": "2c045154"
  },
  {
+  "u": "vozes/coelho.mp3",
+  "h": "2fe9b1ef"
+ },
+ {
   "u": "vozes/gato.mp3",
   "h": "3284d1c8"
  },
  {
+  "u": "vozes/girafa.mp3",
+  "h": "11a778d8"
+ },
+ {
+  "u": "vozes/peixe.mp3",
+  "h": "43d7d2c8"
+ },
+ {
+  "u": "vozes/raposa.mp3",
+  "h": "e6746dad"
+ },
+ {
+  "u": "vozes/sapo.mp3",
+  "h": "d2f99249"
+ },
+ {
   "u": "gerado.js",
-  "h": "d9fccec4"
+  "h": "b808d07b"
  }
 ];
 
