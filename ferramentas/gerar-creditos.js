@@ -22,7 +22,10 @@ if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).sort()) {
 }
 // uma entrada por ficheiro (se dois grupos registaram o mesmo, fica a última), só para ficheiros que existem
 const porFicheiro = new Map();
-for (const e of entradas) if (e.ficheiro && fs.existsSync(path.join(RAIZ, e.ficheiro))) porFicheiro.set(e.ficheiro, e);
+// os sons gravados pela família (gravacoes/tratadas/<id>-som.*) substituem os do Commons: esses deixam de ter crédito
+const tratadas = path.join(RAIZ, 'gravacoes', 'tratadas');
+const daFamilia = new Set(fs.existsSync(tratadas) ? fs.readdirSync(tratadas).map(n => (n.match(/^(.+)-som.[a-z0-9]+$/i) || [])[1]).filter(Boolean) : []);
+for (const e of entradas) if (e.ficheiro && fs.existsSync(path.join(RAIZ, e.ficheiro)) && !daFamilia.has(e.animal)) porFicheiro.set(e.ficheiro, e);
 entradas = [...porFicheiro.values()].sort((a, b) => (ordem[a.animal] ?? 999) - (ordem[b.animal] ?? 999));
 
 const fontes = [
@@ -35,6 +38,7 @@ fs.writeFileSync(path.join(RAIZ, 'creditos.json'), JSON.stringify([...entradas, 
 let md = '# Créditos\n\nSons de animais do [Wikimedia Commons](https://commons.wikimedia.org/), com licenças livres. Cada ficheiro foi cortado para 1–3 s, passado a mono e normalizado em volume.\n\n';
 md += '| Animal | Ficheiro na app | Original | Autor | Licença |\n|---|---|---|---|---|\n';
 for (const e of entradas) md += `| ${nomes[e.animal] || e.animal} | \`${e.ficheiro}\` | [${e.titulo}](${e.origem}) | ${e.autor} | [${e.licenca}](${e.licencaUrl || e.origem}) |\n`;
+md += '\n## Vozes e sons gravados pela família\n\nOs nomes dos animais (`vozes/`) e as onomatopeias gravadas pela família (os sons que não estão na tabela acima) foram gravados pela família da Francisca e limpos com `ferramentas/limpar-voz.js` (filtro de ruído RNNoise, com um modelo de domínio público de [GregorR/rnnoise-models](https://github.com/GregorR/rnnoise-models)).\n';
 md += '\n## Fontes\n\n';
 for (const f of fontes) md += `- **${f.titulo}** — ${f.autor} — [${f.licenca}](${f.licencaUrl}) — [${f.origem}](${f.origem}); texto da licença em \`fontes/\`.\n`;
 md += '\n## Código e desenhos\n\nO código e os desenhos SVG desta app estão sob a licença MIT (ver `LICENSE`).\n';

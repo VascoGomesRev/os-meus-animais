@@ -6,7 +6,7 @@
    Este ficheiro trata do resto: toques, nome escrito, voz, sons, setas, menu, favoritos e área dos pais. */
 'use strict';
 
-const EMBUTIDO = typeof MEDIA_EMBUTIDA !== 'undefined' ? MEDIA_EMBUTIDA : { sons: [] };
+const EMBUTIDO = Object.assign({ sons: [], vozes: [], silabas: {} }, typeof MEDIA_EMBUTIDA !== 'undefined' ? MEDIA_EMBUTIDA : {});
 const VERSAO_APP = typeof VERSAO !== 'undefined' ? VERSAO : 'desenvolvimento';
 const TEMPO_NO_HABITAT = 7000;           // ms que o animal fica no habitat antes de voltar sozinho
 
@@ -84,6 +84,7 @@ const urls = {};      // 'id:tipo' → URL a usar (blob: dos pais, caminho embut
 const proprios = {};  // 'id:tipo' → true se veio dos pais (IndexedDB)
 function urlEmbutida(id, t) {
   if (t === 'som' && EMBUTIDO.sons.includes(id)) return 'sons/' + id + '.mp3';
+  if (t === 'voz' && EMBUTIDO.vozes.includes(id)) return 'vozes/' + id + '.mp3';   // nome gravado pela família
   return null;
 }
 async function carregarMedia() {
@@ -202,17 +203,17 @@ function mostrar(dir) {
   mostrarCoracao();
 }
 
-/* ---------- Habitat: o animal vai lá, fica, e volta (sozinho ao fim de um tempo, ou quando se toca outra vez) ---------- */
+/* ---------- Habitat: o animal vai lá, fica, e volta (sozinho ao fim de um tempo, ou quando se toca outra vez).
+   O habitat não tem nome escrito nem dito: só o animal tem nome. ---------- */
 async function irAoHabitat() {
   if (!controlo || estado !== 'fora') return;
-  const a = ordem[pos], meu = ++sequencia, c = controlo;
+  const c = controlo;
+  pararSom();
   estado = 'indo';
-  const n = $('#nome'); n.textContent = a.habitat; n.classList.add('ver');
-  falar(a.habitat);
+  $('#nome').classList.remove('ver');
   try { await c.irAoHabitat(); } catch (e) { console.error(e); }
   if (c !== controlo) return;
   estado = 'dentro';
-  if (meu === sequencia) setTimeout(() => { if (meu === sequencia) n.classList.remove('ver'); }, 1200);
   agendarVolta();
 }
 function agendarVolta() {
@@ -302,7 +303,10 @@ async function tocarAnimal() {
   if (meu !== sequencia) return;           // entretanto mudou-se de animal
   const s = urls[a.id + ':som'];
   if (a.som && s) {
-    await tocar(s, ms => { if (meu === sequencia) try { c.fazerSom(ms); } catch (e) { console.error(e); } });
+    await espera(220);                     // pausa curta entre o nome e o som («gato»… «miau!»)
+    if (meu !== sequencia) return;
+    const silabas = proprios[a.id + ':som'] ? null : EMBUTIDO.silabas[a.id] || null;   // onde a boca abre (só nos sons da app)
+    await tocar(s, ms => { if (meu === sequencia) try { c.fazerSom(ms, silabas); } catch (e) { console.error(e); } });
     if (meu !== sequencia) return;
   }
   setTimeout(() => { if (meu === sequencia) n.classList.remove('ver'); }, 900);

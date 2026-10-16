@@ -4,7 +4,7 @@
    nome    → como aparece escrito e como é dito (minúsculas, sem artigo: «cão», não «o cão»)
    grupo   → ordem «por grupos» e menu (ver GRUPOS)
    som     → true se o animal tem um som característico (toca se existir sons/<id>.mp3 ou um som carregado pelos pais)
-   habitat → nome do sítio do animal, dito em voz alta quando a criança lhe toca (minúsculas, sem artigo) */
+   O nome do animal é dito com a gravação vozes/<id>.mp3 (se existir) ou com a voz sintética. */
 'use strict';
 
 const GRUPOS = {
@@ -19,8 +19,8 @@ const GRUPOS = {
 };
 
 const ANIMAIS = [
-  { id: 'cao',  nome: 'cão',  grupo: 'casa', som: true, habitat: 'casota' },
-  { id: 'gato', nome: 'gato', grupo: 'casa', som: true, habitat: 'cesto' }
+  { id: 'cao',  nome: 'cão',  grupo: 'casa', som: true },
+  { id: 'gato', nome: 'gato', grupo: 'casa', som: true }
 ];
 
 /* Cada animais/<id>.js acrescenta aqui o seu módulo: MODULOS.<id> = { icone, montar } */

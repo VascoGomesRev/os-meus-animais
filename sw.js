@@ -3,7 +3,7 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-16-7cc81917";
+var VERSAO = "2026-10-16-1b7d7916";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
@@ -12,23 +12,23 @@ var FICHEIROS = [
  },
  {
   "u": "animais.js",
-  "h": "0f1909a3"
+  "h": "2f7b9004"
  },
  {
   "u": "animais/cao.js",
-  "h": "4da58cd8"
+  "h": "10d9a45e"
  },
  {
   "u": "animais/gato.js",
-  "h": "532be95c"
+  "h": "88969003"
  },
  {
   "u": "app.js",
-  "h": "ce565b14"
+  "h": "269f6863"
  },
  {
   "u": "creditos.json",
-  "h": "c5918870"
+  "h": "a6049736"
  },
  {
   "u": "fontes/baloo2.woff2",
@@ -60,15 +60,23 @@ var FICHEIROS = [
  },
  {
   "u": "sons/cao.mp3",
-  "h": "69877e72"
+  "h": "e2c9cf77"
  },
  {
   "u": "sons/gato.mp3",
-  "h": "44a15c5b"
+  "h": "325347b6"
+ },
+ {
+  "u": "vozes/cao.mp3",
+  "h": "2c045154"
+ },
+ {
+  "u": "vozes/gato.mp3",
+  "h": "3284d1c8"
  },
  {
   "u": "gerado.js",
-  "h": "e17c6bea"
+  "h": "e38261b5"
  }
 ];
 

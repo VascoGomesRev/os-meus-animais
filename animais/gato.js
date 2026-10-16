@@ -1371,6 +1371,16 @@ MODULOS.gato = (() => {
       P.boca = 0; P.somP = 0; P.somY = 0; P.somFecha = 0;
     }
 
+    /* um «miau» por sílaba do som gravado, cada um no seu tempo */
+    function* miarSilabas(silabas) {
+      let t = 0;
+      for (const [a, d] of silabas) {
+        if (a > t) yield* durante((a - t) * 1000, () => {});
+        yield* miar(limita(d * 1000, 250, 2000));
+        t = a + d;
+      }
+    }
+
     /* --- cenário vivo e acontecimentos raros --- */
     const poeiras = R.poeiras.map((el, i) => {
       const r = semente(100 + i * 7);
@@ -1503,9 +1513,10 @@ MODULOS.gato = (() => {
         else if (modo === 'dentro') lancar('corpo', reacaoDentro(), () => lancar('corpo', cicloDentro()));
         else { impulso('twE', -10, 300); impulso('twD', -10, 300); }
       },
-      fazerSom(ms) {
+      fazerSom(ms, silabas) {         // silabas = [[início s, duração s], …] medidas no som da app (ferramentas/limpar-voz.js)
         if (!vivo) return;
-        lancar('boca', miar(limita(ms || 900, 300, 3500)));
+        if (Array.isArray(silabas) && silabas.length) lancar('boca', miarSilabas(silabas));
+        else lancar('boca', miar(limita(ms || 900, 300, 3500)));
       },
       irAoHabitat() {
         return new Promise(res => {

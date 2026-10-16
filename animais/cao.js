@@ -1362,11 +1362,11 @@ ${az('azul', '#F4F6FA', '#2F64B5', '#F2C14E')}${az('azVerde', '#F6F3E6', '#3E8C6
           if (!salto.ativo && !reduzido) { salto.ativo = true; salto.t = 0; salto.aterrou = false; }
         } else dentro.acao = null;
       },
-      fazerSom(ms) {
+      fazerSom(ms, silabas) {         // silabas = [[início s, duração s], …] medidas no som da app (ferramentas/limpar-voz.js)
         if (destruido) return;
         ms = Number(ms) || 1500;
         let lat;
-        if (Math.abs(ms - 2600) < 500) lat = [[0.18, 0.15], [1.16, 0.18], [1.88, 0.15]].map(([a, d]) => ({ a: a * ms / 2600, d: d * ms / 2600, k: false }));
+        if (Array.isArray(silabas) && silabas.length) lat = silabas.map(([a, d]) => ({ a, d: Math.min(0.3, d), k: false }));
         else { const s = ms / 1000, n = clamp(Math.round(s / 0.6), 1, 5); lat = []; for (let i = 0; i < n; i++) lat.push({ a: 0.05 + i * s / n, d: Math.min(0.2, s / n * 0.5), k: false }); }
         som = { ativo: true, t: 0, lat, fim: lat[lat.length - 1].a + lat[lat.length - 1].d };
         if (modo === 'fora') { fora.acao = null; fora.prox = Math.max(fora.prox, 2.5); }

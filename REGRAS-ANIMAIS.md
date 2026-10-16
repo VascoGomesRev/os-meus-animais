@@ -21,10 +21,10 @@ Cada animal é **um ficheiro só**: `animais/<id>.js`. Esse ficheiro desenha e a
 O resto da app (nome escrito, voz, som, setas, menu, favoritos, área dos pais) é do motor, `app.js`. **Um módulo nunca mexe em `app.js`, `index.html`, `animais.js` nem nos módulos dos outros animais.**
 
 Para pôr um animal novo na app:
-1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo`, `som`, `habitat`).
+1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo`, `som`).
 2. Criar `animais/<id>.js` seguindo estas regras.
 3. Acrescentar `<script src="animais/<id>.js"></script>` no `index.html`, antes de `app.js`.
-4. Se tiver som: `sons/<id>.mp3` e créditos (ver `ferramentas/GUIA-SONS.md`; os sons antigos estão em `arquivo/sons/`).
+4. Voz e som: gravados pela família (ver §10). O habitat **não tem nome** escrito nem dito.
 5. `node ferramentas/gerar-sw.js` e depois `node ferramentas/verificar.js` → tem de dar 0 erros.
 
 ---
@@ -41,7 +41,7 @@ MODULOS.cao = {
       animal,              // elemento SVG do animal (zona de toque)
       habitat,             // elemento SVG do habitat (zona de toque)
       reagir() {},         // a criança tocou no animal: reação alegre (o motor diz o nome ao mesmo tempo)
-      fazerSom(ms) {},     // o som do animal começou agora e dura ms: boca a ladrar/miar em sincronia
+      fazerSom(ms, silabas) {}, // o som começou agora e dura ms; silabas = [[início s, duração s], …] (null se o som veio dos pais)
       irAoHabitat() {},    // devolve Promise: resolve quando o animal está instalado no habitat
       voltar() {},         // devolve Promise: resolve quando o animal voltou ao sítio e à animação normal
       destruir() {}        // desliga o relógio e tudo o que o módulo criou
@@ -54,8 +54,8 @@ O que o motor faz com isto:
 
 | A criança… | Estado | O motor chama |
 |---|---|---|
-| toca no animal (ou no cenário) | fora | `reagir()`, diz o nome, depois toca o som e chama `fazerSom(ms)` |
-| toca no habitat | fora | diz o nome do habitat, `await irAoHabitat()` |
+| toca no animal (ou no cenário) | fora | `reagir()`, diz o nome (`vozes/<id>.mp3`), pausa de 0,2 s, toca o som e chama `fazerSom(ms, silabas)` |
+| toca no habitat | fora | `await irAoHabitat()` (sem nome escrito nem dito) |
 | toca no animal | dentro do habitat | `reagir()` e `fazerSom(ms)` **com o animal dentro do habitat** (tem de reagir lá dentro, sem sair) |
 | toca no habitat, ou passam 7 s | dentro do habitat | `await voltar()` |
 | carrega numa seta | qualquer | monta o animal seguinte noutro palco, faz a transição e chama `destruir()` no antigo |
@@ -87,7 +87,7 @@ Regras do contrato:
 | Entrar por uma porta | O animal tem de caber agachado no momento em que a atravessa: ver de 50 em 50 ms |
 | Cauda que roda para o lado errado | Interpolar ângulos num intervalo contínuo (ex. −270…90), não entre 178 e −96 |
 | Olhos meio fechados parecem zangados | Inclinar a pálpebra ao contrário da inclinação do olho |
-| Boca em sincronia com o som | Analisar o `sons/<id>.mp3` (onde estão os latidos/miaus) e pôr esses tempos no módulo; para outra duração (som dos pais), distribuir por igual |
+| Boca em sincronia com o som | Usar o `silabas` que o motor passa ao `fazerSom` (medido pelo `limpar-voz.js`); nunca pôr tempos fixos no módulo |
 | Testar comportamentos | Deixar `controlo._teste` (forçar comportamento ou acontecimento, ver o estado); o motor ignora-o |
 
 ---
@@ -139,7 +139,7 @@ Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas *
 
 **Reação ao toque (`reagir`)**
 - Alegria visível em 100 ms: orelhas para cima, olhos maiores ou fechados de contente, cauda rápida, pequeno salto ou abanão.
-- `fazerSom(ms)`: a boca abre e fecha ao ritmo do som, a cabeça acompanha (ex.: «ão ão» = duas aberturas com a cabeça a dar um impulso).
+- `fazerSom(ms, silabas)`: a boca abre uma vez por sílaba, no início e com a duração de cada uma; a cabeça acompanha (ex.: «ão ão» = duas aberturas com um impulso da cabeça). Sem `silabas` (som carregado pelos pais), distribuir aberturas pelos `ms`.
 
 **Ida ao habitat (`irAoHabitat` / `voltar`)**
 - Duração: ida entre 2 e 4 s; volta entre 1,5 e 3 s. Movimento fluido do princípio ao fim, com o andar/salto completo.
@@ -196,3 +196,19 @@ Um agente Opus por animal. O pedido tem de dizer:
 3. Só pode escrever `animais/<id>.js`; não mexe em `app.js`, `index.html`, `animais.js` nem nos outros animais (a linha em `animais.js` e o `<script>` no `index.html` acrescento-os eu antes de lançar o agente).
 4. Testar com o separador próprio do browser, em 915 × 412 e 1024 × 768, com pelo menos 3 voltas de correções vistas em imagens.
 5. Relatório final: o que fez, o que verificou, o que não conseguiu verificar e o que mudaria nestas regras.
+
+---
+
+## 10. Vozes e sons (gravados pela família)
+
+Os nomes e as onomatopeias são gravados pela família: para uma criança pequena, «miau» dito por uma voz conhecida é melhor do que um miado real ou uma voz sintética.
+
+| Passo | Quem | O quê |
+|---|---|---|
+| 1. Gravar | Vasco, no telemóvel | Um ficheiro por som: o nome («gato») e a onomatopeia («miau»). Dentro de casa, numa divisão pequena, telemóvel a 15–20 cm, 1 s de silêncio antes de falar |
+| 2. Enviar | Vasco | Carrega os ficheiros na conversa com o Claude e diz a ordem (ex.: «cão, som, gato, som») |
+| 3. Pôr por tratar | Claude | Copia para `gravacoes/por-tratar/<id>-nome.<ext>` e `gravacoes/por-tratar/<id>-som.<ext>` |
+| 4. Limpar | Claude | `node ferramentas/limpar-voz.js`: corta graves e ruído (RNNoise), corta os silêncios do início e do fim, iguala o volume, grava `vozes/<id>.mp3` e `sons/<id>.mp3`, mede as sílabas para `sons/silabas.json` e passa o original para `gravacoes/tratadas/` |
+| 5. Publicar | Claude | `gerar-creditos.js`, `gerar-sw.js`, `verificar.js`, commit e push |
+
+O que está em `gravacoes/por-tratar/` falta tratar (`node ferramentas/limpar-voz.js --ver`). Os sons antigos do Wikimedia Commons estão em `arquivo/sons/`.

@@ -31,7 +31,6 @@ if (dados) {
     if (!a.nome || a.nome !== a.nome.toLowerCase() || /^(o|a|os|as|um|uma) /.test(a.nome)) erro(`${a.id}: nome inválido «${a.nome}» (minúsculas, sem artigo)`);
     if (!(a.grupo in GRUPOS)) erro(`${a.id}: grupo desconhecido «${a.grupo}»`);
     if (typeof a.som !== 'boolean') erro(`${a.id}: «som» tem de ser true ou false`);
-    if (!a.habitat || a.habitat !== a.habitat.toLowerCase()) erro(`${a.id}: falta o nome do habitat (minúsculas, sem artigo)`);
     const m = MODULOS[a.id];
     if (!m) erro(`${a.id}: falta o módulo animais/${a.id}.js (MODULOS.${a.id})`);
     else {
@@ -49,10 +48,10 @@ if (dados) {
   for (const id of Object.keys(MODULOS)) if (!ids.has(id)) erro(`há um módulo «${id}» que não está em animais.js`);
 
   // 2. Ficheiros de media: nome e extensão
-  for (const [pasta, ext] of [['sons', '.mp3']]) {
+  for (const [pasta, ext] of [['sons', '.mp3'], ['vozes', '.mp3']]) {
     if (!existe(pasta)) continue;
     for (const n of fs.readdirSync(path.join(RAIZ, pasta))) {
-      if (n.startsWith('.')) continue;
+      if (n.startsWith('.') || n === 'silabas.json') continue;
       if (!n.endsWith(ext)) erro(`${pasta}/${n}: extensão errada (esperava ${ext})`);
       else if (!ids.has(n.slice(0, -ext.length))) erro(`${pasta}/${n}: não corresponde a nenhum animal`);
     }
@@ -63,7 +62,9 @@ if (dados) {
     try {
       const cr = JSON.parse(ler('creditos.json'));
       const com = new Set(cr.map(c => c.ficheiro));
-      for (const id of MEDIA_EMBUTIDA.sons) if (!com.has(`sons/${id}.mp3`)) erro(`sons/${id}.mp3 sem entrada em creditos.json`);
+      const trat = existe('gravacoes/tratadas') ? fs.readdirSync(path.join(RAIZ, 'gravacoes', 'tratadas')) : [];
+      const daFamilia = id => trat.some(n => n.startsWith(id + '-som.'));   // som gravado pela família: não precisa de crédito do Commons
+      for (const id of MEDIA_EMBUTIDA.sons) if (!com.has(`sons/${id}.mp3`) && !daFamilia(id)) erro(`sons/${id}.mp3 sem entrada em creditos.json`);
       for (const c of cr) if (c.ficheiro && !existe(c.ficheiro)) aviso(`creditos.json refere ${c.ficheiro}, que não existe`);
     } catch (e) { erro('creditos.json inválido: ' + e.message); }
   } else if (MEDIA_EMBUTIDA.sons.length) erro('há sons embutidos mas não existe creditos.json');

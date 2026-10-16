@@ -1,27 +1,5 @@
 [
  {
-  "ficheiro": "sons/cao.mp3",
-  "animal": "cao",
-  "tipo": "som",
-  "titulo": "Barking of a dog.ogg",
-  "autor": "Amada44",
-  "licenca": "CC BY-SA 3.0",
-  "licencaUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
-  "origem": "https://commons.wikimedia.org/wiki/File:Barking_of_a_dog.ogg",
-  "alteracoes": "cortado a 2,6 s, volume normalizado, mono"
- },
- {
-  "ficheiro": "sons/gato.mp3",
-  "animal": "gato",
-  "tipo": "som",
-  "titulo": "Meow of a Siamese cat - freemaster2.wav",
-  "autor": "freemaster2",
-  "licenca": "CC0",
-  "licencaUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-  "origem": "https://commons.wikimedia.org/wiki/File:Meow_of_a_Siamese_cat_-_freemaster2.wav",
-  "alteracoes": "cortado a 1,5 s, volume normalizado, mono"
- },
- {
   "ficheiro": "fontes/baloo2.woff2",
   "tipo": "fonte",
   "titulo": "Baloo 2",
