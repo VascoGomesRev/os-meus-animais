@@ -1,6 +1,6 @@
 # Regras para criar um animal
 
-Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026) , do coala, macaco, elefante e pato e do porco, galo e cavalo (17-10-2026). Cada animal novo segue estas regras.
+Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026), do coala, macaco, elefante e pato e do porco, galo e cavalo (17-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
 **Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
