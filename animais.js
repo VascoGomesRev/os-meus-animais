@@ -25,7 +25,11 @@ const ANIMAIS = [
   { id: 'sapo', nome: 'sapo', grupo: 'floresta', som: true },
   { id: 'raposa', nome: 'raposa', grupo: 'floresta', som: true },
   { id: 'girafa', nome: 'girafa', grupo: 'selva', som: true },
-  { id: 'peixe', nome: 'peixe', grupo: 'mar', som: true }
+  { id: 'peixe', nome: 'peixe', grupo: 'mar', som: true },
+  { id: 'coala', nome: 'coala', grupo: 'floresta', som: true },
+  { id: 'macaco', nome: 'macaco', grupo: 'selva', som: true },
+  { id: 'elefante', nome: 'elefante', grupo: 'selva', som: true },
+  { id: 'pato', nome: 'pato', grupo: 'quinta', som: true }
 ];
 
 /* Cada animais/<id>.js acrescenta aqui o seu módulo: MODULOS.<id> = { icone, montar } */

@@ -1,6 +1,6 @@
 # Regras para criar um animal
 
-Versão 3 — revista depois do cão e do gato e depois do coelho, do sapo e da girafa (16-10-2026). Cada animal novo segue estas regras.
+Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026) e do coala, macaco, elefante e pato (17-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
 **Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
@@ -14,6 +14,10 @@ Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/
 | `animais/girafa.js` | savana → acácia | animal alto, pescoço segmentado com padrão contínuo, andar a passo travado, comer da árvore |
 | `animais/raposa.js` | bosque de outono → toca no carvalho | cabeça de elipsoides, orelhas que rodam, cauda enorme, salto de caça ao rato |
 | `animais/peixe.js` | recife de coral → anémona | nadar com onda do corpo, barbatanas 3D, tentáculos que envolvem o animal |
+| `animais/coala.js` | eucaliptal → forquilha | trepar um tronco com patas presas, ficar abraçado entre camadas |
+| `animais/macaco.js` | selva → ramo alto | balançar numa liana, mãos presas ao mundo, pendurar pela cauda |
+| `animais/elefante.js` | savana de manhã → poço | tromba de 12 segmentos, orelhas que abanam, banho com esguicho |
+| `animais/pato.js` | quinta com lago → lago | andar bamboleante, boiar com véu de água, «rabo para o ar» |
 
 Custo de referência: 40–65 minutos de um agente Opus por animal; ficheiros de 105–135 KB. O peixe tem ~920 elementos SVG e 37 tentáculos atualizados a cada quadro: é o mais pesado; confirmar no telemóvel.
 
@@ -117,6 +121,17 @@ Regras do contrato:
 | Cauda que se enrola | Distribuir a curva com expoente < 1 (0,6), senão só enrola junto ao corpo |
 | Comportamento interrompido | Limpar os efeitos que criou (bolhas, folhas, partículas) |
 | Promessa de `irAoHabitat` que nunca resolve | Guardar o estado (`modo`) e não deixar outro comportamento substituir a tarefa da ida a meio |
+| Animal entre camadas do habitat com patas por cima (coala no ramo) | Repetir a peça da frente do habitat dentro do grupo do animal: o toque continua a dar `reagir()` |
+| Costuras onde ramos inclinados nascem de um tronco | Gradientes `userSpaceOnUse` com `skewX`, presos a um y comum |
+| Braços com as mãos acima da cabeça (liana, trepar) | Trocar a ordem: braços atrás da cabeça, senão tapam a cara |
+| Mãos presas a um ponto do mundo (liana, ramo) | Peso numa mola que mistura o alvo do mundo com o do corpo: interromper nunca parte o braço |
+| Animal que boia ou entra na água | Véu: cópia da água (mesma cor) recortada abaixo da linha de água; anéis de onda em duas metades (trás atrás do animal, frente por cima do véu) |
+| Tromba/pescoço que nasce da cara | Gradiente com transparência na base; contorno só opaco depois do enchimento |
+| Animal branco com peças sobrepostas | Enchimento liso nas peças que se sobrepõem (o gradiente radial mostra as costuras) |
+| Animal sem cauda visível (coala) | A «onda» passa para as orelhas (mola de acompanhamento e tiques) |
+| Acontecimento que usa uma parte do corpo (ave pousa nas costas) | Só quando essa parte está à vista e o animal está fora do habitat |
+| Partículas | Nunca o mesmo nome de campo para um elemento e para um número |
+| Erva e folhagem paradas | Juntar num só `path` por cor: menos elementos |
 
 ---
 
@@ -182,7 +197,7 @@ Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas *
 ## 6. Desempenho e segurança
 
 - Tem de correr a 60 fps num telemóvel Android médio. Gradientes sim; **filtros SVG animados não** (desfoque, sombra com filtro em peças que se mexem). Sombras = elipses com gradiente.
-- Um único `<svg>` por módulo. Ficheiro com menos de 250 KB.
+- Um único `<svg>` por módulo. Ficheiro com menos de 250 KB. **No máximo ~1200 elementos SVG** (o macaco e o pato passaram dos 1800: confirmar no telemóvel).
 - Sem imagens externas, sem internet, sem `<script>`, `<image>` ou `<foreignObject>`. Tudo desenhado em SVG no próprio ficheiro.
 - Comentários e nomes no código em português de Portugal.
 - Ícone do menu: no máximo 220 de altura (senão tapa o nome do grupo) e, de preferência, **sem gradientes com id**: o mesmo ícone pode aparecer em dois cartões e, se o primeiro estiver escondido, o segundo fica sem cor.
@@ -198,7 +213,9 @@ Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas *
    Com o painel escondido a transição entre animais (setas) também fica parada a meio: é normal, no telemóvel não acontece.
    Se dois agentes usam o browser ao mesmo tempo, cada um abre o seu separador (`tabs_create`) e passa sempre o `tabId`.
 4. Ver sempre em 915 × 412 e em 1024 × 768.
-5. Antes de entregar: `node ferramentas/gerar-sw.js` e `node ferramentas/verificar.js` (0 erros).
+5. Antes de entregar: `node ferramentas/verificar.js` (0 erros no animal). Os agentes **não** correm `gerar-sw.js`: o erro «sw.js / gerado.js desatualizados» é esperado e quem coordena corre o gerador no fim.
+6. Com o tempo manual, nunca `await controlo.irAoHabitat()` nem esperar por `requestAnimationFrame` na consola: fica pendurado. Guardar a promessa, avançar o tempo e ver depois.
+7. Recortes para o `fotografar.js` (sempre 16:9, senão a grelha corta): telemóvel `0 90 1600 720`; tablet: ver x 200–1400. Ajuda desenhar as zonas das setas e do nome por cima. O `fotografar.js` é partilhado: não o fechar se outro agente o usa.
 
 ---
 
