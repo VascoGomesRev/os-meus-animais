@@ -860,6 +860,7 @@ MODULOS.cavalo = (() => {
       const trem = P.pele ? Math.sin(tempo * .09) * P.pele : 0;
       poe(R.tronco, `matrix(${n3(fx)},${n3(fy)},0,${ESC},${n(c0[0] + trem)},${n(c0[1])})`);
       poe(R.troncoR, `scale(1,${n3(1 + .014 * resp)})`);
+      atr(R.tronco, 'opacity', n3(passoS(.1, .38, Math.abs(c))));      // de frente/costas o perfil some-se (fica o peito ou a garupa)
       const wF = 1 - passoS(.3, .86, Math.abs(c));
       if (wF > .02 && s > 0) {
         const pc = T(W(112, 0, 242));
@@ -916,6 +917,7 @@ MODULOS.cavalo = (() => {
       // cauda: cadeia 3D a partir da garupa (pendurada, com onda; abana para os lados)
       const querCF = caudaNaFrente ? s < .3 : s < .2;
       if (querCF !== caudaNaFrente) { caudaNaFrente = querCF; (querCF ? R.slotCF : R.slotCT).appendChild(R.cauda); }
+      atr(R.cauda, 'opacity', n3(1 - passoS(.5, .78, s)));             // de frente a cauda fica escondida atrás do corpo
       {
         let w = W(CAUDA0.u, 0, CAUDA0.h);
         const pts = [T(w)];
@@ -1119,9 +1121,9 @@ MODULOS.cavalo = (() => {
         P.alt = -5 * Math.sin(u * PI * 4) ** 2 * sino(u);
         for (const st of plano) {
           if (u < st.a || st.feito) continue;
-          if (!st.de) { st.de = [st.f.x, st.f.z]; st.para = restPe(st.f.pe, P.X, P.Z, thEm(st.ua)); }
+          if (!st.de) { st.de = [st.f.x, st.f.z]; st.y0 = st.f.y; st.para = restPe(st.f.pe, P.X, P.Z, thEm(st.ua)); }
           const v = limita((u - st.a) / (st.b - st.a), 0, 1);
-          st.f.x = lerp(st.de[0], st.para[0], eseno(v)); st.f.z = lerp(st.de[1], st.para[1], eseno(v)); st.f.y = sino(v) * 32 * ESC; st.f.inc = -sino(v) * 26;
+          st.f.x = lerp(st.de[0], st.para[0], eseno(v)); st.f.z = lerp(st.de[1], st.para[1], eseno(v)); st.f.y = lerp(st.y0, 0, eseno(v)) + sino(v) * 32 * ESC; st.f.inc = -sino(v) * 26;
           if (v >= 1) { st.feito = true; st.f.y = 0; st.f.inc = 0; }
         }
       });

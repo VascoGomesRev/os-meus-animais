@@ -1277,7 +1277,7 @@ MODULOS.galo = (() => {
     function* virar(h1, ms, semAssentar) {           // vira primeiro a cabeça, depois o corpo, a dar passinhos no sítio
       const h0 = P.h, dh = h1 - h0;
       if (Math.abs(dh) < 2) { P.h = h1; return; }
-      const lead = limita(dh, -45, 45) * .8, hy0 = P.hY;
+      const lead = -limita(dh, -45, 45) * .8, hy0 = P.hY;
       yield* durante(ms * .3, u => { P.hY = lerp(hy0, lead, esai(u)); });
       marcha.alvoAmp = .5;
       let t = 0;
@@ -1452,7 +1452,7 @@ MODULOS.galo = (() => {
     }
     function* inclinarCabeca() {                     // inclina a cabeça e olha para nós com um olho, depois com o outro
       const b = baseP(), sg = escolhe([-1, 1]), h0 = P.h;
-      const vira = limita(-h0, -70, 70);
+      const vira = limita(h0, -70, 70);
       yield* tw({ hY: vira + 30 * sg, hR: 28 * sg, hP: 4, sobr: .8, olhosEsc: 1.06 }, 300, esai);
       focar(() => [800, 300]);
       yield* espera(900);
@@ -1481,7 +1481,7 @@ MODULOS.galo = (() => {
         const dt = yield; t += dt;
         if (!G) continue;
         const p = alvo(), dx = p[0] - G.cab[0], dy = p[1] - G.cab[1];
-        const hAbs = limita(dx / 5, -85, 85), yaw = limita(hAbs - P.h, -65, 65), pit = limita(-dy / 5, -40, 40);
+        const hAbs = limita(dx / 5, -85, 85), yaw = limita(P.h - hAbs, -65, 65), pit = limita(-dy / 5, -40, 40);
         const k = 1 - Math.exp(-dt / 260);
         P.hY += (yaw - P.hY) * k; P.hP += (pit - P.hP) * k; P.hR += (limita(-yaw / 5, -10, 10) - P.hR) * k;
       }
@@ -1499,7 +1499,7 @@ MODULOS.galo = (() => {
       min.x = P.x + sg * 108; min.y = P.gy + 14; min.sai = 0; min.vis = true; min.t = 0;
       atr(R.minhoca, 'display', 'inline');
       yield* durante(500, u => { min.sai = esai(u); });
-      const vira = limita(sg * 90 - P.h, -70, 70);
+      const vira = limita(P.h - sg * 90, -70, 70);
       focar(() => [min.x, min.y - 14 * min.sai]);
       yield* tw({ hY: vira * .8, hR: 26 * sg, hx: 44, hy: 70, hP: -26, sobr: .9, olhosEsc: 1.08 }, 380, esai);
       yield* espera(900);
@@ -1568,7 +1568,7 @@ MODULOS.galo = (() => {
     function* reacao() {
       reagindo = true; marcha.alvoAmp = 0;
       const s0 = P.salto, b = BASE;
-      const rosto = tw({ feliz: .85, sobr: 1, bico: .25, olhosEsc: 1.1, abE: 1, abD: 1, hx: b.hx, hy: b.hy, hz: 0, hY: limita(-P.h, -40, 40), hP: 8, hR: 0, cP: b.cP, cR: 0, cF: 0, cU: 0, puff: 0 }, 90, esai);
+      const rosto = tw({ feliz: .85, sobr: 1, bico: .25, olhosEsc: 1.1, abE: 1, abD: 1, hx: b.hx, hy: b.hy, hz: 0, hY: limita(P.h, -40, 40), hP: 8, hR: 0, cP: b.cP, cR: 0, cF: 0, cU: 0, puff: 0 }, 90, esai);
       const corpo = (function* () {
         if (s0 < 3) yield* tw({ cH: b.cH - 14, sq: .06, aE: .3, aD: .3 }, 70, esai);
         const c0 = P.cH;
@@ -1591,7 +1591,7 @@ MODULOS.galo = (() => {
     function* reacaoPau() {                          // no pau: dá um saltinho, bate as asas e o pau baloiça
       reagindo = true;
       const b = POLEIRO;
-      const rosto = tw({ feliz: .85, sobr: 1, bico: .25, olhosEsc: 1.1, abE: 1, abD: 1, hx: b.hx, hy: b.hy, hz: 0, hY: limita(-P.h, -40, 40), hP: 8, hR: 0, cF: 0, puff: 0 }, 90, esai);
+      const rosto = tw({ feliz: .85, sobr: 1, bico: .25, olhosEsc: 1.1, abE: 1, abD: 1, hx: b.hx, hy: b.hy, hz: 0, hY: limita(P.h, -40, 40), hP: 8, hR: 0, cF: 0, puff: 0 }, 90, esai);
       const corpo = (function* () {
         yield* tw({ cH: b.cH - 12, sq: .05, aE: .6, aD: .6, batE: 60, batD: 60 }, 80, esai);
         pau.v -= 80; barb.v += 240;
@@ -1795,7 +1795,7 @@ MODULOS.galo = (() => {
         const dt = yield; t += dt;
         if (!G) continue;
         const p = ev.pos(), dx = p[0] - G.cab[0], dy = p[1] - G.cab[1];
-        const yaw = limita(limita(dx / 5, -85, 85) - P.h, -65, 65), pit = limita(-dy / 6, -30, 35), k = 1 - Math.exp(-dt / 220);
+        const yaw = limita(P.h - limita(dx / 5, -85, 85), -65, 65), pit = limita(-dy / 6, -30, 35), k = 1 - Math.exp(-dt / 220);
         P.hY += (yaw - P.hY) * k; P.hP += (pit - P.hP) * k;
       }
       focar(null);
