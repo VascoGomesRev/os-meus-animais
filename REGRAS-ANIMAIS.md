@@ -1,6 +1,6 @@
 # Regras para criar um animal
 
-Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026), do coala, macaco, elefante e pato e do porco, galo e cavalo (17-10-2026). Cada animal novo segue estas regras.
+Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026), do coala, macaco, elefante e pato , do porco, galo e cavalo e da vaca, ovelha e passarinho (17-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
 **Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
@@ -21,6 +21,9 @@ Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/
 | `animais/porco.js` | pátio de quinta → poça de lama | rebolar um elipsoide, manchas de lama que secam |
 | `animais/galo.js` | quintal minhoto ao amanhecer → poleiro | passo de galo com a cabeça parada no mundo, esvoaçar, poleiro com mola |
 | `animais/cavalo.js` | Alentejo → cavalariça | trote diagonal, entrar de frente por uma porta, cabeça por cima da meia-porta |
+| `animais/vaca.js` | lameiro de montanha → curral de granito | malhas recortadas, chocalho e úbere com mola, deitar-se em dois tempos |
+| `animais/ovelha.js` | serra da Estrela → redil de pedra | lã em bolas com pouco peso, cancela com chocalho, balido trémulo |
+| `animais/passarinho.js` | jardim com cerejeira → ninho | voo com bater de asas, bico que toca na semente, banho de pássaros |
 
 Custo de referência: 40–65 minutos de um agente Opus por animal; ficheiros de 105–135 KB. O peixe tem ~920 elementos SVG e 37 tentáculos atualizados a cada quadro: é o mais pesado; confirmar no telemóvel.
 
@@ -143,6 +146,17 @@ Regras do contrato:
 | Entrar de frente por uma porta (cavalo) | Recortar só pela abertura, alargada até aos cascos; sombra do interior por cima do corpo, mais escura quanto mais fundo |
 | Cabeça de fora por cima de uma meia-porta | Cópia da meia-porta no grupo do animal, entre corpo e pescoço |
 | Cara que se esconde de costas | Só quando sen(rumo) < −0,35; antes disso aparece o «olho fantasma» |
+| Perfil do tronco quando o animal está de frente | Esbater com `opacity` abaixo de \|cos\| 0,38 e esconder a cauda, senão nasce um «pau» por cima |
+| Olhar para uma direção absoluta A | O rumo positivo de `roda()` vira ao contrário de `h`: `hY = P.h − A` (no galo o sinal está trocado) |
+| Riscas e colares numa cabeça redonda | Linhas sobre a superfície da esfera (só os troços virados para nós), não manchas soltas |
+| Bico que tem de tocar num ponto (semente, água) | Procurar a altura da cabeça por bissecção numa cópia da pose |
+| `andarPara` seguido de `virar()` | Não acertar os pés no fim do andar (o `virar()` já pisa): poupa ~0,6 s |
+| Pé no ar quando começa um `virar()` | Começar o passo da altura em que está (não cair de repente) |
+| Cancela que abre para fora | Abrir antes de o animal chegar, do lado oposto ao caminho |
+| Animal de cara escura | Boca aberta desenhada por cima do focinho, com língua |
+| Partículas (fiapos, pó) | Nunca nascem em cima da cara |
+| Animal que se deita dentro do habitat | A cópia da parte da frente só aparece quando o animal já passou esse plano |
+| Testes | `_teste.semEventos()` para desligar os acontecimentos raros durante as fotos |
 
 ---
 

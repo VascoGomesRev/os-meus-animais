@@ -1,3 +1,3 @@
 /* GERADO por ferramentas/gerar-sw.js — não editar à mão. Para atualizar: node ferramentas/gerar-sw.js */
-const VERSAO = "2026-10-17-56340563";
+const VERSAO = "2026-10-17-d34e93c7";
 const MEDIA_EMBUTIDA = {"sons":["cao","coelho","gato","girafa","peixe","raposa","sapo"],"vozes":["cao","coelho","gato","girafa","peixe","raposa","sapo"],"silabas":{"cao":[[0,0.36],[0.63,0.28],[1.46,0.31]],"coelho":[[0,0.37],[0.49,0.39],[0.98,0.34],[1.56,0.36]],"gato":[[0,1.13],[2.01,1.32]],"girafa":[[0,2.21]],"peixe":[[0,0.18],[0.34,0.47],[1.05,0.38],[1.78,0.4]],"raposa":[[0,0.43],[0.76,0.36],[1.27,0.3]],"sapo":[[0,0.62],[1.37,0.58],[2.01,0.12],[2.73,0.86]]}};
