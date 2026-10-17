@@ -1,6 +1,6 @@
 # Regras para criar um animal
 
-Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026) e do coala, macaco, elefante e pato (17-10-2026). Cada animal novo segue estas regras.
+Versão 4 — revista depois do cão e do gato, do coelho, do sapo e da girafa (16-10-2026) , do coala, macaco, elefante e pato e do porco, galo e cavalo (17-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
 **Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
@@ -18,6 +18,9 @@ Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/
 | `animais/macaco.js` | selva → ramo alto | balançar numa liana, mãos presas ao mundo, pendurar pela cauda |
 | `animais/elefante.js` | savana de manhã → poço | tromba de 12 segmentos, orelhas que abanam, banho com esguicho |
 | `animais/pato.js` | quinta com lago → lago | andar bamboleante, boiar com véu de água, «rabo para o ar» |
+| `animais/porco.js` | pátio de quinta → poça de lama | rebolar um elipsoide, manchas de lama que secam |
+| `animais/galo.js` | quintal minhoto ao amanhecer → poleiro | passo de galo com a cabeça parada no mundo, esvoaçar, poleiro com mola |
+| `animais/cavalo.js` | Alentejo → cavalariça | trote diagonal, entrar de frente por uma porta, cabeça por cima da meia-porta |
 
 Custo de referência: 40–65 minutos de um agente Opus por animal; ficheiros de 105–135 KB. O peixe tem ~920 elementos SVG e 37 tentáculos atualizados a cada quadro: é o mais pesado; confirmar no telemóvel.
 
@@ -132,6 +135,14 @@ Regras do contrato:
 | Acontecimento que usa uma parte do corpo (ave pousa nas costas) | Só quando essa parte está à vista e o animal está fora do habitat |
 | Partículas | Nunca o mesmo nome de campo para um elemento e para um número |
 | Erva e folhagem paradas | Juntar num só `path` por cor: menos elementos |
+| Elipsoide que rebola (porco na lama) | A barriga é a parte abaixo de um plano: arco visível do corte prolongado até ao contorno, recortado pela elipse do tronco |
+| Orelha plana que aponta para a câmara | Encurtar e cair para fora e para baixo; esticar na direção que sobra parece um corno |
+| Crista, barbelas, bico de perfil quando a cabeça vira de frente | Largura mínima ~0,55 (com 0,3 desaparecem) |
+| Pousar num poleiro | Pau que baixa e baloiça com mola; pés e corpo leem a altura do pau a cada quadro; dedos desenhados por cima do pau |
+| Pose de cantar/relinchar | Somada à parte (`canto` 0–1, faixa própria) para não lutar com os comportamentos; não inclinar a cabeça demasiado para cima (de frente esconde a cara) |
+| Entrar de frente por uma porta (cavalo) | Recortar só pela abertura, alargada até aos cascos; sombra do interior por cima do corpo, mais escura quanto mais fundo |
+| Cabeça de fora por cima de uma meia-porta | Cópia da meia-porta no grupo do animal, entre corpo e pescoço |
+| Cara que se esconde de costas | Só quando sen(rumo) < −0,35; antes disso aparece o «olho fantasma» |
 
 ---
 

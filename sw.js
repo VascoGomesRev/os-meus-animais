@@ -3,20 +3,24 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-17-b9a81fe7";
+var VERSAO = "2026-10-17-56340563";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "057c1adc"
+  "h": "50164ecb"
  },
  {
   "u": "animais.js",
-  "h": "7992e671"
+  "h": "3aaca732"
  },
  {
   "u": "animais/cao.js",
   "h": "10d9a45e"
+ },
+ {
+  "u": "animais/cavalo.js",
+  "h": "6a670112"
  },
  {
   "u": "animais/coala.js",
@@ -29,6 +33,10 @@ var FICHEIROS = [
  {
   "u": "animais/elefante.js",
   "h": "be2e12fe"
+ },
+ {
+  "u": "animais/galo.js",
+  "h": "b22f45e3"
  },
  {
   "u": "animais/gato.js",
@@ -49,6 +57,10 @@ var FICHEIROS = [
  {
   "u": "animais/peixe.js",
   "h": "571d9c0b"
+ },
+ {
+  "u": "animais/porco.js",
+  "h": "907a644e"
  },
  {
   "u": "animais/raposa.js",
@@ -88,7 +100,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "057c1adc"
+  "h": "50164ecb"
  },
  {
   "u": "manifest.webmanifest",
@@ -152,7 +164,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "96d31831"
+  "h": "4fdf749d"
  }
 ];
 
