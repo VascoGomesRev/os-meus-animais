@@ -3,7 +3,7 @@
    - gerado.js       → VERSAO e MEDIA_EMBUTIDA (gerado por ferramentas/gerar-sw.js, não editar à mão)
    - animais.js      → ANIMAIS, GRUPOS, MODULOS
    - animais/<id>.js → MODULOS.<id>: o cenário, o animal, o habitat e todas as animações (ver REGRAS-ANIMAIS.md)
-   Este ficheiro trata do resto: toques, nome escrito, voz, sons, setas, menu, favoritos e área dos pais. */
+   Este ficheiro trata do resto: toques, nome escrito, voz, sons, setas, menu e área dos pais. */
 'use strict';
 
 const EMBUTIDO = Object.assign({ sons: [], vozes: [], silabas: {} }, typeof MEDIA_EMBUTIDA !== 'undefined' ? MEDIA_EMBUTIDA : {});
@@ -112,45 +112,9 @@ function baralhar(v) {
   return v;
 }
 function animaisAtivos() {
-  if (grupoAtivo === 'favoritos') return prontos().filter(a => favoritos.has(a.id));
   return grupoAtivo ? prontos().filter(a => a.grupo === grupoAtivo) : prontos();
 }
 function fazerOrdem() { const base = animaisAtivos(); ordem = modo === 'aleatorio' ? baralhar(base) : base.slice(); pos = 0; }
-
-/* ---------- Favoritos: roda dentada premida 2 s e largada marca ou desmarca ---------- */
-const favoritos = new Set((leLS('favoritos') || '').split(',').filter(Boolean));
-function guardarFavoritos() { guardaLS('favoritos', [...favoritos].join(',')); }
-function mostrarCoracao() {
-  const a = ordem[pos], c = $('#coracao');
-  c.style.setProperty('--f', a && favoritos.has(a.id) ? 1 : 0);
-  c.style.setProperty('--p', 0);
-}
-function alternarFavorito() {
-  const a = ordem[pos]; if (!a) return;
-  if (favoritos.has(a.id)) favoritos.delete(a.id); else favoritos.add(a.id);
-  guardarFavoritos();
-  const c = $('#coracao');
-  mostrarCoracao();
-  c.classList.remove('pulso'); void c.offsetWidth; c.classList.add('pulso');
-  if (favoritos.has(a.id)) chuvaDeCoracoes();
-  try { navigator.vibrate && navigator.vibrate(40); } catch (e) {}
-}
-function chuvaDeCoracoes() {                 // corações a subir do animal quando fica favorito
-  const alvo = controlo && controlo.animal;
-  const r = alvo ? alvo.getBoundingClientRect() : { left: innerWidth * .3, top: innerHeight * .3, width: innerWidth * .4, height: innerHeight * .5 };
-  for (let i = 0; i < 9; i++) {
-    const h = document.createElement('div');
-    h.className = 'coracao-voa';
-    h.style.left = (r.left + r.width * (0.2 + Math.random() * 0.6)) + 'px';
-    h.style.top = (r.top + r.height * (0.3 + Math.random() * 0.4)) + 'px';
-    h.style.setProperty('--dx', ((Math.random() - 0.5) * 120).toFixed(0) + 'px');
-    h.style.animationDelay = (i * 90) + 'ms';
-    h.style.fontSize = (22 + Math.random() * 22) + 'px';
-    h.textContent = '❤';
-    $('#app').appendChild(h);
-    setTimeout(() => h.remove(), 1800);
-  }
-}
 
 /* ---------- Menu de grupos (só aparecem os grupos que já têm animais; «Todos» só com 2 ou mais grupos) ---------- */
 function iconeDe(id) { return `<svg viewBox="0 0 220 220" aria-hidden="true">${(MODULOS[id] && MODULOS[id].icone) || ''}</svg>`; }
@@ -160,12 +124,10 @@ function desenharMenu() {
   const ultimo = lista.length ? lista[lista.length - 1].id : '';
   $('#grupos').innerHTML = grupos.map(g =>
     `<button class="grupo" data-grupo="${g}">${iconeDe(lista.find(a => a.grupo === g).id)}<b>${GRUPOS[g]}</b></button>`).join('') +
-    (grupos.length > 1 ? `<button class="grupo todos" data-grupo="">${iconeDe(ultimo)}<b>Todos</b></button>` : '') +
-    `<button class="grupo favoritos" data-grupo="favoritos" ${favoritos.size ? '' : 'hidden'}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6.2a5.3 5.3 0 0 1 9.3 5.8C19 16.4 12 21 12 21z" fill="#E8457A"/></svg><b>Favoritos</b></button>`;
+    (grupos.length > 1 ? `<button class="grupo todos" data-grupo="">${iconeDe(ultimo)}<b>Todos</b></button>` : '');
   $('#grupos').querySelectorAll('.grupo').forEach(b => b.addEventListener('pointerup', () => escolherGrupo(b.dataset.grupo || null)));
 }
 function escolherGrupo(g) {
-  if (g === 'favoritos' && !favoritos.size) return;
   grupoAtivo = g;
   pararSom();
   fazerOrdem(); mostrar();
@@ -200,7 +162,6 @@ function mostrar(dir) {
     });
   }
   $('#nome').classList.remove('ver');
-  mostrarCoracao();
 }
 
 /* ---------- Habitat: o animal vai lá, fica, e volta (sozinho ao fim de um tempo, ou quando se toca outra vez).
@@ -335,26 +296,19 @@ $('#casa-btn').addEventListener('pointerdown', e => { e.stopPropagation(); abrir
 $('#ant').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(-1); });
 $('#seg').addEventListener('pointerdown', e => { e.stopPropagation(); mudar(1); });
 
-/* ---------- Roda dentada: premida 2 s e largada → favorito; premida 3 s → área dos pais ---------- */
+/* ---------- Roda dentada: premida 3 s → área dos pais ---------- */
 let tPais = null, tIni = 0;
 function anel(p) { $('#pais').style.setProperty('--p', p); }
 $('#pais').addEventListener('pointerdown', e => {
   e.stopPropagation(); tIni = Date.now();
   tPais = setInterval(() => {
     const ms = Date.now() - tIni;
-    $('#coracao').style.setProperty('--p', Math.min(100, ms / 20));              // coração enche nos primeiros 2 s
-    anel(ms < 2000 ? 0 : Math.min(100, (ms - 2000) / 10));                       // anel da roda enche dos 2 aos 3 s
+    anel(Math.min(100, ms / 30));                                                // o anel da roda enche em 3 s
     if (ms >= 3000) { cancelarPais(); abrirPainel(); }
   }, 50);
 });
-function cancelarPais(largou) {
-  const ms = Date.now() - tIni;
-  clearInterval(tPais); tPais = null; anel(0);
-  $('#coracao').style.setProperty('--p', 0);
-  if (largou && ms >= 2000 && ms < 3000) alternarFavorito();
-}
-$('#pais').addEventListener('pointerup', () => { if (tPais) cancelarPais(true); });
-['pointerleave', 'pointercancel'].forEach(ev => $('#pais').addEventListener(ev, () => { if (tPais) cancelarPais(false); }));
+function cancelarPais() { clearInterval(tPais); tPais = null; anel(0); }
+['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => $('#pais').addEventListener(ev, () => { if (tPais) cancelarPais(); }));
 
 /* ---------- Área dos pais ---------- */
 function marcaOrdem() {

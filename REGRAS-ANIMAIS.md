@@ -42,7 +42,7 @@ Cada animal é **um ficheiro só**: `animais/<id>.js`. Esse ficheiro desenha e a
 | Animal | Personagem articulado (cabeça, orelhas, patas, cauda… mexem-se em separado) | Cão |
 | Habitat | O sítio do animal, **parte do cenário** (não é um autocolante por cima) | Casota no jardim |
 
-O resto da app (nome escrito, voz, som, setas, menu, favoritos, área dos pais) é do motor, `app.js`. **Um módulo nunca mexe em `app.js`, `index.html`, `animais.js` nem nos módulos dos outros animais.**
+O resto da app (nome escrito, voz, som, setas, menu, área dos pais) é do motor, `app.js`. **Um módulo nunca mexe em `app.js`, `index.html`, `animais.js` nem nos módulos dos outros animais.**
 
 Para pôr um animal novo na app:
 1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo: 'animais'`, `som`). Por agora só há o grupo «Animais»; mais tarde virão coisas, elementos, números…
@@ -189,7 +189,7 @@ O SVG tem sempre `viewBox="0 0 1600 900"` e `preserveAspectRatio="xMidYMid slice
 | x 200–1400, y 90–810 | **Área sempre visível** em qualquer telemóvel ou tablet deitado: o animal, o habitat e o percurso entre eles ficam aqui dentro |
 | x < 420 e x > 1180, com y 280–620 | Setas da app por cima: não pôr aqui o animal nem o habitat |
 | x 560–1040, y < 270 | Nome escrito do animal aparece aqui (pode haver céu/parede, mas nada importante) |
-| Cantos de cima (120 × 120) | Botões da casa, do coração e da roda dentada |
+| Cantos de cima (120 × 120) | Botões da casa e da roda dentada |
 
 Tamanhos: o animal parado ocupa cerca de **300–420 de altura** (ao toque de um dedo pequeno, e bem visível); o habitat tem de ser grande o bastante para o animal caber lá dentro **à mesma escala** (o animal não encolhe ao entrar). Zona de toque do habitat: pelo menos 260 × 260.
 Animais altos (girafa, elefante, avestruz) podem ir até ~650 de altura, com os pés a y ≤ 795 (no telemóvel só se vê até ~810) e a cabeça fora da zona do nome e das setas. Testar o animal **dentro do habitat** também em 4:3: no sapo a seta tapava-lhe os olhos.

@@ -8,7 +8,7 @@ Toca no animal: aparece o nome escrito, a app diz o nome e toca o som do animal.
 
 ## Pastas
 
-- `index.html`, `app.js` — a app e o motor (toques, voz, sons, setas, menu, favoritos, área dos pais)
+- `index.html`, `app.js` — a app e o motor (toques, voz, sons, setas, menu, área dos pais)
 - `animais.js` — lista dos animais que estão na app
 - `animais/<id>.js` — um ficheiro por animal: cenário, animal, habitat e todas as animações
 - `REGRAS-ANIMAIS.md` — regras a cumprir para criar cada animal
