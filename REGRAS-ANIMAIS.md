@@ -337,3 +337,5 @@ Aprendido com o fogo e o ar:
 | Zona de toque | Qualquer toque no cenário já chama `reagir()`; um retângulo invisível ≥ 300 × 300 no grupo do elemento chega |
 | Bordas em 4:3 | Nada importante a x > 1340 ou x < 260 (fica cortado ou por baixo das setas no tablet) |
 | Agentes em paralelo | Cada agente usa a sua porta e uma subpasta própria (com o nome do elemento) no diretório temporário |
+| Água a correr (cascata, ribeiro) | Um `path` por fio de água com `stroke-dasharray` e `stroke-dashoffset` mexido pelo relógio, cada fio com a sua fase. Num `path` com vários subcaminhos o tracejado recomeça em cada um: começar as linhas em x diferentes, senão alinham-se em colunas |
+| Formas sobrepostas num só `path` | Não usar `fill-rule="evenodd"`: as sobreposições ficam buracos |

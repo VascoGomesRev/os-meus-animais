@@ -251,7 +251,7 @@ MODULOS.terra = (() => {
     return `<rect width="1600" height="600" fill="url(#terra-ceu)"/>
       <circle class="tr-solBrilho" cx="190" cy="110" r="380" fill="url(#terra-solBrilho)"/>
       <circle cx="190" cy="110" r="52" fill="url(#terra-sol)"/>
-      <g class="tr-nuvens">${nuvemSVG(0, 1)}${nuvemSVG(1, .7)}${nuvemSVG(2, .9)}${nuvemSVG(3, .6)}</g>
+      <g class="tr-nuvens">${nuvemSVG(0, 1)}${nuvemSVG(1, .7)}${nuvemSVG(2, .9)}${nuvemSVG(3, .6)}${nuvemSVG(4, .8)}</g>
       ${andorinhaSVG(0)}${andorinhaSVG(1)}`;
   }
 
@@ -922,7 +922,7 @@ MODULOS.terra = (() => {
       melro: q('.tr-melro'), melroCorpo: q('.tr-melroCorpo'), melroCab: q('.tr-melroCab'), melroAsa: q('.tr-melroAsa'), melroAsaTras: q('.tr-melroAsaTras'), melroPernas: q('.tr-melroPernas'),
       pisco: q('.tr-pisco'), piscoCorpo: q('.tr-piscoCorpo'), piscoCab: q('.tr-piscoCab'), piscoPalp: q('.tr-piscoPalp'), piscoCauda: q('.tr-piscoCauda'), piscoAsa: q('.tr-piscoAsa'),
       borboleta: q('.tr-borboleta'), asaE: q('.tr-asaE'), asaD: q('.tr-asaD'),
-      nuvens: [0, 1, 2, 3].map(i => q('.tr-nuvem' + i)), andorinhas: [0, 1].map(i => q('.tr-andorinha' + i)), andAsas: qa('.tr-andAsas'),
+      nuvens: [0, 1, 2, 3, 4].map(i => q('.tr-nuvem' + i)), andorinhas: [0, 1].map(i => q('.tr-andorinha' + i)), andAsas: qa('.tr-andAsas'),
       solBrilho: q('.tr-solBrilho'), fumos: Array.from(q('.tr-fumos').children), galegas: [0, 1].map(i => q('.tr-galega' + i)),
       ervaE: q('.tr-ervaE'), ervaD: q('.tr-ervaD'), orvalho: Array.from(q('.tr-orvalho').children),
       pos: Array.from(q('.tr-pos').children), migas: [0, 1, 2].map(i => q('.tr-miga' + i))
@@ -1472,7 +1472,7 @@ MODULOS.terra = (() => {
     /* --- cenário vivo --- */
     function animarCena(dt, t) {
       R.nuvens.forEach((g, i) => {
-        const y = [96, 170, 70, 230][i], x0 = [300, 900, 1320, 620][i], v = [9, 6, 11, 5][i] * calma;
+        const y = [96, 170, 70, 226, 130][i], x0 = [300, 724, 1148, 1572, 1996][i], v = [8, 7.4, 8.6, 7.8, 8.2][i] * calma;
         poe(g, `translate(${n(-260 + ((x0 + 260 + t * v) % 2120))},${n(y + 4 * Math.sin(t * .1 + i))})`);
       });
       R.andorinhas.forEach((g, i) => {

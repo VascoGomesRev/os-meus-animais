@@ -3,20 +3,32 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-18-51b6ec86";
+var VERSAO = "2026-10-18-3a9b96df";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "42338b88"
+  "h": "89004e6e"
  },
  {
   "u": "animais.js",
-  "h": "dd215f45"
+  "h": "52c8542e"
  },
  {
   "u": "animais/abelha.js",
   "h": "f2344fef"
+ },
+ {
+  "u": "animais/agua.js",
+  "h": "a032e40e"
+ },
+ {
+  "u": "animais/ar.js",
+  "h": "22bbb217"
+ },
+ {
+  "u": "animais/arvore.js",
+  "h": "403c2624"
  },
  {
   "u": "animais/cao.js",
@@ -37,6 +49,14 @@ var FICHEIROS = [
  {
   "u": "animais/elefante.js",
   "h": "f9d48701"
+ },
+ {
+  "u": "animais/flor.js",
+  "h": "50b4db57"
+ },
+ {
+  "u": "animais/fogo.js",
+  "h": "16b33562"
  },
  {
   "u": "animais/galo.js",
@@ -87,6 +107,10 @@ var FICHEIROS = [
   "h": "692f22d3"
  },
  {
+  "u": "animais/terra.js",
+  "h": "353c763e"
+ },
+ {
   "u": "animais/vaca.js",
   "h": "b512748b"
  },
@@ -96,7 +120,7 @@ var FICHEIROS = [
  },
  {
   "u": "app.js",
-  "h": "3e4711b4"
+  "h": "fc24ff0b"
  },
  {
   "u": "creditos.json",
@@ -124,7 +148,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "42338b88"
+  "h": "89004e6e"
  },
  {
   "u": "manifest.webmanifest",
@@ -207,6 +231,18 @@ var FICHEIROS = [
   "h": "630cca35"
  },
  {
+  "u": "vozes/agua.mp3",
+  "h": "3562e8a5"
+ },
+ {
+  "u": "vozes/ar.mp3",
+  "h": "0c726455"
+ },
+ {
+  "u": "vozes/arvore.mp3",
+  "h": "cd62ac80"
+ },
+ {
   "u": "vozes/cao.mp3",
   "h": "0b84c2ed"
  },
@@ -225,6 +261,14 @@ var FICHEIROS = [
  {
   "u": "vozes/elefante.mp3",
   "h": "6aa4749a"
+ },
+ {
+  "u": "vozes/flor.mp3",
+  "h": "b925cc41"
+ },
+ {
+  "u": "vozes/fogo.mp3",
+  "h": "90d2ef93"
  },
  {
   "u": "vozes/galo.mp3",
@@ -275,6 +319,10 @@ var FICHEIROS = [
   "h": "7b6c97ae"
  },
  {
+  "u": "vozes/terra.mp3",
+  "h": "3bfe8c44"
+ },
+ {
   "u": "vozes/vaca.mp3",
   "h": "c8fc128d"
  },
@@ -284,7 +332,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "b793860b"
+  "h": "824a2b76"
  }
 ];
 
