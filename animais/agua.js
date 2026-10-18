@@ -83,8 +83,8 @@ MODULOS.agua = (() => {
   // dentro da poça (elipse aproximada; f < 1 afasta das bordas)
   const naPoca = (x, y, f = 1) => Math.pow((x - 828) / (420 * f), 2) + Math.pow((y - 700) / (104 * f), 2) < 1;
   const MELRO_POS = [1042, 576];                       // pés do melro na pedra
-  const RA_POS = [478, 728];                           // rã na pedra da frente
-  const FETO_GOTA = { x: 586, y: 514 };                // base do feto que pinga
+  const RA_POS = [526, 708];                           // rã na pedra da frente
+  const FETO_GOTA = { x: 520, y: 498, len: 172 };                // base do feto que pinga
   const CARVALHO = { x: 140, y: 330 };                 // topo do tronco do carvalho (a folha cai daqui)
 
   /* ================= 3) Ícone do menu (sem gradientes com id) ================= */
@@ -97,9 +97,9 @@ MODULOS.agua = (() => {
     return `<circle cx="110" cy="110" r="106" fill="#8ED0F4"/>
       <circle cx="54" cy="44" r="16" fill="#FFF6C8"/><circle cx="54" cy="44" r="24" fill="#FFF6C8" opacity=".35"/>
       <path d="M58,30 C66,22 80,22 86,30 C94,28 102,34 100,40 L52,40 C48,36 52,30 58,30 Z" fill="#FFFFFF" opacity=".9"/>
-      <path d="M6.4,90 L34,64 L58,80 L88,52 L118,74 L146,50 L178,72 L213.6,90 A106,106 0 0 1 6.4,90 Z" fill="#9DB6CC"/>
+      <path d="M5.9,90 L34,64 L58,80 L88,52 L118,74 L146,50 L178,72 L214.1,90 A106,106 0 0 1 5.9,90 Z" fill="#9DB6CC"/>
       <path d="M86,54 L94,62 M146,52 L138,62" stroke="#E2EAF0" stroke-width="3" stroke-linecap="round"/>
-      <path d="M5.2,100 C40,88 70,96 110,92 C150,88 180,94 214.8,100 A106,106 0 0 1 5.2,100 Z" fill="#5E9448"/>
+      <path d="M4.5,100 C40,88 70,96 110,92 C150,88 180,94 215.5,100 A106,106 0 0 1 4.5,100 Z" fill="#5E9448"/>
       <g fill="#3E7034"><circle cx="30" cy="96" r="10"/><circle cx="46" cy="92" r="9"/><circle cx="176" cy="92" r="10"/><circle cx="192" cy="96" r="9"/></g>
       <path d="M40,160 C34,120 44,84 70,62 C82,54 92,56 96,64 L92,160 Z" fill="#B8B2A6" stroke="#5E5A52" stroke-width="2.4"/>
       <path d="M180,160 C186,120 176,86 150,64 C138,56 128,58 124,66 L128,160 Z" fill="#9E988C" stroke="#5E5A52" stroke-width="2.4"/>
@@ -108,7 +108,7 @@ MODULOS.agua = (() => {
       <path d="M94,62 L126,62 L132,150 L88,150 Z" fill="#E8F6FC"/>
       <path d="${fios}" stroke="#FFFFFF" stroke-width="4" stroke-dasharray="14 8"/>
       <path d="M100,62 L96,150 M120,62 L126,150" stroke="#9CCADC" stroke-width="2.4"/>
-      <path d="M8.4,170 C40,150 80,150 110,152 C140,150 180,150 211.6,170 A106,106 0 0 1 8.4,170 Z" fill="#4AAAB8"/>
+      <path d="M18.4,164 C46,150 80,148 110,150 C140,148 174,150 201.6,164 A106,106 0 0 1 18.4,164 Z" fill="#4AAAB8"/>
       <path d="${seixos}" fill="#3A8C98"/>
       <ellipse cx="110" cy="164" rx="54" ry="10" fill="none" stroke="#E8FAFC" stroke-width="2.6" opacity=".8"/>
       <ellipse cx="110" cy="172" rx="78" ry="15" fill="none" stroke="#E8FAFC" stroke-width="2" opacity=".55"/>
@@ -116,7 +116,7 @@ MODULOS.agua = (() => {
       <g fill="#FFFFFF"><circle cx="70" cy="136" r="3"/><circle cx="150" cy="132" r="3.4"/><circle cx="62" cy="146" r="2.2"/><circle cx="160" cy="144" r="2.4"/></g>
       <path d="M150,180 Q154,170 160,180 Q164,186 156,190 Q148,190 150,180 Z" fill="#FFFFFF" opacity=".9"/>
       <path d="M150,124 a12,12 0 0 1 22,6" stroke="#FF8A5A" stroke-width="2.4" fill="none" opacity=".7"/><path d="M152,128 a10,10 0 0 1 17,4" stroke="#FFE04A" stroke-width="2.4" fill="none" opacity=".7"/>
-      <path d="M22,196 C28,176 34,166 48,158 M30,178 l-10,-4 M34,170 l-8,-6 M38,166 l2,-9 M44,162 l5,-7 M32,176 l7,2" stroke="#4E8A2E" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+      <path d="M58,200 C60,184 64,174 76,166 M61,186 l-10,-3 M64,178 l-9,-5 M68,172 l1,-9 M72,169 l5,-7 M63,182 l8,1 M67,175 l8,-1" stroke="#4E8A2E" stroke-width="3.4" fill="none" stroke-linecap="round"/>
       <circle cx="110" cy="110" r="106" fill="none" stroke="#5AA0C8" stroke-width="3"/>`;
   }
 
@@ -517,7 +517,7 @@ MODULOS.agua = (() => {
       ${rochas(PENEDOS, 31)}
       ${tocaSVG('ag-fetoD', 1124, 468, .7, [-160, -130, -110, -150], 3)}
       ${tocaSVG('ag-fetoE', 524, 420, .55, [-40, -70, -20, -55], 4)}
-      <g class="ag-fetoGota">${(() => { const fr = frondeD(FETO_GOTA.x, FETO_GOTA.y, -40, 120, 95, 1); const fr2 = frondeD(FETO_GOTA.x, FETO_GOTA.y + 4, -10, 90, 70, .9); return `<path d="${fr2.f}" fill="#3E7A2A"/><path d="${fr.f}" fill="#6AA63A"/><path d="${fr.eixo}${fr2.eixo}" stroke="#3A5E1E" stroke-width="2" fill="none" stroke-linecap="round"/>`; })()}</g>
+      <g class="ag-fetoGota">${(() => { const fr = frondeD(FETO_GOTA.x, FETO_GOTA.y, -40, FETO_GOTA.len, 95, 1), fr2 = frondeD(FETO_GOTA.x, FETO_GOTA.y + 4, -12, 120, 72, .9), fr3 = frondeD(FETO_GOTA.x - 4, FETO_GOTA.y, -70, 100, 40, .9); return `<path d="${fr2.f}${fr3.f}" fill="#3E7A2A"/><path d="${fr.f}" fill="#6AA63A"/><path d="${fr.eixo}${fr2.eixo}${fr3.eixo}" stroke="#3A5E1E" stroke-width="2.6" fill="none" stroke-linecap="round"/>`; })()}</g>
       ${canalSVG()}
       <g class="ag-agua">
         <rect x="430" y="290" width="760" height="550" fill="#FFFFFF" opacity="0"/>
@@ -584,7 +584,7 @@ MODULOS.agua = (() => {
       ${tocaSVG('ag-fetoF2', 1250, 600, .55, [-150, -120, -90, -60, -30], 13)}
       ${carvalhoSVG()}
       ${pinheiroSVG()}
-      <g class="ag-folha" display="none"><g class="ag-folhaIn" transform="scale(1.7)">${FOLHA}</g></g>
+      <g class="ag-folha" display="none"><g class="ag-folhaIn" transform="scale(2.2)">${FOLHA}</g></g>
       <g class="ag-gotaFeto" display="none"><ellipse cx="0" cy="0" rx="6" ry="7.4" fill="url(#agua-gota)" stroke="#5E9EB4" stroke-width="1"/><circle cx="-2" cy="-2.6" r="1.6" fill="#FFFFFF"/></g>
       ${libelinhaSVG()}
       <path class="ag-chuva" stroke="#E6F4FC" stroke-width="2" fill="none" stroke-linecap="round" opacity="0"/>
@@ -618,7 +618,7 @@ MODULOS.agua = (() => {
     const SUPERIOR = R.folha.parentNode;           // a raiz do SVG (folha no ar, por cima das árvores)
 
     /* --- estado --- */
-    let tempo = 0, vivo = true, semEventos = false;
+    let tempo = 0, vivo = true, semEventos = false, semVar = false;
     const S = { jorro: 0, agita: 0, sol: 1, chuva: 0, arco: 0, nuvem: 0 };   // valores suavizados
 
     /* --- envelopes: efeitos que se somam e se apagam sozinhos (toques seguidos nunca deixam nada partido) --- */
@@ -910,7 +910,7 @@ MODULOS.agua = (() => {
     }
 
     /* --- melro-d'água: balança-se (sobe e desce), pisca a pálpebra branca, segue com os olhos o que mexe --- */
-    const melro = { x: MELRO_POS[0], y: MELRO_POS[1], dip: 0, rot: 0, cab: 0, cabAlvo: 0, lado: 1, ladoAlvo: 1, esc: 1.3, alvo: null, ocupado: false,
+    const melro = { x: MELRO_POS[0], y: MELRO_POS[1], dip: 0, rot: 0, cab: 0, cabAlvo: 0, lado: 1, ladoAlvo: 1, esc: 1.5, alvo: null, ocupado: false,
       proxDip: aleat(1500, 3500), tDip: -1, nDip: 0, proxOlhar: 2000, pisca: 0, proxPisca: 2500, tPisca: -1, susto: 0, voo: false, asa: 0, sub: false, salto: 0 };
     function olharPara(f) { melro.alvo = f; }
     function atualizarMelro(dt) {
@@ -1001,8 +1001,8 @@ MODULOS.agua = (() => {
     }
     function* varPeixinho() {                    // uma truta passa devagar no fundo da poça
       const dir = escolhe([-1, 1]);
-      const cam = dir > 0 ? [[440, 750], [600, 720], [780, 750], [960, 720], [1150, 740]] : [[1180, 750], [1000, 720], [820, 752], [640, 728], [440, 760]];
-      peixeSub(true); atr(R.peixe, 'display', 'inline'); peixe.esc = 1.05;
+      const cam = dir > 0 ? [[430, 740], [600, 748], [780, 770], [960, 752], [1160, 756]] : [[1180, 752], [1000, 748], [820, 772], [640, 752], [430, 744]];
+      peixeSub(true); atr(R.peixe, 'display', 'inline'); peixe.esc = 1.3;
       olharPara(alvoPeixe);
       let px = cam[0][0], py = cam[0][1];
       yield* durante(6000, (u, tt) => {
@@ -1010,7 +1010,7 @@ MODULOS.agua = (() => {
         const vx = x - px, vy = y - py; px = x; py = y;
         if (Math.abs(vx) + Math.abs(vy) > .01) peixe.ang = Math.atan2(vy, vx) * GRAU;
         peixe.x = x; peixe.y = y; peixe.cauda = 22 * Math.sin(tt * .012);
-        peixe.op = .85 * passoS(0, .1, u) * (1 - passoS(.88, 1, u));
+        peixe.op = passoS(0, .1, u) * (1 - passoS(.88, 1, u));
         poePeixe();
       });
     }
@@ -1025,23 +1025,23 @@ MODULOS.agua = (() => {
       poe(R.fetoGota, `rotate(${n3(fetoGota.ang + balanco)},${FETO_GOTA.x},${FETO_GOTA.y})`);
       // posição da ponta (para a gota)
       let x = FETO_GOTA.x, y = FETO_GOTA.y;
-      for (let i = 1; i <= 16; i++) { const aa = (-40 + 95 * i / 16) * RAD; x += Math.cos(aa) * 120 / 16; y += Math.sin(aa) * 120 / 16; }
+      for (let i = 1; i <= 16; i++) { const aa = (-40 + 95 * i / 16) * RAD; x += Math.cos(aa) * FETO_GOTA.len / 16; y += Math.sin(aa) * FETO_GOTA.len / 16; }
       const r = (fetoGota.ang + balanco) * RAD, dx = x - FETO_GOTA.x, dy = y - FETO_GOTA.y;
       gotaPosAtual = [FETO_GOTA.x + dx * Math.cos(r) - dy * Math.sin(r), FETO_GOTA.y + dx * Math.sin(r) + dy * Math.cos(r) + 7];
     }
     function* varGotaFeto() {
       atr(R.gotaFeto, 'display', 'inline');
       olharPara(() => gotaPos());
-      yield* durante(1700, u => { fetoGota.alvo = 8 * esai(u); const [x, y] = gotaPos(); poe(R.gotaFeto, `translate(${n(x)},${n(y + 3 * u)}) scale(${n3(.15 + .85 * u)},${n3(.15 + .95 * u)})`); });
+      yield* durante(1700, u => { fetoGota.alvo = 8 * esai(u); const [x, y] = gotaPos(); poe(R.gotaFeto, `translate(${n(x)},${n(y + 3 * u)}) scale(${n3(1.5 * (.15 + .85 * u))},${n3(1.5 * (.15 + .95 * u))})`); });
       let [x, y] = gotaPos(); y += 3;
       fetoGota.alvo = 0; fetoGota.v -= 140;               // sem o peso, o feto salta para cima e baloiça
       let vy = 0;
-      const yA = 650;
+      const yA = 668;
       olharPara(() => [x, y]);
       while (y < yA) {
         const dt = yield; const s = dt / 1000;
         vy += 1500 * s; y += vy * s;
-        poe(R.gotaFeto, `translate(${n(x)},${n(Math.min(y, yA))}) scale(.9,${n3(1 + Math.min(.6, vy / 900))})`);
+        poe(R.gotaFeto, `translate(${n(x)},${n(Math.min(y, yA))}) scale(1.35,${n3(1.5 * (1 + Math.min(.6, vy / 900)))})`);
       }
       atr(R.gotaFeto, 'display', 'none');
       onda(x, yA, 3, 80, 1500, .95); onda(x, yA, 2, 50, 1200, .75, 220); onda(x, yA, 2, 26, 900, .55, 460);
@@ -1053,7 +1053,7 @@ MODULOS.agua = (() => {
     varGotaFeto.limpar = () => { atr(R.gotaFeto, 'display', 'none'); fetoGota.alvo = 0; if (vivo) olharPara(null); };
 
     const lib = { x: 0, y: 0, rot: 0, quadro: 0 };
-    function poeLib() { poe(R.lib, `translate(${n(lib.x)},${n(lib.y)}) rotate(${n(lib.rot)}) scale(1.35)`); }
+    function poeLib() { poe(R.lib, `translate(${n(lib.x)},${n(lib.y)}) rotate(${n(lib.rot)}) scale(1.8)`); }
     function* varLibelinha() {                   // uma libelinha-azul chega, paira e toca duas vezes na água
       atr(R.lib, 'display', 'inline');
       olharPara(() => [lib.x, lib.y]);
@@ -1077,7 +1077,7 @@ MODULOS.agua = (() => {
     varLibelinha.limpar = () => { atr(R.lib, 'display', 'none'); if (vivo) olharPara(null); };
 
     const folha = { x: 0, y: 0, rot: 0, sx: 1, naAgua: false };
-    function poeFolha() { poe(R.folha, `translate(${n(folha.x)},${n(folha.y)}) rotate(${n(folha.rot)})`); poe(R.folhaIn, `scale(${n3(1.7 * folha.sx)},1.7)`); }
+    function poeFolha() { poe(R.folha, `translate(${n(folha.x)},${n(folha.y)}) rotate(${n(folha.rot)})`); poe(R.folhaIn, `scale(${n3(2.2 * folha.sx)},2.2)`); }
     function* varFolha() {                       // uma folha cai do carvalho a baloiçar e pousa na água
       if (R.folha.parentNode !== SUPERIOR) SUPERIOR.insertBefore(R.folha, R.gotaFeto);
       atr(R.folha, 'display', 'inline'); folha.naAgua = false;
@@ -1119,7 +1119,7 @@ MODULOS.agua = (() => {
       lancar('variacao', g, () => { vari.prox = aleat(4000, 9000); vari.atual = null; });
     }
     function atualizarVariacoes(dt) {
-      if (faixas.has('variacao')) return;
+      if (faixas.has('variacao') || semVar) return;
       vari.prox -= dt;
       if (vari.prox > 0) return;
       vari.prox = aleat(4000, 9000);
@@ -1203,16 +1203,16 @@ MODULOS.agua = (() => {
       yield* durante(460, u => { m.x = lerp(x0, xe, u); m.y = lerp(y0, ye, u) - 50 * 4 * u * (1 - u); m.rot = lerp(0, -35, u); m.salto = 0; });
       coroa(xe, ye, 14, 40, 600); salpicar(xe, ye, 10, .6, 12); onda(xe, ye, 4, 90, 1300, .8); onda(xe, ye, 3, 50, 1000, .6, 200);
       moverMelro(true);
-      const cam = [[xe, ye + 8], [930, 690], [880, 702], [860, 696], [900, 680], [950, 668]];
+      const cam = [[xe, ye + 8], [940, 704], [890, 730], [850, 738], [880, 716], [930, 690]];
       yield* durante(2400, (u, tt) => {
         const [x, y] = catmull(cam, eseno(u)); m.x = x; m.y = y + 14; m.rot = 20 * Math.sin(u * PI * 2) - 10;
         m.voo = true; m.asa = Math.sin(tt * .02) * .5;
-        atr(R.melro, 'opacity', n3(.75));
-        if (Math.random() < dt0 / 120) bolhas.push({ x: x - 10, y: y - 10, r: aleat(1.5, 3.4), t: 0, dur: aleat(500, 900) });
+        atr(R.melro, 'opacity', n3(.92));
+        if (Math.random() < dt0 / 90) bolhas.push({ x: x - 14, y: y - 18, r: aleat(1.5, 3.6), t: 0, dur: aleat(500, 900) });
       });
       atr(R.melro, 'opacity', '1');
       const xs = m.x, ys = m.y;
-      coroa(xs, 672, 12, 36, 560); salpicar(xs, 672, 10, .6, 10); onda(xs, 672, 4, 80, 1200, .75);
+      const ysup = ys - 14; coroa(xs, ysup, 12, 36, 560); salpicar(xs, ysup, 10, .6, 10); onda(xs, ysup, 4, 80, 1200, .75);
       moverMelro(false);
       yield* durante(700, (u, tt) => {
         m.x = lerp(xs, MELRO_POS[0], eseno(u)); m.y = lerp(ys - 10, MELRO_POS[1], eseno(u)) - 46 * sino(u);
@@ -1242,13 +1242,13 @@ MODULOS.agua = (() => {
       atr(R.ra, 'display', 'inline'); atr(R.ra, 'opacity', '1');
       olharPara(() => [ra.x, ra.y - 20]);
       const [xr, yr] = RA_POS;
-      ra.x = 380; ra.y = 760; ra.rot = 0;
-      yield* durante(500, u => { ra.x = lerp(380, xr, u); ra.y = lerp(760, yr, u) - 40 * sino(u); ra.rot = -20 * Math.sin(u * PI * 2) * .4; poeRa(u > .1 && u < .85); });
+      ra.x = 400; ra.y = 744; ra.rot = 0;
+      yield* durante(500, u => { ra.x = lerp(400, xr, u); ra.y = lerp(744, yr, u) - 44 * sino(u); ra.rot = -20 * Math.sin(u * PI * 2) * .4; poeRa(u > .1 && u < .85); });
       ra.rot = 0;
       yield* durante(1500, (u, tt) => { ra.papo = Math.max(0, Math.sin(tt * .012)); poeRa(false); });
       ra.papo = 0;
       yield* durante(160, u => { ra.y = yr + 3 * u; poeRa(false); });
-      const xe = 616, ye = 708;
+      const xe = 650, ye = 716;
       yield* durante(520, u => { ra.x = lerp(xr, xe, u); ra.y = lerp(yr + 3, ye, u) - 70 * 4 * u * (1 - u); ra.rot = lerp(-25, 40, u); poeRa(true); });
       coroa(xe + 10, ye, 18, 50, 620); salpicar(xe + 10, ye, 14, .7, 14); onda(xe + 10, ye, 4, 120, 1500, .9); onda(xe + 10, ye, 3, 70, 1100, .65, 200);
       R.debaixo.appendChild(R.ra);
@@ -1366,7 +1366,7 @@ MODULOS.agua = (() => {
         variacao: nome => iniciarVariacao(nome),
         evento: nome => iniciarEvento(nome),
         semEventos: (v = true) => { semEventos = v; },
-        semVariacoes: () => { vari.prox = 1e12; },
+        semVariacoes: (v = true) => { semVar = v; },
         estado: () => ({ faixas: [...faixas.keys()], envs: envs.length, gotas: gotas.length, coroas: coroas.length, aneisPeq: aneisPeq.length, elementos: svg.querySelectorAll('*').length })
       }
     };
