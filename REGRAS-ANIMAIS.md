@@ -303,3 +303,22 @@ Os nomes e as onomatopeias são gravados pela família: para uma criança pequen
 | 5. Publicar | Claude | `gerar-creditos.js`, `gerar-sw.js`, `verificar.js`, commit e push |
 
 O que está em `gravacoes/por-tratar/` falta tratar (`node ferramentas/limpar-voz.js --ver`). Se o tratamento mudar, `node ferramentas/limpar-voz.js --refazer` volta a tratar todos os originais de `gravacoes/tratadas/`. Os sons antigos do Wikimedia Commons estão em `arquivo/sons/`.
+
+---
+
+## 11. Elementos (água, fogo, terra, ar, árvore, flor)
+
+O grupo «Elementos» usa o mesmo motor, o mesmo contrato (§2), as mesmas medidas de ecrã (§4) e as mesmas regras de desempenho (§6). Cada elemento é um ficheiro `animais/<id>.js` com `grupo: 'elementos'` e `som: false` (só tem a gravação do nome). O que muda:
+
+| Tema | Animais | Elementos |
+|---|---|---|
+| Personagem | O animal, articulado | O elemento, desenhado como é de verdade (estilo boneco): **sem cara, sem olhos, sem boca**. A criança tem de o reconhecer como na vida real |
+| Habitat | Obrigatório | **Não há.** `habitat: null`; `irAoHabitat()` e `voltar()` devolvem `Promise.resolve()` |
+| `animal` | O animal | O grupo SVG do elemento (zona de toque grande, ≥ 300 × 300), no centro da área visível |
+| `fazerSom` | Boca por sílaba | Nunca é chamado (`som: false`); deixar uma função vazia |
+| Parado | Respira, pisca, ≥ 5 comportamentos ociosos | **Nunca estático**: movimento contínuo próprio do elemento (chama a tremeluzir, água a correr, folhas a mexer) e ≥ 3 variações ociosas ao acaso a cada 4–9 s |
+| `reagir()` | Alegria visível em 100 ms | Reação visível em 100 ms, forte e curta (1–2 s), com acompanhamento no cenário (ex.: o fogo cresce e solta faúlhas; uma rajada de vento dobra a erva). Variar entre 2–3 reações para não ser sempre igual |
+| Cenário | 3 planos, ≥ 4 coisas a mexer, 1 acontecimento raro | Igual. O cenário mostra **onde** o elemento se encontra (fogueira num acampamento, ribeiro num vale…) e tem de ajudar a perceber o elemento, não competir com ele |
+| Tamanho | 300–420 de altura | O elemento ocupa a parte principal da área visível (≈ 400–600 de altura ou de largura) |
+
+Lista de verificação: reconhece-se à primeira; nunca está parado; ≥ 3 variações ociosas; ≥ 2 reações ao toque; cenário com 3 planos, ≥ 4 coisas a mexer e 1 acontecimento raro; `reagir()` 10 vezes depressa não estraga nada; `destruir()` a qualquer momento sem erros; 0 erros no `verificar.js`.

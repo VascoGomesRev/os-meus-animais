@@ -2,15 +2,16 @@
    os animais voltam um a um, cada um com o seu módulo em animais/<id>.js (regras em REGRAS-ANIMAIS.md).
    id      → nome do ficheiro animais/<id>.js e sons/<id>.mp3 (só letras minúsculas sem acentos, números e hífen)
    nome    → como aparece escrito e como é dito (minúsculas, sem artigo: «cão», não «o cão»)
-   grupo   → cartão do menu (ver GRUPOS); por agora só há «animais»
+   grupo   → cartão do menu (ver GRUPOS): «animais» ou «elementos» (os elementos não têm habitat nem som; REGRAS-ANIMAIS.md §11)
    som     → true se o animal tem um som característico (toca se existir sons/<id>.mp3 ou um som carregado pelos pais)
    somDentro → false se o som não toca quando o animal está no habitat (ex.: a zebra deitada no pó não trota)
    O nome do animal é dito com a gravação vozes/<id>.mp3 (se existir) ou com a voz sintética. */
 'use strict';
 
-/* Grupos do menu inicial. Por agora só «Animais»; mais tarde: coisas, elementos, números… */
+/* Grupos do menu inicial. Mais tarde: coisas, números… */
 const GRUPOS = {
-  animais: 'Animais'
+  animais: 'Animais',
+  elementos: 'Elementos'
 };
 
 const ANIMAIS = [
@@ -33,7 +34,9 @@ const ANIMAIS = [
   { id: 'passarinho', nome: 'passarinho', grupo: 'animais', som: true },
   { id: 'leao', nome: 'leão', grupo: 'animais', som: true },
   { id: 'zebra', nome: 'zebra', grupo: 'animais', som: true, somDentro: false },
-  { id: 'abelha', nome: 'abelha', grupo: 'animais', som: true }
+  { id: 'abelha', nome: 'abelha', grupo: 'animais', som: true },
+  { id: 'fogo', nome: 'fogo', grupo: 'elementos', som: false },
+  { id: 'ar', nome: 'ar', grupo: 'elementos', som: false }
 ];
 
 /* Cada animais/<id>.js acrescenta aqui o seu módulo: MODULOS.<id> = { icone, montar } */
