@@ -756,7 +756,7 @@ MODULOS.zebra = (() => {
       ${planiciesSVG(p)}
       <g class="zb-zebrinhas">${zebrinhaSVG(0, 250, 596, .5, false)}${zebrinhaSVG(1, 318, 604, .56, true)}${zebrinhaSVG(2, 404, 592, .46, false)}</g>
       <g class="zb-gnus">${gnuSVG('zb-gn0', 1420, 588, .5, true)}${gnuSVG('zb-gn1', 1484, 594, .55, false)}${gnuSVG('zb-gn2', 1540, 586, .45, true)}${gnuSVG('zb-gn3', 720, 590, .42, false)}</g>
-      <g class="zb-manada" display="none">${Array.from({ length: 9 }, (_, i) => i % 4 === 2 ? `<g class="zb-mg${i}">${zebrinhaSVG(9 + i, 0, 0, .44, true)}</g>` : gnuSVG('zb-mg' + i, 0, 0, .46, true)).join('')}
+      <g class="zb-manada" display="none">${Array.from({ length: 9 }, (_, i) => i % 4 === 2 ? `<g class="zb-mg${i}">${zebrinhaSVG(9 + i, 0, 0, .44, true)}</g>` : `<g class="zb-mg${i}">${gnuSVG('zb-mgG' + i, 0, 0, .46, true)}</g>`).join('')}
         <g class="zb-mgPo">${[0, 1, 2, 3].map(i => `<ellipse cx="${i * 90 + 40}" cy="-6" rx="60" ry="14" fill="#E2C89A" opacity=".35"/>`).join('')}</g></g>
       ${capimSVG()}
       ${ervaSVG(p)}
@@ -1568,7 +1568,8 @@ MODULOS.zebra = (() => {
     }
 
     /* --- som: o trote dos cascos («pocotó»). Cada batida do som é um casco a pousar: fora, a zebra trota no sítio
-           aos pares diagonais (fD+tE, fE+tD) e a cabeça acena a cada batida; deitada no charco, só acena a cabeça --- */
+           aos pares diagonais (fD+tE, fE+tD) e a cabeça acena a cada batida; deitada no charco o motor não toca o som
+           (somDentro: false em animais.js) — se vier, só acena a cabeça --- */
     function batidas(ms, silabas) {             // instantes (ms) em que os cascos batem no chão
       if (Array.isArray(silabas) && silabas.length) return silabas.map(([a]) => a * 1000);
       const k = Math.max(2, Math.round(ms / 700));

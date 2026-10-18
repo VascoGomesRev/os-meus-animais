@@ -4,6 +4,7 @@
    nome    → como aparece escrito e como é dito (minúsculas, sem artigo: «cão», não «o cão»)
    grupo   → cartão do menu (ver GRUPOS); por agora só há «animais»
    som     → true se o animal tem um som característico (toca se existir sons/<id>.mp3 ou um som carregado pelos pais)
+   somDentro → false se o som não toca quando o animal está no habitat (ex.: a zebra deitada no pó não trota)
    O nome do animal é dito com a gravação vozes/<id>.mp3 (se existir) ou com a voz sintética. */
 'use strict';
 
@@ -31,7 +32,7 @@ const ANIMAIS = [
   { id: 'ovelha', nome: 'ovelha', grupo: 'animais', som: true },
   { id: 'passarinho', nome: 'passarinho', grupo: 'animais', som: true },
   { id: 'leao', nome: 'leão', grupo: 'animais', som: true },
-  { id: 'zebra', nome: 'zebra', grupo: 'animais', som: true },
+  { id: 'zebra', nome: 'zebra', grupo: 'animais', som: true, somDentro: false },
   { id: 'abelha', nome: 'abelha', grupo: 'animais', som: true }
 ];
 

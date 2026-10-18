@@ -304,7 +304,7 @@ async function tocarAnimal() {
   await (v ? tocar(v) : falar(a.nome));
   if (meu !== sequencia) return;           // entretanto mudou-se de animal
   const s = urls[a.id + ':som'];
-  if (a.som && s) {
+  if (a.som && s && !(estado === 'dentro' && a.somDentro === false)) {
     await espera(220);                     // pausa curta entre o nome e o som («gato»… «miau!»)
     if (meu !== sequencia) return;
     const silabas = proprios[a.id + ':som'] ? null : EMBUTIDO.silabas[a.id] || null;   // onde a boca abre (só nos sons da app)
