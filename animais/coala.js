@@ -591,13 +591,13 @@ MODULOS.coala = (() => {
     let fol = '';
     for (let i = 0; i < 9; i++) fol += folhaD(20 + i * 22, 20 + (i % 3) * 8, 34 + rnd() * 10, 7, -.5 + rnd(), (rnd() - .5) * 8);
     return `<circle cx="110" cy="110" r="106" fill="#F6DDB0"/><path d="M4,110 A106,106 0 0 1 216,110 Z" fill="#B9D7E6" opacity=".85"/>
-      <path d="M14,160 A106,106 0 0 0 206,160 Z" fill="#D2AC68" opacity=".7"/>
+      <path d="M16.5,160 A106,106 0 0 0 203.5,160 Z" fill="#D2AC68" opacity=".7"/>
       <path d="M150,216 C152,170 158,120 170,60 L188,62 C178,120 172,170 172,214 Z" fill="#EDE4D4" stroke="#9E907C" stroke-width="2"/>
       <path d="${fol}" fill="#7FA79C" stroke="#3E5E56" stroke-width="1.2"/>
       <circle cx="110" cy="110" r="106" fill="none" stroke="#D8B680" stroke-width="3"/>
       <path d="M48,214 C46,190 60,168 110,166 C160,168 174,190 172,214 Z" fill="#A3A2AB" stroke="${C}" stroke-width="4"/>
       <path d="M86,214 C84,196 94,182 110,182 C126,182 136,196 134,214 Z" fill="#F1EBE2"/>
-      <g transform="translate(110,104) scale(.92)">
+      <g transform="translate(110,108) scale(.88)">
         ${orelha('E')}${orelha('D')}
         <path d="${felpudo(0, 0, 80, 26, 6, semente(51))}" fill="#ABAAB3" stroke="${C}" stroke-width="4" transform="scale(1,.86)"/>
         <path d="M-50,-40 C-32,-56 -6,-60 18,-56" stroke="#E4E3E8" stroke-width="9" fill="none" opacity=".6" stroke-linecap="round"/>

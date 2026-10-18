@@ -399,7 +399,7 @@ MODULOS.passarinho = (() => {
       flores += `<path d="${p}" fill="#FFD2E0" stroke="#E890B0" stroke-width="1.2"/><circle cx="${x}" cy="${y}" r="${n(4 * k)}" fill="#F0B030"/>`;
     }
     return `<circle cx="110" cy="110" r="106" fill="#CDEBFF"/>
-      <path d="M8,150 C60,136 160,136 212,148 A106,106 0 0 1 8,150 Z" fill="#9CD06A"/>
+      <path d="M12,150 C60,136 160,136 209,148 A106,106 0 0 1 12,150 Z" fill="#9CD06A"/>
       <path d="M4,170 C60,160 120,158 216,166" stroke="#6A4630" stroke-width="10" fill="none" stroke-linecap="round"/>
       <path d="M4,170 C60,160 120,158 216,166" stroke="#9A6A48" stroke-width="5" fill="none" stroke-linecap="round"/>
       ${flores}
@@ -1348,9 +1348,9 @@ MODULOS.passarinho = (() => {
       const b = NINHADO;
       const rosto = tw({ feliz: .9, top: 1, bico: .3, olhosEsc: 1.12, abE: 1, abD: 1, hx: b.hx, hy: b.hy, hz: 0, hY: limita(P.h, -30, 30), hP: 10, hR: 0 }, 90, esai);
       const corpo = (function* () {
-        yield* tw({ cH: b.cH + 14, puff: 1, aE: .4, aD: .4 }, 100, esai);
+        yield* tw({ cH: b.cH + 14, puff: 1, aE: .26, aD: .26 }, 100, esai);   // asinhas pouco abertas: a da direita ia à seta direita
         ramo.v -= 60; cauda.v += 260;
-        yield* durante(460, u => { P.batE = P.batD = 34 + 40 * Math.sin(u * PI * 7); P.cR = 7 * Math.sin(u * PI * 4); P.aE = P.aD = .4 * (1 - u * .5); });
+        yield* durante(460, u => { P.batE = P.batD = 34 + 40 * Math.sin(u * PI * 7); P.cR = 7 * Math.sin(u * PI * 4); P.aE = P.aD = .26 * (1 - u * .5); });
         ramo.v += 90;
         yield* tw({ cH: b.cH, puff: b.puff, aE: 0, aD: 0, batE: 30, batD: 30, cR: 0 }, 260, eio);
       })();
@@ -1404,13 +1404,13 @@ MODULOS.passarinho = (() => {
       // antecipação: agacha-se, levanta a cauda, abre um pouco as asas e olha para o ninho
       yield* tw({ cH: BASE.cH - 30, sq: .09, cP: 2, cU: 20, aE: .3, aD: .3, batE: 56, batD: 56, hy: BASE.hy - 10, hP: 16, top: .3 }, 220, esai);
       apoio = 'ar';
-      const x0 = P.x, g0 = P.gy, h0 = P.h, xA = NO_NINHO.x + 40, yA = 110;
+      const x0 = P.x, g0 = P.gy, h0 = P.h, xA = NO_NINHO.x - 20, yA = 110;   // chega pela esquerda: as asas não vão à seta direita
       bater.amp = 1; bater.freq = 5.6; cauda.v -= 200;
       // 1) o salto e o voo em arco
       yield* durante(900, u => {
         const e = eseno(u);
         P.x = lerp(x0, xA, e); P.gy = lerp(g0, NO_NINHO.gy + queda(NO_NINHO.x), e);
-        P.y = lerp(0, yA, eio(u)) + 60 * sino(u);
+        P.y = lerp(0, yA, eio(u)) + 34 * sino(u);   // arco mais baixo: as pontas das asas não saem por cima no telemóvel (y < 90)
         P.h = lerp(h0, 76, eio(u));
         P.cH = lerp(BASE.cH - 30, BASE.cH, Math.min(1, u * 4)); P.sq = -.07 * sino(u * 3);
         P.enc = limita(u * 5, 0, 1); P.cP = lerp(2, -10, Math.min(1, u * 3)); P.cU = lerp(20, 12, u);
@@ -1426,11 +1426,12 @@ MODULOS.passarinho = (() => {
         P.x = lerp(x1, NO_NINHO.x, e); P.gy = NO_NINHO.gy + queda(NO_NINHO.x); P.y = lerp(y1, 0, eseno(u));
         P.h = lerp(h1, NO_NINHO.h, e);
         P.cP = lerp(-10, 42, Math.min(1, u * 2.4)); P.leque = sino(u * 1.1) * 1.2; P.cU = lerp(12, -6, sino(u));
-        P.enc = 1 - limita(u * 2, 0, 1); P.batE = P.batD = lerp(24, 40, u); bater.amp = 1 - .4 * u;
+        P.enc = 1 - limita(u * 2, 0, 1); P.batE = P.batD = lerp(24, 40, u); bater.amp = 1 - .6 * u;
+        P.aE = P.aD = 1 - .8 * eio(u);               // vai recolhendo as asas: abertas de todo, a da direita ia à seta direita
         P.hx = lerp(54, NINHADO.hx, u); P.hy = lerp(76, NINHADO.hy, u); P.hP = lerp(-2, 6, u);
       });
       apoio = 'ninho'; P.y = 0; bater.amp = 0; ramo.v += 190; cauda.v += 280;
-      yield* tw({ sq: .1, cH: NINHADO.cH + 22, cP: 22, aE: .7, aD: .7, batE: 64, batD: 64, leque: .7 }, 110, esai);
+      yield* tw({ sq: .1, cH: NINHADO.cH + 22, cP: 22, aE: .2, aD: .2, batE: 44, batD: 44, leque: .7 }, 110, esai);
       yield* tw({ aE: 0, aD: 0, batE: 30, batD: 30, leque: 0, sq: 0, cP: NINHADO.cP, cU: NINHADO.cU }, 240, eio);
       // aninha-se: abana-se de um lado para o outro enquanto se senta
       yield* durante(520, u => { P.cR = 9 * Math.sin(u * PI * 4) * (1 - u); P.cH = lerp(NINHADO.cH + 22, NINHADO.cH, eio(u)); P.puff = NINHADO.puff * u; P.hx = NINHADO.hx; P.hy = NINHADO.hy; });
@@ -1450,18 +1451,18 @@ MODULOS.passarinho = (() => {
       yield* juntos(arrumar(120), tw({ cH: BASE.cH, puff: 0, cP: BASE.cP, cU: 0 }, 260, eio));
       yield* durante(300, u => { const w = Math.sin(u * PI * 6) * (1 - u); P.cR = 10 * w; P.hR = -14 * w; P.puff = .5 * (1 - u); });
       P.cR = 0; P.hR = 0; P.puff = 0;
-      yield* tw({ cH: BASE.cH - 28, sq: .08, cP: 4, cU: 18, aE: .3, aD: .3, batE: 56, batD: 56, h: -56, hP: 10 }, 200, esai);
+      yield* tw({ cH: BASE.cH - 28, sq: .08, cP: 4, cU: 10, aE: .15, aD: .15, batE: 46, batD: 46, h: -34, hP: 10 }, 200, esai);   // pouco virado e de asas quase fechadas: a asa e a cauda não vão à seta direita
       apoio = 'ar'; ramo.v -= 150; cauda.v -= 200;
       const x0 = P.x, g0 = P.gy, h0 = P.h, xF = REPOUSO.x, gF = bordaY(REPOUSO.x);
       let trocou = false;
       bater.amp = 1; bater.freq = 5.6;
       yield* durante(760, u => {
         const e = eseno(u);
-        P.x = lerp(x0, xF + 24, e); P.gy = lerp(g0, gF, e);
+        P.x = lerp(x0, xF + 24, (e + esai(u)) / 2); P.gy = lerp(g0, gF, e);   // afasta-se do ninho logo no início (seta direita)
         P.y = lerp(0, 44, u) + 110 * sino(u);
         P.h = lerp(h0, -80, eio(u));
         P.enc = limita(u * 5, 0, 1); P.cP = lerp(4, -10, Math.min(1, u * 3)); P.cH = lerp(BASE.cH - 28, BASE.cH, Math.min(1, u * 4));
-        P.aE = P.aD = limita(.3 + u * 6, 0, 1); P.batE = P.batD = 24; P.sq = -.06 * sino(u * 3);
+        P.aE = P.aD = limita(.15 + u * 2.6, 0, 1); bater.amp = Math.min(1, .35 + u * 2.6); P.batE = P.batD = 24; P.sq = -.06 * sino(u * 3);   // abre as asas já a afastar-se do ninho (seta direita)
         if (!trocou && u > .2) { trocou = true; camada('fora'); }
       });
       const x1 = P.x, y1 = P.y;

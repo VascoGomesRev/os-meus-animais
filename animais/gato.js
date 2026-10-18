@@ -445,11 +445,13 @@ MODULOS.gato = (() => {
   }
   function relogioSVG() {
     const cx = 1110, cy = 184;
-    let marcas = '';
+    let dG = '', dP = '';                 // traços das horas e dos minutos: um path cada (menos elementos)
     for (let i = 0; i < 60; i++) {
       const a = i / 60 * 2 * PI, g = i % 5 === 0, r0 = g ? 35 : 39;
-      marcas += `<line x1="${n(cx + Math.sin(a) * r0)}" y1="${n(cy - Math.cos(a) * r0)}" x2="${n(cx + Math.sin(a) * 42)}" y2="${n(cy - Math.cos(a) * 42)}" stroke="#4A3726" stroke-width="${g ? 3 : 1.2}" stroke-linecap="round"/>`;
+      const d = `M${n(cx + Math.sin(a) * r0)},${n(cy - Math.cos(a) * r0)}L${n(cx + Math.sin(a) * 42)},${n(cy - Math.cos(a) * 42)}`;
+      if (g) dG += d; else dP += d;
     }
+    const marcas = `<path d="${dP}" stroke="#4A3726" stroke-width="1.2" stroke-linecap="round" fill="none"/><path d="${dG}" stroke="#4A3726" stroke-width="3" stroke-linecap="round" fill="none"/>`;
     return `<g>
       <ellipse cx="${cx + 10}" cy="${cy + 96}" rx="66" ry="150" fill="#3A1E0C" opacity=".1"/>
       <path d="M${cx - 34},236 L${cx + 34},236 L${cx + 30},372 C${cx + 30},384 ${cx - 30},384 ${cx - 30},372 Z" fill="url(#gato-madeira)" stroke="#4A2A14" stroke-width="2.5"/>
@@ -478,8 +480,10 @@ MODULOS.gato = (() => {
     s += `<rect x="${X0}" y="${Y0}" width="${X1 - X0}" height="${Y1 - Y0}" fill="url(#gato-madeira)" stroke="#4A2A14" stroke-width="2.5"/>`;
     s += `<rect x="${X0 + 14}" y="${Y0 + 14}" width="${X1 - X0 - 28}" height="${Y1 - Y0 - 44}" fill="#4A2B14"/>`;
     const prat = [[Y0 + 14, 350], [362, 452], [464, 556]];
+    const ret = (x, y, w, h) => `M${n(x)},${n(y)}h${n(w)}v${n(h)}h${n(-w)}Z`;
     for (const [a, b] of prat) {
       let x = X0 + 16;
+      let dB35 = '', dB30 = '', dB18 = '', dP12 = '';
       const fim = X1 - 16;
       let k = 0;
       while (x < fim - 12) {
@@ -491,10 +495,11 @@ MODULOS.gato = (() => {
         const w = 13 + r() * 12, h = (b - a - 8) * (.66 + r() * .3), c = cores[(r() * cores.length) | 0];
         if (x + w > fim) break;
         s += `<rect x="${n(x)}" y="${n(b - h)}" width="${n(w)}" height="${n(h)}" rx="1.5" fill="${c}" stroke="#2A1A10" stroke-width="1"/>`;
-        s += `<rect x="${n(x + 1.5)}" y="${n(b - h + 6)}" width="${n(w - 3)}" height="3" fill="#FFFFFF" opacity=".35"/><rect x="${n(x + 1.5)}" y="${n(b - 12)}" width="${n(w - 3)}" height="3" fill="#FFFFFF" opacity=".3"/>`;
-        s += `<rect x="${n(x + w * .25)}" y="${n(b - h * .62)}" width="${n(w * .5)}" height="${n(h * .2)}" fill="#000" opacity=".12"/><rect x="${n(x)}" y="${n(b - h)}" width="2" height="${n(h)}" fill="#FFFFFF" opacity=".18"/>`;
+        dB35 += ret(x + 1.5, b - h + 6, w - 3, 3); dB30 += ret(x + 1.5, b - 12, w - 3, 3);
+        dP12 += ret(x + w * .25, b - h * .62, w * .5, h * .2); dB18 += ret(x, b - h, 2, h);
         x += w + 1;
       }
+      s += `<path d="${dB35}" fill="#FFFFFF" opacity=".35"/><path d="${dB30}" fill="#FFFFFF" opacity=".3"/><path d="${dP12}" fill="#000" opacity=".12"/><path d="${dB18}" fill="#FFFFFF" opacity=".18"/>`;
       s += `<rect x="${X0 + 8}" y="${b}" width="${X1 - X0 - 16}" height="12" fill="url(#gato-madeira-v)" stroke="#4A2A14" stroke-width="1.5"/><rect x="${X0 + 8}" y="${b + 12}" width="${X1 - X0 - 16}" height="5" fill="#000" opacity=".2"/>`;
     }
     s += `<rect x="${X0 + 8}" y="${Y1 - 30}" width="${X1 - X0 - 16}" height="26" fill="url(#gato-madeira-v)" stroke="#4A2A14" stroke-width="1.5"/>`;
@@ -520,9 +525,10 @@ MODULOS.gato = (() => {
     const xA = (xb, y) => VP + (xb - VP) * (y - VY) / (Y1 - VY);
     let s = `<rect y="${Y0}" width="1600" height="${Y1 - Y0}" fill="url(#gato-chao)"/>`;
     const tons = ['#C88A50', '#BF8149', '#CD9256', '#C3864D', '#B97B44', '#CA8D53'];
+    const dTom = tons.map(() => ''); let dVeio = '', dBorda = '', dLuz = '', juntas = '';   // um path por estilo: menos elementos
     for (let i = 0; i < 31; i++) {
       const xa = -1000 + i * 125, xb = xa + 125;
-      s += `<path d="M${n(xA(xa, Y0))},${Y0} L${n(xA(xb, Y0))},${Y0} L${xb},${Y1} L${xa},${Y1} Z" fill="${tons[i % 6]}" opacity=".55"/>`;
+      dTom[i % 6] += `M${n(xA(xa, Y0))},${Y0} L${n(xA(xb, Y0))},${Y0} L${xb},${Y1} L${xa},${Y1} Z`;
       for (let k = 0; k < 3; k++) {
         const fx = .15 + r() * .7, ph = r() * 6;
         let d = '';
@@ -530,15 +536,18 @@ MODULOS.gato = (() => {
           const y = Y0 + (Y1 - Y0) * j / 8, f = fx + .035 * Math.sin(j * .9 + ph);
           d += (j ? ' L' : 'M') + n(lerp(xA(xa, y), xA(xb, y), f)) + ',' + n(y);
         }
-        s += `<path d="${d}" stroke="#8B5530" stroke-width="1.3" fill="none" opacity=".22"/>`;
+        dVeio += d;
       }
       const nj = 1 + (r() * 2 | 0);
       for (let j = 0; j < nj; j++) {
         const y = Y0 + 20 + r() * (Y1 - Y0 - 30);
-        s += `<path d="M${n(xA(xa, y))},${n(y)} L${n(xA(xb, y))},${n(y)}" stroke="#6E3E20" stroke-width="${n(1 + (y - Y0) / 160)}" opacity=".5"/>`;
+        juntas += `<path d="M${n(xA(xa, y))},${n(y)} L${n(xA(xb, y))},${n(y)}" stroke="#6E3E20" stroke-width="${n(1 + (y - Y0) / 160)}" opacity=".5"/>`;
       }
-      s += `<path d="M${n(xA(xa, Y0))},${Y0} L${xa},${Y1}" stroke="#6A3B1E" stroke-width="2.4" opacity=".6"/><path d="M${n(xA(xa, Y0) + 2)},${Y0} L${xa + 3},${Y1}" stroke="#EBB57A" stroke-width="1.6" opacity=".25"/>`;
+      dBorda += `M${n(xA(xa, Y0))},${Y0} L${xa},${Y1}`; dLuz += `M${n(xA(xa, Y0) + 2)},${Y0} L${xa + 3},${Y1}`;
     }
+    s += dTom.map((d, i) => `<path d="${d}" fill="${tons[i]}" opacity=".55"/>`).join('');
+    s += `<path d="${dVeio}" stroke="#8B5530" stroke-width="1.3" fill="none" opacity=".22"/>${juntas}`;
+    s += `<path d="${dBorda}" stroke="#6A3B1E" stroke-width="2.4" opacity=".6"/><path d="${dLuz}" stroke="#EBB57A" stroke-width="1.6" opacity=".25"/>`;
     s += `<rect y="${Y0}" width="1600" height="80" fill="url(#gato-chao-sombra)"/>`;
     return s;
   }
@@ -1106,7 +1115,7 @@ MODULOS.gato = (() => {
       }
     }
     /* --- salto em arco (antecipação feita antes; aqui: impulso, voo esticado, preparação da aterragem) --- */
-    function* salto(x1, y1, altura, ms) {
+    function* salto(x1, y1, altura, ms, cauda) {   // cauda: {cB, cC} opcional (cauda levantada, para não ir para baixo da seta)
       const x0 = P.x, y0 = P.y, ini = copia(SALTO);
       const iniA = copia(ATERRAR_AR);
       yield* durante(ms, u => {
@@ -1117,6 +1126,7 @@ MODULOS.gato = (() => {
         else misturar(Object.assign({}, iniA, SALTO), ATERRAR_AR, eseno((u - .55) / .45));
         P.inclina = u < .5 ? lerp(-14, 0, eseno(u / .5)) : lerp(0, 12, eseno((u - .5) / .5));
         P.cO = 2;
+        if (cauda) Object.assign(P, cauda);
       });
     }
 
@@ -1263,7 +1273,8 @@ MODULOS.gato = (() => {
       reagindo = true;
       const rosto = tw({ oE: -12, oD: -12, oEs: 1, oDs: 1, feliz: 1, olhos: 1, pupila: .55, bigode: 10, sobr: .6, bocaB: 0, lingua: 0, almof: 0, yawM: 0 }, 130, esai);
       const corpo = (function* () {
-        if (P.pataFrente || P.cEsc < .99 || P.hipY < -125 || Math.abs(P.spA - SENTADO.spA) > 15 || Math.abs(P.hipX - SENTADO.hipX) > 10) yield* recompor(300);
+        const cabecaFora = Math.abs(P.cabX - SENTADO.cabX) > 6 || Math.abs(P.cabY - SENTADO.cabY) > 6 || Math.abs(P.cabYaw - SENTADO.cabYaw) > .1 || Math.abs(P.pitch) > .1;   // ex.: interrompeu o lamber o ombro ou o bocejo
+        if (cabecaFora || P.pataFrente || P.cEsc < .99 || P.hipY < -125 || Math.abs(P.spA - SENTADO.spA) > 15 || Math.abs(P.hipX - SENTADO.hipX) > 10) yield* recompor(300);
         yield* juntos(
           tw({ cB: -98, cC: 2, cP: 34, cO: 9, cBy: -18 }, 280, esai),
           (function* () {
@@ -1343,10 +1354,11 @@ MODULOS.gato = (() => {
       yield* juntos(transicao(Object.assign({}, ESPREGUICAR), 360, eio), tw({ bocaB: .8, olhos: 0, oE: 20, oD: 20, lingua: .3 }, 330));
       yield* espera(130);
       yield* juntos(transicao(Object.assign({}, EM_PE), 240, eio), tw({ bocaB: 0, olhos: 1, oE: 0, oD: 0, lingua: 0 }, 220));
-      yield* tw(Object.assign({}, AGACHADO), 100, esai);
+      const caudaAlta = { cB: -104, cC: 5 };        // salta para a esquerda: a cauda esticada para trás passava por baixo da seta direita
+      yield* tw(Object.assign({}, AGACHADO, caudaAlta), 100, esai);
       P.y += P.afunda; dentroCesto = false;          // passa a afundar só a almofada (sem salto no desenho)
       impulso('cesto', -2.2, 800, 'mola');
-      yield* juntos(salto(770, CHAO, 165, 380), tw({ afunda: 0 }, 300));
+      yield* juntos(salto(770, CHAO, 165, 380, caudaAlta), tw({ afunda: 0 }, 300));
       yield* tw(Object.assign({}, ATERRAR), 90, esai);
       yield* transicao(Object.assign({}, EM_PE), 80, eio);
       yield* andar(REPOUSO.x, 480);
@@ -1541,5 +1553,8 @@ MODULOS.gato = (() => {
     };
   }
 
-  return { icone: iconeSVG(), montar };
+  // O ícone usa gradientes com id; o mesmo ícone pode aparecer em dois cartões do menu e, se o primeiro estiver escondido,
+  // o segundo ficava sem cor. Cada leitura de «icone» devolve uma cópia com ids próprios (gato-iconeN-…).
+  const ICONE = iconeSVG(); let nIcone = 0;
+  return { get icone() { nIcone++; return ICONE.split('gato-icone-').join('gato-icone' + nIcone + '-'); }, montar };
 })();

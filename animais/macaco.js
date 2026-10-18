@@ -53,7 +53,7 @@ MODULOS.macaco = (() => {
   const TRONCO_X = 1240;                  // tronco da árvore do habitat (o ramo dobra aqui)
   const RAMO_Y = x => 488 + (TRONCO_X - x) * 0.028 + 4 * Math.sin((TRONCO_X - x) / 60);   // cimo do ramo
   const RAMO_E = x => lerp(14, 40, clamp((x - 880) / (TRONCO_X - 880), 0, 1));            // espessura do ramo
-  const ASS = { x: 1098, y: RAMO_Y(1098) - 22 };   // bacia sentado no ramo
+  const ASS = { x: 1070, y: RAMO_Y(1070) - 22 };   // bacia sentado no ramo
   const PILHA = { x: 716, y: 782 };       // bananas caídas no chão
   const CACHO = { x: 976, y: RAMO_Y(976) };
   const POUSO = { x: 336, y: 247 };       // ramo onde pousa o tucano
@@ -251,7 +251,7 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
   function gerarIcone() {
     const E = estadoCabeca(Object.assign({}, CAB0, { yaw: 0.1, nod: 0.06, feliz: 0.3, boca: 0.3, sorriso: 1, sobr: 0.4, esc: 1.08, olhoX: 0.3, olhoY: 0.25 }));
     let folhas = '';
-    for (const [x, y, r, c] of [[30, 66, -150, '#4E9A3E'], [190, 60, -30, '#3E8436'], [22, 150, 160, '#5FAE48'], [198, 150, 20, '#4E9A3E'], [70, 196, 120, '#3E8436'], [150, 198, 60, '#5FAE48']]) {
+    for (const [x, y, r, c] of [[30, 66, -150, '#4E9A3E'], [190, 60, -30, '#3E8436'], [22, 150, 160, '#5FAE48'], [198, 150, 20, '#4E9A3E'], [66, 182, 150, '#3E8436'], [154, 184, 30, '#5FAE48']]) {
       folhas += `<g transform="translate(${x},${y}) rotate(${r})"><path d="M0,0 C10,-14 34,-14 46,0 C34,14 10,14 0,0Z" fill="${c}" stroke="#1E4A1E" stroke-width="2"/><path d="M2,0 L42,0" stroke="#B8E08A" stroke-width="1.6"/></g>`;
     }
     return `<circle cx="110" cy="112" r="100" fill="#C4E6A8"/><circle cx="80" cy="76" r="60" fill="#EAF8D8" opacity=".6"/>${folhas}
@@ -285,7 +285,20 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
     const d = `M0,0 C${n1(L * 0.18)},${n1(-W)} ${n1(L * 0.72)},${n1(-W * 0.92)} ${n1(L)},0 C${n1(L * 0.72)},${n1(W * 0.92)} ${n1(L * 0.18)},${n1(W)} 0,0Z`;
     let v = `M2,0 Q${n1(L * 0.5)},${n1(-W * 0.06)} ${n1(L * 0.95)},0`;
     for (let k = 1; k < 6; k++) { const xk = L * k / 6.4; v += ` M${n1(xk)},0 q${n1(L * 0.07)},${n1(-W * 0.42)} ${n1(L * 0.15)},${n1(-W * 0.62)} M${n1(xk)},0 q${n1(L * 0.07)},${n1(W * 0.42)} ${n1(L * 0.15)},${n1(W * 0.62)}`; }
-    return `<g transform="translate(${n1(x)},${n1(y)}) rotate(${n1(ang)})"><path d="${d}" fill="${cor}" stroke="#1E441C" stroke-width="2"/><path d="${v}" fill="none" stroke="${nerv || '#B4DC86'}" stroke-width="1.6" stroke-linecap="round" opacity=".65"/><path d="M${n1(L * 0.12)},${n1(-W * 0.45)} C${n1(L * 0.35)},${n1(-W * 0.85)} ${n1(L * 0.6)},${n1(-W * 0.8)} ${n1(L * 0.8)},${n1(-W * 0.4)}" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".18"/></g>`;
+    // a posição e a rotação vão já nas coordenadas (sem <g> por folha: menos elementos)
+    const T = p => moverPath(p, n1(x), n1(y), n1(ang));
+    return `<path d="${T(d)}" fill="${cor}" stroke="#1E441C" stroke-width="2"/><path d="${T(v)}" fill="none" stroke="${nerv || '#B4DC86'}" stroke-width="1.6" stroke-linecap="round" opacity=".65"/><path d="${T(`M${n1(L * 0.12)},${n1(-W * 0.45)} C${n1(L * 0.35)},${n1(-W * 0.85)} ${n1(L * 0.6)},${n1(-W * 0.8)} ${n1(L * 0.8)},${n1(-W * 0.4)}`)}" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity=".18"/>`;
+  }
+  // aplica translate(tx,ty) rotate(ang) scale(1,sy) a um path só com M L C Q Z (absolutos) e m l c q (relativos)
+  function moverPath(d, tx, ty, ang, sy = 1) {
+    const c = Math.cos(ang / GRAU), s = Math.sin(ang / GRAU);
+    const abs = (px, py) => { py *= sy; return `${n1(px * c - py * s + tx)},${n1(px * s + py * c + ty)}`; };
+    const rel = (px, py) => { py *= sy; return `${n1(px * c - py * s)},${n1(px * s + py * c)}`; };
+    return d.replace(/([MLCQZmlcqz])([^MLCQZmlcqz]*)/g, (m, cmd, args) => {
+      const n = (args.match(/-?\d*\.?\d+/g) || []).map(Number), f = cmd === cmd.toUpperCase() ? abs : rel;
+      const pares = []; for (let i = 0; i + 1 < n.length; i += 2) pares.push(f(n[i], n[i + 1]));
+      return cmd + pares.join(' ') + ' ';
+    }).trim();
   }
   const VERDES = ['#5FA84A', '#4E9440', '#3E7E36', '#72B852', '#2F6A2E', '#68AE4C'];
   function moita(x, y, n, L0, L1, a0, a1, rng, cls, cores, extra) {   // tufo de folhas grandes em leque, que balança
@@ -298,12 +311,13 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
   }
   function fronde(x, y, L, ang, cor, rng) {   // folha de palmeira: talo curvo com folíolos finos
     let s = `<g transform="translate(${x},${y}) rotate(${ang})"><path d="M0,0 Q${n1(L * 0.5)},${n1(-L * 0.18)} ${L},${n1(L * 0.08)}" fill="none" stroke="#3E6A24" stroke-width="3.5" stroke-linecap="round"/>`;
+    let d = '';   // folíolos finos que quase não se tocam: um só path
     for (let k = 1; k < 16; k++) {
       const t = k / 16, px = L * t, py = -L * 0.18 * 2 * t * (1 - t) * 2 + L * 0.08 * t * t, w = 34 * (1 - t * 0.6);
-      s += `<path d="M${n1(px)},${n1(py)} q${n1(w * 0.3)},${n1(-w * 0.5)} ${n1(w * 0.75)},${n1(-w * 0.9)} q${n1(-w * 0.2)},${n1(w * 0.6)} ${n1(-w * 0.75)},${n1(w * 0.9)}Z" fill="${cor}" stroke="#2A4E1A" stroke-width="1"/>`;
-      s += `<path d="M${n1(px)},${n1(py)} q${n1(w * 0.3)},${n1(w * 0.45)} ${n1(w * 0.7)},${n1(w * 0.85)} q${n1(-w * 0.25)},${n1(-w * 0.5)} ${n1(-w * 0.7)},${n1(-w * 0.85)}Z" fill="${cor}" stroke="#2A4E1A" stroke-width="1"/>`;
+      d += `M${n1(px)},${n1(py)} q${n1(w * 0.3)},${n1(-w * 0.5)} ${n1(w * 0.75)},${n1(-w * 0.9)} q${n1(-w * 0.2)},${n1(w * 0.6)} ${n1(-w * 0.75)},${n1(w * 0.9)}Z`;
+      d += `M${n1(px)},${n1(py)} q${n1(w * 0.3)},${n1(w * 0.45)} ${n1(w * 0.7)},${n1(w * 0.85)} q${n1(-w * 0.25)},${n1(-w * 0.5)} ${n1(-w * 0.7)},${n1(-w * 0.85)}Z`;
     }
-    return s + '</g>';
+    return s + `<path d="${d}" fill="${cor}" stroke="#2A4E1A" stroke-width="1"/></g>`;
   }
   function hibisco(x, y, r, rot, cor, cor2) {
     let s = `<g transform="translate(${x},${y}) rotate(${rot})">`;
@@ -337,10 +351,14 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
   function cenaFundo(u, rng, meta) {
     let s = `<rect x="-10" y="-10" width="1620" height="920" fill="url(#${u}ceu)"/><circle cx="240" cy="30" r="560" fill="url(#${u}sol)"/>`;
     // troncos e copas ao longe, na névoa
-    for (let i = 0; i < 17; i++) { const x = 20 + i * 100 + rng() * 40, w = 7 + rng() * 7, t = 160 + rng() * 80; s += `<path d="M${n1(x - w)},600 L${n1(x - w * 0.6)},${n1(t)} L${n1(x + w * 0.6)},${n1(t)} L${n1(x + w)},600Z" fill="#A6CCAE" opacity=".6"/>`; }
+    let dTr = '';   // troncos que não se tocam: um só path por cor
+    for (let i = 0; i < 17; i++) { const x = 20 + i * 100 + rng() * 40, w = 7 + rng() * 7, t = 160 + rng() * 80; dTr += `M${n1(x - w)},600 L${n1(x - w * 0.6)},${n1(t)} L${n1(x + w * 0.6)},${n1(t)} L${n1(x + w)},600Z`; }
+    s += `<path d="${dTr}" fill="#A6CCAE" opacity=".6"/>`;
     for (let i = 0; i < 36; i++) { const x = rng() * 1660 - 30, y = 60 + rng() * 230, r = 50 + rng() * 80; s += `<circle cx="${n1(x)}" cy="${n1(y)}" r="${n1(r)}" fill="${['#BFDFC4', '#B2D6B8', '#C8E4C8', '#A8CEAE'][i % 4]}" opacity="${n3(0.55 + rng() * 0.3)}"/>`; }
     s += `<rect x="-10" y="250" width="1620" height="320" fill="url(#${u}nevoa)"/>`;
-    for (let i = 0; i < 11; i++) { const x = 60 + i * 150 + rng() * 60, w = 12 + rng() * 9; s += `<path d="M${n1(x - w)},640 C${n1(x - w * 0.7)},420 ${n1(x - w * 0.6)},250 ${n1(x - w * 0.5)},80 L${n1(x + w * 0.5)},80 C${n1(x + w * 0.6)},250 ${n1(x + w * 0.7)},420 ${n1(x + w)},640Z" fill="#7EA88A" opacity=".7"/>`; }
+    dTr = '';
+    for (let i = 0; i < 11; i++) { const x = 60 + i * 150 + rng() * 60, w = 12 + rng() * 9; dTr += `M${n1(x - w)},640 C${n1(x - w * 0.7)},420 ${n1(x - w * 0.6)},250 ${n1(x - w * 0.5)},80 L${n1(x + w * 0.5)},80 C${n1(x + w * 0.6)},250 ${n1(x + w * 0.7)},420 ${n1(x + w)},640Z`; }
+    s += `<path d="${dTr}" fill="#7EA88A" opacity=".7"/>`;
     for (let i = 0; i < 24; i++) { const x = rng() * 1660 - 30, y = 20 + rng() * 170, r = 60 + rng() * 70; s += `<circle cx="${n1(x)}" cy="${n1(y)}" r="${n1(r)}" fill="${['#8CBC94', '#80B28A', '#96C49C'][i % 3]}" opacity="${n3(0.75 + rng() * 0.2)}"/>`; }
     // raios de luz vindos de cima à esquerda
     s += `<g class="cn-raios" pointer-events="none">`;
@@ -383,7 +401,7 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
     // árvore grande da esquerda (raízes de contraforte, musgo, bromélia, ramo do tucano)
     s += `<path d="M40,-20 C52,200 60,420 52,600 C40,640 10,680 -20,720 L270,720 C236,690 206,660 196,620 C186,440 184,220 196,-20Z" fill="url(#${u}tronco)" stroke="#2E2014" stroke-width="3"/>`;
     s += `<path d="M120,600 C110,640 90,690 60,724 L92,724 C110,690 124,650 130,610Z M170,610 C190,650 220,690 262,722 L230,724 C204,700 184,660 170,620Z" fill="#4A3622" opacity=".6"/>`;
-    for (let k = 0; k < 9; k++) { const x = 70 + k * 14; s += `<path d="M${x},${-10 + k * 20} C${x + 6},${160 + k * 20} ${x - 4},${360 + k * 10} ${x + 3},${600 - k * 4}" fill="none" stroke="#2E2014" stroke-width="2.2" opacity=".35"/>`; }
+    { let dC = ''; for (let k = 0; k < 9; k++) { const x = 70 + k * 14; dC += `M${x},${-10 + k * 20} C${x + 6},${160 + k * 20} ${x - 4},${360 + k * 10} ${x + 3},${600 - k * 4}`; } s += `<path d="${dC}" fill="none" stroke="#2E2014" stroke-width="2.2" opacity=".35"/>`; }
     s += `<path d="M66,0 C74,200 76,420 70,600" fill="none" stroke="#C4A27E" stroke-width="5" opacity=".35"/>`;
     s += `<path d="M48,300 C60,280 90,276 110,290 C96,300 70,304 48,320Z M182,420 C170,404 150,400 132,410 C148,422 166,426 186,440Z" fill="url(#${u}musgo)" opacity=".9"/>`;
     s += `<path d="M186,236 C240,232 290,240 340,250 C370,256 400,258 428,252" fill="none" stroke="#4A3422" stroke-width="16" stroke-linecap="round"/><path d="M192,230 C240,226 290,234 340,244 C372,250 400,252 426,247" fill="none" stroke="#9C7C58" stroke-width="4" stroke-linecap="round" opacity=".6"/>`;
@@ -392,7 +410,7 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
     // tronco da árvore do habitat (à direita)
     s += `<path d="M1222,-20 C1230,200 1232,420 1224,600 C1210,646 1180,690 1140,728 L1460,728 C1414,690 1384,650 1374,600 C1366,420 1366,200 1372,-20Z" fill="url(#${u}tronco)" stroke="#2E2014" stroke-width="3"/>`;
     s += `<path d="M1290,600 C1280,644 1256,690 1220,728 L1254,728 C1280,694 1296,650 1300,610Z M1344,610 C1362,654 1392,694 1430,726 L1398,728 C1372,704 1354,664 1344,620Z" fill="#4A3622" opacity=".6"/>`;
-    for (let k = 0; k < 9; k++) { const x = 1240 + k * 14; s += `<path d="M${x},${-10 + k * 16} C${x + 6},${180 + k * 14} ${x - 4},${380 + k * 8} ${x + 3},${610 - k * 4}" fill="none" stroke="#2E2014" stroke-width="2.2" opacity=".35"/>`; }
+    { let dC = ''; for (let k = 0; k < 9; k++) { const x = 1240 + k * 14; dC += `M${x},${-10 + k * 16} C${x + 6},${180 + k * 14} ${x - 4},${380 + k * 8} ${x + 3},${610 - k * 4}`; } s += `<path d="${dC}" fill="none" stroke="#2E2014" stroke-width="2.2" opacity=".35"/>`; }
     s += `<path d="M1236,0 C1244,200 1246,420 1240,600" fill="none" stroke="#C4A27E" stroke-width="5" opacity=".35"/>`;
     s += `<path d="M1226,620 C1250,600 1290,598 1320,612 C1290,622 1256,630 1226,648Z" fill="url(#${u}musgo)" opacity=".9"/>` + bromelia(1360, 640, 1.1) + orquidea(1366, 300, 1);
     // lianas penduradas (balançam)
@@ -411,11 +429,20 @@ ${svgTronco(u)}<g class="mc-perna0">${svgMembro(u, PERNA, svgPe(u))}</g><g class
     s += `<path d="M-10,700 C200,690 420,706 700,698 C980,690 1250,706 1610,694 V722 C1250,734 980,718 700,726 C420,734 200,718 -10,728Z" fill="#9CC060" opacity=".4"/>`;
     for (const [x, y, rx] of [[560, 790, 190], [880, 740, 140], [300, 760, 110]]) s += `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${n1(rx * 0.16)}" fill="#E8F4B0" opacity=".18"/>`;
     // folhas caídas, ervas e pedrinhas (mais pequenas ao longe)
+    // juntas num só path por cor (e por espessura, nas ervas): menos elementos
+    const fCor = {}, eCor = {};
     for (let i = 0; i < 140; i++) {
       const k = Math.pow(rng(), 0.8), y = 708 + k * 200, e = 0.5 + k * 1.1, x = rng() * 1660 - 30;
-      if (rng() < 0.55) s += `<path d="M0,-${n1(8 * e)} C${n1(4 * e)},-${n1(4 * e)} ${n1(4 * e)},${n1(3 * e)} 0,${n1(7 * e)} C-${n1(4 * e)},${n1(3 * e)} -${n1(4 * e)},-${n1(4 * e)} 0,-${n1(8 * e)}Z" transform="translate(${n1(x)},${n1(y)}) rotate(${n1(rng() * 360)}) scale(1,.55)" fill="${['#7A9A3A', '#9AA840', '#6E8A30', '#B49A48', '#8A7A34'][Math.floor(rng() * 5)]}" opacity=".9"/>`;
-      else s += `<path d="M${n1(x)},${n1(y)} q${n1((rng() - 0.5) * 6)},-${n1(8 * e)} ${n1((rng() - 0.5) * 10)},-${n1((10 + rng() * 8) * e)}" stroke="${['#7EA43C', '#5E8A2E', '#9AC050'][Math.floor(rng() * 3)]}" stroke-width="${n1(1.6 * e)}" fill="none" stroke-linecap="round"/>`;
+      if (rng() < 0.55) {
+        const d = moverPath(`M0,-${n1(8 * e)} C${n1(4 * e)},-${n1(4 * e)} ${n1(4 * e)},${n1(3 * e)} 0,${n1(7 * e)} C-${n1(4 * e)},${n1(3 * e)} -${n1(4 * e)},-${n1(4 * e)} 0,-${n1(8 * e)}Z`, n1(x), n1(y), n1(rng() * 360), 0.55);
+        const c = ['#7A9A3A', '#9AA840', '#6E8A30', '#B49A48', '#8A7A34'][Math.floor(rng() * 5)]; fCor[c] = (fCor[c] || '') + d;
+      } else {
+        const d = `M${n1(x)},${n1(y)} q${n1((rng() - 0.5) * 6)},-${n1(8 * e)} ${n1((rng() - 0.5) * 10)},-${n1((10 + rng() * 8) * e)}`;
+        const c = ['#7EA43C', '#5E8A2E', '#9AC050'][Math.floor(rng() * 3)] + '|' + (e < 0.9 ? 1.1 : e < 1.3 ? 1.8 : 2.5); eCor[c] = (eCor[c] || '') + d;
+      }
     }
+    for (const c in fCor) s += `<path d="${fCor[c]}" fill="${c}" opacity=".9"/>`;
+    for (const c in eCor) { const [cor, l] = c.split('|'); s += `<path d="${eCor[c]}" stroke="${cor}" stroke-width="${l}" fill="none" stroke-linecap="round"/>`; }
     for (const [x, y, r] of [[420, 790, 16], [760, 800, 12], [1010, 760, 18], [1180, 790, 14], [300, 830, 20]]) s += `<ellipse cx="${x}" cy="${y + r * 0.4}" rx="${r * 1.3}" ry="${r * 0.35}" fill="#1E3010" opacity=".3"/><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${n1(r * 0.7)}" fill="#8E9886" stroke="#4E5848" stroke-width="2"/><ellipse cx="${x - r * 0.3}" cy="${y - r * 0.3}" rx="${n1(r * 0.4)}" ry="${n1(r * 0.2)}" fill="#C4CCB8" opacity=".6"/><path d="M${x - r},${y - 2} C${x - r * 0.5},${y - r * 0.8} ${x + r * 0.2},${y - r * 0.8} ${x + r * 0.6},${y - r * 0.5}" fill="none" stroke="#8AB44A" stroke-width="4" stroke-linecap="round" opacity=".8"/>`;
     // pilha de bananas caídas ao lado do macaco
     s += `<ellipse cx="${PILHA.x}" cy="${PILHA.y + 6}" rx="40" ry="7" fill="url(#${u}somb)"/>`;
@@ -986,24 +1013,24 @@ ${svgBorboleta('bf bf-azul', '#3FA2F2', '#2A6AD8', 1.25)}${svgBorboleta('bf bf-a
       } else if (T < 2.95) {                                  // 4) larga a liana e voa até ao ramo
         if (lia.presa) { lia.presa = false; seq.rx = PX; seq.ry = PY; seq.rr = ROT; }
         const k = (T - 2.5) / 0.45, s = lerp(k, sinoide(k), 0.3);
-        const fim = [1092, PE_RAMO(1092)[1] - ESC * 76 - 4], c = [seq.rx + 10, Math.min(seq.ry, fim[1]) - 70];
+        const fim = [1064, PE_RAMO(1064)[1] - ESC * 76 - 4], c = [seq.rx + 10, Math.min(seq.ry, fim[1]) - 70];
         const p = bez2([seq.rx, seq.ry], c, fim, s);
         PX = p[0]; PY = p[1]; ROT = lerp(seq.rr, 0, sinoide(k)) - 0.25 * Math.sin(PI * k);
         A.mw0 = 0; A.mw1 = 0;
         for (let i = 0; i < 2; i++) { const sg = i ? 1 : -1; A['m' + i + 'x'] = sg * 84; A['m' + i + 'y'] = -130; A['fecha' + i] = 0; }
         A.p0y = lerp(30, 76, passo(0.4, 1, k)); A.p1y = A.p0y; A.p0x = -24; A.p1x = 24; A.pr0 = 0.3; A.pr1 = 0.3;
         A.sq = 0.06 * Math.sin(PI * k); A.boca = 0.5; A.sorriso = 1; A.feliz = 0.5;
-        olharPara(A, { x: 1092, y: RAMO_Y(1092) }, 0.4);
+        olharPara(A, { x: 1064, y: RAMO_Y(1064) }, 0.4);
       } else {                                                // 5) aterra (encolhe), o ramo dobra e senta-se com as pernas para fora
-        if (!seq.aterrou) { seq.aterrou = true; ramoB.v += 70; abanarHabitat(1.2); soltarFolhas(1092, 470, 8, 1, 120); }
+        if (!seq.aterrou) { seq.aterrou = true; ramoB.v += 70; abanarHabitat(1.2); soltarFolhas(1064, 470, 8, 1, 120); }
         const k = clamp((T - 2.95) / 0.75, 0, 1);
-        const de = [1092, PE_RAMO(1092)[1] - ESC * 76 - 4];
+        const de = [1064, PE_RAMO(1064)[1] - ESC * 76 - 4];
         const agacha = janela(T, 2.95, 3.05, 3.15, 3.35);
         const senta = sinoide((T - 3.2) / 0.45);
         PX = lerp(de[0], ASS.x, senta); PY = lerp(de[1] + 26 * agacha, ASS.y, senta); ROT = 0;
         A.sq = -0.14 * agacha;
         const wpe = 1 - passo(3.3, 3.6, T);
-        peMundo(A, 0, PE_RAMO(1060)[0], PE_RAMO(1060)[1], wpe); peMundo(A, 1, PE_RAMO(1124)[0], PE_RAMO(1124)[1], wpe);
+        peMundo(A, 0, PE_RAMO(1032)[0], PE_RAMO(1032)[1], wpe); peMundo(A, 1, PE_RAMO(1096)[0], PE_RAMO(1096)[1], wpe);
         misturar(A, NO_RAMO, senta);
         for (let i = 0; i < 2; i++) { const sg = i ? 1 : -1; A['m' + i + 'x'] = sg * 86; A['m' + i + 'y'] = -40; }
         maoMundo(A, 0, ASS.x - 96, RAMO_Y(ASS.x - 96) - 8, senta); maoMundo(A, 1, ASS.x + 92, RAMO_Y(ASS.x + 92) - 8, senta);
@@ -1021,12 +1048,12 @@ ${svgBorboleta('bf bf-azul', '#3FA2F2', '#2A6AD8', 1.25)}${svgBorboleta('bf bf-a
     function correrVolta(dt, A) {
       seq.T += dt; const T = seq.T;
       A.cauAmp = 0.1;
-      const de = [1092, PE_RAMO(1092)[1] - ESC * 76 - 4];
+      const de = [1064, PE_RAMO(1064)[1] - ESC * 76 - 4];
       if (T < 0.75) {                                         // 1) levanta-se no ramo, sacode-se e agacha-se
         const k = sinoide(T / 0.4);
         PX = lerp(seq.x0, de[0], k); PY = lerp(seq.y0, de[1], k) + 14 * janela(T, 0.5, 0.7, 0.75, 0.8); ROT = lerp(seq.r0, 0, k) + 0.1 * Math.sin(T * TAU * 6) * janela(T, 0.3, 0.38, 0.5, 0.56);
         A.sq = -0.08 * janela(T, 0.5, 0.7, 0.75, 0.8);
-        peMundo(A, 0, PE_RAMO(1060)[0], PE_RAMO(1060)[1], passo(0.1, 0.35, T)); peMundo(A, 1, PE_RAMO(1124)[0], PE_RAMO(1124)[1], passo(0.1, 0.35, T));
+        peMundo(A, 0, PE_RAMO(1032)[0], PE_RAMO(1032)[1], passo(0.1, 0.35, T)); peMundo(A, 1, PE_RAMO(1096)[0], PE_RAMO(1096)[1], passo(0.1, 0.35, T));
         for (let i = 0; i < 2; i++) { const sg = i ? 1 : -1; A['m' + i + 'x'] = sg * 86; A['m' + i + 'y'] = -30; }
         A.fecho = Math.max(A.fecho, 0.8 * janela(T, 0.3, 0.36, 0.5, 0.56));
         olharPara(A, { x: gripW(lia.a, LL)[0], y: gripW(lia.a, LL)[1] }, 0.6);
@@ -1323,7 +1350,7 @@ ${svgBorboleta('bf bf-azul', '#3FA2F2', '#2A6AD8', 1.25)}${svgBorboleta('bf bf-a
         if (destruido) return;
         ms = Number(ms) || 1500;
         let lat;
-        if (Array.isArray(silabas) && silabas.length) lat = silabas.map(([a, d]) => ({ a: +a || 0, d: Math.min(0.4, Math.max(0.08, +d || 0.2)) }));
+        if (Array.isArray(silabas) && silabas.length) lat = silabas.map(([a, d]) => ({ a: +a || 0, d: Math.min(1.5, Math.max(0.08, +d || 0.2)) }));
         else { const s = ms / 1000, n = clamp(Math.round(s / 0.4), 1, 6); lat = []; for (let i = 0; i < n; i++) lat.push({ a: 0.05 + i * s / n, d: Math.min(0.28, s / n * 0.55) }); }
         som = { ativo: true, t: 0, lat, fim: lat[lat.length - 1].a + lat[lat.length - 1].d };
         if (modo === 'fora') { pararAcao(); fora.prox = Math.max(fora.prox, 2.5); }

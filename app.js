@@ -152,7 +152,7 @@ function chuvaDeCoracoes() {                 // corações a subir do animal qua
   }
 }
 
-/* ---------- Menu de grupos (só aparecem os grupos que já têm animais) ---------- */
+/* ---------- Menu de grupos (só aparecem os grupos que já têm animais; «Todos» só com 2 ou mais grupos) ---------- */
 function iconeDe(id) { return `<svg viewBox="0 0 220 220" aria-hidden="true">${(MODULOS[id] && MODULOS[id].icone) || ''}</svg>`; }
 function desenharMenu() {
   const lista = prontos();
@@ -160,7 +160,7 @@ function desenharMenu() {
   const ultimo = lista.length ? lista[lista.length - 1].id : '';
   $('#grupos').innerHTML = grupos.map(g =>
     `<button class="grupo" data-grupo="${g}">${iconeDe(lista.find(a => a.grupo === g).id)}<b>${GRUPOS[g]}</b></button>`).join('') +
-    `<button class="grupo todos" data-grupo="">${iconeDe(ultimo)}<b>Todos</b></button>` +
+    (grupos.length > 1 ? `<button class="grupo todos" data-grupo="">${iconeDe(ultimo)}<b>Todos</b></button>` : '') +
     `<button class="grupo favoritos" data-grupo="favoritos" ${favoritos.size ? '' : 'hidden'}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6.2a5.3 5.3 0 0 1 9.3 5.8C19 16.4 12 21 12 21z" fill="#E8457A"/></svg><b>Favoritos</b></button>`;
   $('#grupos').querySelectorAll('.grupo').forEach(b => b.addEventListener('pointerup', () => escolherGrupo(b.dataset.grupo || null)));
 }

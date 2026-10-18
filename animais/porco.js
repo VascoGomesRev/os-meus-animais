@@ -393,18 +393,20 @@ MODULOS.porco = (() => {
       <g class="pc-aves">${[0, 1, 2].map(i => `<path class="pc-ave${i}" d="M-8,0 Q-4,-5 0,0 Q4,-5 8,0" stroke="#4A4A58" stroke-width="2" fill="none" stroke-linecap="round"/>`).join('')}</g>`;
   }
   // sobreiro: tronco torcido, cortiça tirada em baixo (cor de tijolo) com o algarismo do ano pintado a branco
+  // elipse como subcaminho (para juntar várias da mesma cor lisa num só path: menos elementos)
+  const elipseD = (cx, cy, rx, ry) => `M${n(cx - rx)},${n(cy)} a${n(rx)},${n(ry)} 0 1 0 ${n(2 * rx)},0 a${n(rx)},${n(ry)} 0 1 0 ${n(-2 * rx)},0Z`;
   function sobreiroSVG(x, y, k, longe, num) {
     const rnd = semente(Math.round(x * 7 + y));
     if (longe) {
       let c = '';
-      for (let i = 0; i < 6; i++) c += `<ellipse cx="${n((rnd() - .5) * 70)}" cy="${n(-46 - rnd() * 22)}" rx="${n(20 + rnd() * 14)}" ry="${n(12 + rnd() * 8)}"/>`;
-      return `<g transform="translate(${x},${y}) scale(${k})"><path d="M-4,0 L-3,-40 L-14,-52 M3,0 L4,-38 L16,-50" stroke="#6E6A52" stroke-width="5" fill="none"/><g fill="#7C8A5C">${c}</g></g>`;
+      for (let i = 0; i < 6; i++) { const cx = (rnd() - .5) * 70, cy = -46 - rnd() * 22, rx = 20 + rnd() * 14, ry = 12 + rnd() * 8; c += elipseD(cx, cy, rx, ry); }
+      return `<g transform="translate(${x},${y}) scale(${k})"><path d="M-4,0 L-3,-40 L-14,-52 M3,0 L4,-38 L16,-50" stroke="#6E6A52" stroke-width="5" fill="none"/><path fill="#7C8A5C" d="${c}"/></g>`;
     }
-    let copa = '', luz = '';
+    let copa = '', copaD = '', luz = '';
     for (let i = 0; i < 9; i++) {
       const cx = (rnd() - .5) * 150, cy = -118 - rnd() * 52 + Math.abs(cx) * .25, rx = 30 + rnd() * 18, ry = 20 + rnd() * 10;
-      copa += `<ellipse cx="${n(cx)}" cy="${n(cy)}" rx="${n(rx)}" ry="${n(ry)}"/>`;
-      if (i % 2 === 0) luz += `<ellipse cx="${n(cx - rx * .3)}" cy="${n(cy - ry * .35)}" rx="${n(rx * .45)}" ry="${n(ry * .3)}"/>`;
+      copa += `<ellipse cx="${n(cx)}" cy="${n(cy)}" rx="${n(rx)}" ry="${n(ry)}"/>`; copaD += elipseD(cx, cy, rx, ry);
+      if (i % 2 === 0) luz += elipseD(cx - rx * .3, cy - ry * .35, rx * .45, ry * .3);
     }
     return `<g transform="translate(${x},${y}) scale(${k})">
 
@@ -412,7 +414,7 @@ MODULOS.porco = (() => {
       <path d="M-18,0 C-17,-12 -16,-24 -14,-34 L12,-34 C13,-22 13,-10 14,0 Z" fill="#B4532A" stroke="#6E321A" stroke-width="2"/>
       <path d="M-14,-34 C-6,-37 4,-37 12,-34" stroke="#7A5A42" stroke-width="5" fill="none" stroke-linecap="round"/>
       ${num ? `<path d="M-6,-24 L4,-24 L-2,-10" stroke="#FFFFFF" stroke-width="2.4" fill="none" opacity=".85"/>` : ''}
-      <g fill="#3E4E1E" transform="translate(0,6)">${copa}</g><g fill="url(#${p0}copa)">${copa}</g><g fill="#A6B860" opacity=".55">${luz}</g>
+      <path fill="#3E4E1E" transform="translate(0,6)" d="${copaD}"/><g fill="url(#${p0}copa)">${copa}</g><path fill="#A6B860" opacity=".55" d="${luz}"/>
     </g>`;
   }
   const p0 = 'porco-';
@@ -1471,6 +1473,9 @@ MODULOS.porco = (() => {
     const COMPORTAMENTOS = { fucar, comerGamela, cocarPoste, abanarOrelhas, sentar, farejar, abanarCauda, olharCrianca };
     let ultimoComp = null, postePuxa = 0;
     function* cicloFora() {
+      // um coçar no poste interrompido (toque) não deixa o poste torto nem o porco encostado a ele
+      postePuxa = 0;
+      if (Math.hypot(P.X - REP.X, P.Z - REP.Z) > 3) yield* andar(REP.X, REP.Z, 700, false);
       for (;;) {
         yield* espera(aleat(4000, 9000));
         let nome; do nome = escolhe(Object.keys(COMPORTAMENTOS)); while (nome === ultimoComp);
@@ -1577,7 +1582,7 @@ MODULOS.porco = (() => {
       salpicar(centroMundo[0] + 30, CHAO + KZ * P.Z, 8, .9, 80); enlamear(.6); P.lamaCab = 1; P.lamaCabIdade = 0;
       yield* tw(Object.assign({}, DEITADO, { feliz: .8, olhos: .4, cauVel: 1.2 }), 350, eio);
       modo = 'dentro';
-      yield* tw({ feliz: .3, olhos: 1, cauVel: CAUDA_0.cauVel, cauAmp: 1 }, 300);
+      yield* tw({ feliz: .3, olhos: 1, cauVel: CAUDA_0.cauVel, cauAmp: 1 }, 150);   // curto: a ida fica abaixo dos 4 s mesmo a meio de um passo
     }
     /* --- volta: rebola para ficar de pé, sacode a lama, vira-se e volta a trote --- */
     function* voltaLama() {

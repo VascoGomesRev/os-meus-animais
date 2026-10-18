@@ -674,7 +674,7 @@ MODULOS.elefante = (() => {
   /* ================= 6) montar() ================= */
   // Repouso (fora): de pé, a 3/4 virado para a esquerda e para nós, à frente do poço; o poço fica atrás, à direita
   const REP = { X: 668, Z: 40, th: PI - .5 };
-  const HAB = { X: 1008, Z: -36, th: 1.3 };
+  const HAB = { X: 962, Z: -36, th: 1.3 };
   const TH_IDA = Math.atan2(HAB.Z - REP.Z, HAB.X - REP.X), TH_VOLTA = Math.atan2(REP.Z - HAB.Z, REP.X - HAB.X);
   const CORPO0 = { alt: 0, incl: 0, lat: 0, balanco: 0, cTurn: -.55, cB: 8, cBaixa: 0, cAv: 0, cRoll: 0 };
   const ROSTO0 = { olhos: 1, feliz: 0, sobr: 0, boca: 0, sorriso: .5, olhoEsc: 1, oE: 0, oD: 0, orelhas: 0 };

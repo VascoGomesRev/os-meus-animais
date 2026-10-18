@@ -3,88 +3,100 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-17-6735d85c";
+var VERSAO = "2026-10-18-ced45678";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
   "u": "./",
-  "h": "3e9c66c8"
+  "h": "42338b88"
  },
  {
   "u": "animais.js",
-  "h": "9b9f1849"
+  "h": "08142c08"
+ },
+ {
+  "u": "animais/abelha.js",
+  "h": "f2344fef"
  },
  {
   "u": "animais/cao.js",
-  "h": "10d9a45e"
+  "h": "e8d71a32"
  },
  {
   "u": "animais/cavalo.js",
-  "h": "60b48395"
+  "h": "9603e247"
  },
  {
   "u": "animais/coala.js",
-  "h": "0c1610a6"
+  "h": "84cb023f"
  },
  {
   "u": "animais/coelho.js",
-  "h": "a59a13bc"
+  "h": "59def928"
  },
  {
   "u": "animais/elefante.js",
-  "h": "be2e12fe"
+  "h": "f9d48701"
  },
  {
   "u": "animais/galo.js",
-  "h": "7f8b23c6"
+  "h": "afbe2c83"
  },
  {
   "u": "animais/gato.js",
-  "h": "88969003"
+  "h": "462e82b4"
  },
  {
   "u": "animais/girafa.js",
-  "h": "9dec4d4d"
+  "h": "60d7d780"
+ },
+ {
+  "u": "animais/leao.js",
+  "h": "f5c9ffd3"
  },
  {
   "u": "animais/macaco.js",
-  "h": "36e1f5f4"
+  "h": "c2985a9f"
  },
  {
   "u": "animais/ovelha.js",
-  "h": "dde6751b"
+  "h": "89372f5f"
  },
  {
   "u": "animais/passarinho.js",
-  "h": "5cd9cc58"
+  "h": "b7b31b9f"
  },
  {
   "u": "animais/pato.js",
-  "h": "1cf69c83"
+  "h": "305133f2"
  },
  {
   "u": "animais/peixe.js",
-  "h": "571d9c0b"
+  "h": "821fa6af"
  },
  {
   "u": "animais/porco.js",
-  "h": "907a644e"
+  "h": "427bcf81"
  },
  {
   "u": "animais/raposa.js",
-  "h": "4c56a58f"
+  "h": "1e4e73d6"
  },
  {
   "u": "animais/sapo.js",
-  "h": "e1a55b5a"
+  "h": "692f22d3"
  },
  {
   "u": "animais/vaca.js",
-  "h": "9d24116b"
+  "h": "b512748b"
+ },
+ {
+  "u": "animais/zebra.js",
+  "h": "c27a5150"
  },
  {
   "u": "app.js",
-  "h": "c02ffd35"
+  "h": "c4adf0ef"
  },
  {
   "u": "creditos.json",
@@ -112,7 +124,7 @@ var FICHEIROS = [
  },
  {
   "u": "index.html",
-  "h": "3e9c66c8"
+  "h": "42338b88"
  },
  {
   "u": "manifest.webmanifest",
@@ -176,7 +188,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "a1336575"
+  "h": "44e3253b"
  }
 ];
 

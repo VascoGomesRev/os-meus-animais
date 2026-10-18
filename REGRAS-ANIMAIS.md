@@ -1,6 +1,6 @@
 # Regras para criar um animal
 
-Versão 4 — revista depois de cada lote: cão e gato; coelho, sapo e girafa (16-10-2026); coala, macaco, elefante e pato; porco, galo e cavalo; vaca, ovelha e passarinho (17-10-2026). Cada animal novo segue estas regras.
+Versão 4 — revista depois de cada lote: cão e gato; coelho, sapo e girafa (16-10-2026); coala, macaco, elefante e pato; porco, galo e cavalo; vaca, ovelha e passarinho (17-10-2026); leão, zebra e abelha, e revisão dos 17 anteriores (18-10-2026). Cada animal novo segue estas regras.
 Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/` e voltam um a um.
 
 **Referências de qualidade** (ler pelo menos uma por inteiro antes de começar):
@@ -24,6 +24,9 @@ Os 200 animais antigos (desenhos, habitats e sons) estão guardados em `arquivo/
 | `animais/vaca.js` | lameiro de montanha → curral de granito | malhas recortadas, chocalho e úbere com mola, deitar-se em dois tempos |
 | `animais/ovelha.js` | serra da Estrela → redil de pedra | lã em bolas com pouco peso, cancela com chocalho, balido trémulo |
 | `animais/passarinho.js` | jardim com cerejeira → ninho | voo com bater de asas, bico que toca na semente, banho de pássaros |
+| `animais/leao.js` | savana ao fim da tarde → abrigo nas rochas | juba de madeixas em anéis 3D com mola, borboleta no nariz (vesgo e espirro) |
+| `animais/zebra.js` | planície com o Kilimanjaro → pó debaixo da Kigelia | riscas presas ao perfil 2,5D, rebolar de patas no ar, búfago no dorso |
+| `animais/abelha.js` | encosta alentejana em flor → cortiço | animal que paira, asas rápidas sem filtros, pólen nas patas, entrar de costas num buraco de frente |
 
 Custo de referência: 40–65 minutos de um agente Opus por animal; ficheiros de 105–135 KB. O peixe tem ~920 elementos SVG e 37 tentáculos atualizados a cada quadro: é o mais pesado; confirmar no telemóvel.
 
@@ -42,7 +45,7 @@ Cada animal é **um ficheiro só**: `animais/<id>.js`. Esse ficheiro desenha e a
 O resto da app (nome escrito, voz, som, setas, menu, favoritos, área dos pais) é do motor, `app.js`. **Um módulo nunca mexe em `app.js`, `index.html`, `animais.js` nem nos módulos dos outros animais.**
 
 Para pôr um animal novo na app:
-1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo`, `som`).
+1. Acrescentar a linha em `animais.js` → `ANIMAIS` (`id`, `nome`, `grupo: 'animais'`, `som`). Por agora só há o grupo «Animais»; mais tarde virão coisas, elementos, números…
 2. Criar `animais/<id>.js` seguindo estas regras.
 3. Acrescentar `<script src="animais/<id>.js"></script>` no `index.html`, antes de `app.js`.
 4. Voz e som: gravados pela família (ver §10). O habitat **não tem nome** escrito nem dito.
@@ -157,6 +160,21 @@ Regras do contrato:
 | Partículas (fiapos, pó) | Nunca nascem em cima da cara |
 | Animal que se deita dentro do habitat | A cópia da parte da frente só aparece quando o animal já passou esse plano |
 | Testes | `_teste.semEventos()` para desligar os acontecimentos raros durante as fotos |
+| Caminho até ao habitat perto de uma seta (cavalo, vaca, revisão de 18-10) | Andar até ao meio (x≈830), virar-se e dar passos de lado até à porta; a porta/cancela só abre depois. Na volta, o mesmo ao contrário |
+| Juba ou coroa de pelo numa cabeça que roda (leão) | Madeixas presas a 2–3 anéis 3D atrás da cara; atraso com mola da velocidade da cabeça e uma onda que dá a volta ao anel; um anel pequeno na nuca dá volume de perfil |
+| `vector-effect` num `<g>` | Não se herda: pôr `vector-effect="non-scaling-stroke"` em cada path dentro de elipsoides escalados |
+| Sombra do interior por cima de um animal com a cabeça de fora | Sombra como peça do animal, com z entre o tronco e a cabeça/patas da frente |
+| Pálpebra fechada que parece um disco pálido | Pintar a pálpebra com o gradiente da cabeça |
+| Riscas num perfil 2,5D (zebra, tigre) | Riscas no espaço local do perfil, recortadas por um `clipPath` com o próprio perfil: andam com a peça e não «nadam»; no pescoço segmentado, o intervalo branco fica em cima da junta |
+| Pó que fica no pelo | Manchas com gradiente radial transparente; elipses lisas parecem doença |
+| Ave pousada no dorso | Voa embora quando o animal reage ou sai, senão fica «montada» na ida ao habitat |
+| Riscas em anel num abdómen (abelha) | Faixa preenchida entre dois anéis, não um traço grosso |
+| Asas muito rápidas sem filtros | Duas poses fantasma que trocam de lado a cada quadro, opacidade 0,5 cada |
+| Olhos contentes | Só a pálpebra de baixo sobe; com a de cima descida parecem sonolentos ou zangados |
+| Animal que paira (abelha) | A flutuação substitui a respiração; a inclinação sai da velocidade suavizada |
+| Ícone com gradientes com id (cão, gato) | Cada leitura de `icone` devolve uma cópia com ids próprios (`<id>-iconeN-…`) |
+| Demasiados elementos SVG | Juntar num só `path` por estilo as peças paradas que não se sobrepõem (ervas, tábuas, pedras, folíolos): o aspeto fica igual |
+| `fotografar.js` partilhado | Cada agente arranca o seu numa porta livre e confirma que o PNG apareceu |
 
 ---
 

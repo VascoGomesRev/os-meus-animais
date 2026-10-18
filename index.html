@@ -51,8 +51,8 @@ button{font:inherit;color:inherit}
 /* Menu de grupos */
 #menu{z-index:9;background:#FFE9C7;padding:calc(10px + env(safe-area-inset-top,0px)) 3vw;overflow:hidden}
 #menu h2{font-family:var(--f-titulo);font-weight:800;font-size:min(7vh,34px);margin:0 0 1vh;line-height:1}
-.grupos{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5vh 1.5vw;width:100%;max-width:1100px}
-.grupo{border:0;border-radius:3vh;background:#fff;box-shadow:0 .8vh 0 var(--sombra);padding:1vh .5vw .6vh;display:grid;justify-items:center;gap:.3vh;touch-action:none;cursor:pointer}
+.grupos{display:flex;flex-wrap:wrap;justify-content:center;gap:1.5vh 1.5vw;width:100%;max-width:1100px}
+.grupo{width:calc((100% - 6vw) / 5);border:0;border-radius:3vh;background:#fff;box-shadow:0 .8vh 0 var(--sombra);padding:1vh .5vw .6vh;display:grid;justify-items:center;gap:.3vh;touch-action:none;cursor:pointer}
 .grupo:active{transform:translateY(.4vh);box-shadow:0 .4vh 0 var(--sombra)}
 .grupo svg{width:min(22vh,14vw);height:min(22vh,14vw);overflow:visible;filter:drop-shadow(0 0 0 #fff) drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff)}
 .grupo b{font-family:var(--f-titulo);font-weight:800;font-size:min(4.2vh,22px);line-height:1;color:var(--tinta)}
@@ -103,7 +103,7 @@ button{font:inherit;color:inherit}
   <div id="nome" aria-live="polite"></div>
   <button id="ant" class="seta" aria-label="Animal anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4 7 12l8 8"/></svg></button>
   <button id="seg" class="seta" aria-label="Animal seguinte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 4 8 8-8 8"/></svg></button>
-  <button id="casa-btn" aria-label="Escolher grupo de animais"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2618" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></button>
+  <button id="casa-btn" aria-label="Voltar ao menu"><svg viewBox="0 0 24 24" fill="none" stroke="#3A2618" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg></button>
   <div id="coracao" aria-hidden="true"><span class="anel"></span><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6.2a5.3 5.3 0 0 1 9.3 5.8C19 16.4 12 21 12 21z" fill="none" stroke="#E8457A" stroke-width="2"/><path class="cheio" d="M12 21s-7-4.6-9.3-9A5.3 5.3 0 0 1 12 6.2a5.3 5.3 0 0 1 9.3 5.8C19 16.4 12 21 12 21z" fill="#E8457A"/></svg></div>
   <button id="pais" aria-label="Área dos pais: manter premido 3 segundos"><span class="anel"></span><svg viewBox="0 0 24 24" fill="none" stroke="#3A2618" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
 </div>
@@ -118,7 +118,7 @@ button{font:inherit;color:inherit}
 
 <div id="menu" class="cobre" hidden>
   <div style="width:100%;display:grid;justify-items:center">
-    <h2>Que animais queres ver?</h2>
+    <h2>O que queres ver?</h2>
     <div class="grupos" id="grupos"></div>
   </div>
 </div>
@@ -130,7 +130,7 @@ button{font:inherit;color:inherit}
 
   <h3>Ordem dos animais</h3>
   <div class="escolha">
-    <button class="btn" id="ord-grupos" aria-pressed="true">Por grupos</button>
+    <button class="btn" id="ord-grupos" aria-pressed="true">Pela ordem</button>
     <button class="btn" id="ord-aleat" aria-pressed="false">Aleatória</button>
   </div>
 
@@ -169,6 +169,9 @@ button{font:inherit;color:inherit}
 <script src="animais/vaca.js"></script>
 <script src="animais/ovelha.js"></script>
 <script src="animais/passarinho.js"></script>
+<script src="animais/leao.js"></script>
+<script src="animais/zebra.js"></script>
+<script src="animais/abelha.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

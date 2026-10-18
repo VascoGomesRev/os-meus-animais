@@ -475,10 +475,13 @@ MODULOS.girafa = (() => {
     const rnd = semente(5);
     let s = `<rect y="540" width="1600" height="110" fill="url(#${p}planicie)"/>`;
     s += acaciaLongeSVG(118, 556, .9, '#8E9677') + acaciaLongeSVG(430, 560, .7, '#97A07F') + acaciaLongeSVG(812, 558, .6, '#99A282') + acaciaLongeSVG(1286, 552, 1, '#8A9372') + acaciaLongeSVG(1500, 562, .75, '#949C7C') + acaciaLongeSVG(960, 552, .5, '#A0A887');
+    const tufos = { '#C99A4C': '', '#F2DA9C': '' };   // tufos juntos num só path por cor (menos elementos SVG)
     for (let i = 0; i < 160; i++) {
       const x = rnd() * 1600, y = 548 + rnd() * 92, h = 2 + (y - 540) * .05 + rnd() * 3;
-      s += `<path d="M${n(x)},${n(y)} l${n(-1 - rnd())},${n(-h)} M${n(x + 2)},${n(y)} l${n(1 + rnd())},${n(-h * .9)}" stroke="${rnd() < .5 ? '#C99A4C' : '#F2DA9C'}" stroke-width="1.1" opacity=".6"/>`;
+      const d = `M${n(x)},${n(y)} l${n(-1 - rnd())},${n(-h)} M${n(x + 2)},${n(y)} l${n(1 + rnd())},${n(-h * .9)}`;
+      tufos[rnd() < .5 ? '#C99A4C' : '#F2DA9C'] += d;
     }
+    for (const cor in tufos) s += `<path d="${tufos[cor]}" stroke="${cor}" stroke-width="1.1" opacity=".6"/>`;
     s += `<g class="gr-zebras">${zebraSVG(0)}${zebraSVG(1)}${zebraSVG(2)}</g>${elefanteSVG()}`;
     s += `<g class="gr-redem" display="none" opacity="0"><g class="gr-redemIn">${[0, 1, 2, 3, 4, 5].map(i => `<ellipse class="gr-rd${i}" cx="0" cy="${-i * 14}" rx="${4 + i * 3.2}" ry="${3 + i * .9}" fill="none" stroke="#E7CB92" stroke-width="${3.5 - i * .3}" opacity="${.75 - i * .08}"/>`).join('')}
       <path d="M-4,0 C-10,-30 -6,-56 -18,-84 L20,-84 C8,-56 10,-30 4,0 Z" fill="url(#${p}redemoinho)" opacity=".5"/>
@@ -490,16 +493,21 @@ MODULOS.girafa = (() => {
     let s = `<path d="M0,604 C200,592 420,600 640,594 C900,588 1180,600 1600,590 L1600,900 L0,900 Z" fill="url(#${p}erva)"/>`;
     // carreiro de terra batida até à acácia
     s += `<path d="M330,900 C420,850 560,812 720,800 C860,790 980,778 1070,768 C1110,763 1150,760 1190,760 L1196,772 C1100,778 980,792 860,808 C700,826 560,856 470,900 Z" fill="url(#${p}caminho)"/>`;
+    const erva = new Map();   // ervas juntas num só path por cor e espessura (menos elementos SVG)
     for (let i = 0; i < 420; i++) {
       const y = 600 + Math.pow(rnd(), .8) * 300, x = rnd() * 1640 - 20, k = .4 + (y - 600) / 300 * 1.1;
       const h = (6 + rnd() * 9) * k, cor = escolhe(['#B98330', '#C99140', '#EFCB7C', '#F6DA92', '#D8A54C', '#A87428']);
       const inc = (rnd() - .5) * 6 * k;
-      s += `<path d="M${n(x)},${n(y)} q${n(inc * .4)},${n(-h * .6)} ${n(inc)},${n(-h)} M${n(x + 2 * k)},${n(y)} q${n(-inc * .3 + 2)},${n(-h * .5)} ${n(-inc * .5 + 3 * k)},${n(-h * .8)}" stroke="${cor}" stroke-width="${n(1 + k * .6)}" fill="none" stroke-linecap="round" opacity=".75"/>`;
+      const chave = cor + '|' + (Math.round((1 + k * .6) * 5) / 5).toFixed(1);   // espessura arredondada a 0,2
+      erva.set(chave, (erva.get(chave) || '') + `M${n(x)},${n(y)} q${n(inc * .4)},${n(-h * .6)} ${n(inc)},${n(-h)} M${n(x + 2 * k)},${n(y)} q${n(-inc * .3 + 2)},${n(-h * .5)} ${n(-inc * .5 + 3 * k)},${n(-h * .8)}`);
     }
+    for (const [chave, d] of erva) { const [cor, w] = chave.split('|'); s += `<path d="${d}" stroke="${cor}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity=".75"/>`; }
+    let pedra = '', brilho = '';   // pedrinhas num só path por cor
     for (let i = 0; i < 26; i++) {
       const x = rnd() * 1600, y = 640 + rnd() * 250;
-      s += `<ellipse cx="${n(x)}" cy="${n(y)}" rx="${n(2 + rnd() * 3)}" ry="${n(1.2 + rnd() * 1.4)}" fill="#A88A64" opacity=".7"/><ellipse cx="${n(x - .8)}" cy="${n(y - .6)}" rx="${n(1.2 + rnd())}" ry=".8" fill="#E9D6B0" opacity=".7"/>`;
+      pedra += elipseD(x, y, 2 + rnd() * 3, 1.2 + rnd() * 1.4); brilho += elipseD(x - .8, y - .6, 1.2 + rnd(), .8);
     }
+    s += `<path d="${pedra}" fill="#A88A64" opacity=".7"/><path d="${brilho}" fill="#E9D6B0" opacity=".7"/>`;
     return s;
   }
   function termiteiraSVG(p) {
@@ -834,6 +842,8 @@ MODULOS.girafa = (() => {
     const H = {};
     for (const k of ['ossoE', 'ossoD', 'orelhaE', 'orelhaD', 'olhoE', 'olhoD', 'narE', 'narD', 'bochE', 'bochD', 'sobrE', 'sobrD', 'cabMan', 'bocaInt'])
       H[k] = q('.gr-' + k);
+    H.cabIn = q('.gr-cab-in'); H.contCab = q('.gr-cab-in > ellipse');   // para pôr a orelha do lado de cá à frente do crânio de perfil
+    let orelhaFrente = { f: false, k: '' };
     H.ponte = [q('.gr-ponteC'), q('.gr-ponte')]; H.foc = [q('.gr-focC'), q('.gr-foc')]; H.queixo = [q('.gr-queixoC'), q('.gr-queixo')];
     H.ponteR = [q('.gr-ponteCr'), q('.gr-ponteR')]; H.ponteL = q('.gr-ponteL'); H.boca = q('.gr-boca');
     H.iris = [q('.gr-irisE'), q('.gr-irisD')];
@@ -997,6 +1007,12 @@ MODULOS.girafa = (() => {
       const E = estadoCabeca({ Y, beta, oE: P.oE + IMP.twE, oD: P.oD + IMP.twD, orelhas: P.orelhas + P.somB * 10, fecho, feliz: P.feliz, sobr: P.sobr,
         boca: Math.max(P.boca, P.somB), mastX: P.mastX, mastY: P.mastY, olharX: P.olharX, olharY: P.olharY, nariz: P.nariz, sorriso: P.sorriso, olhoEsc: P.olhoEsc });
       for (const k of ['ossoE', 'ossoD', 'orelhaE', 'orelhaD', 'olhoE', 'olhoD', 'narE', 'narD', 'bochE', 'bochD', 'sobrE', 'sobrD', 'cabMan', 'bocaInt']) poe(H[k], E.t[k]);
+      // quase de perfil, a orelha do lado de cá fica toda atrás do crânio: passa para a frente dele (por baixo do focinho)
+      const kPerto = Y > 0 ? 'orelhaE' : 'orelhaD', kLonge = Y > 0 ? 'orelhaD' : 'orelhaE', orFrente = Math.abs(Y) > .8;
+      if (orFrente !== orelhaFrente.f || kPerto !== orelhaFrente.k) {
+        orelhaFrente = { f: orFrente, k: kPerto };
+        H.cabIn.insertBefore(H[kLonge], H.contCab); H.cabIn.insertBefore(H[kPerto], orFrente ? H.ponte[1] : H.contCab);
+      }
       for (const k of ['olhoE', 'olhoD', 'narE', 'narD', 'bochE', 'bochD', 'sobrE', 'sobrD']) atr(H[k], 'opacity', String(E.op[k]));
       poeT(H.ponte, E.t.ponte); poeT(H.foc, E.t.foc); poeT(H.queixo, E.t.queixo);
       atr(H.ponteR[0], 'width', String(E.a.ponteL)); atr(H.ponteR[1], 'width', String(E.a.ponteL)); atr(H.ponteL, 'width', String(Math.max(1, n(E.a.ponteL - 26))));

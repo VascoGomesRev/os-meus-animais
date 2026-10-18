@@ -797,8 +797,9 @@ MODULOS.vaca = (() => {
 
   /* ================= 6) montar() ================= */
   // Pose de repouso (fora): de pé, a 3/4 virada para a direita e para nós, a cara a olhar para a criança
-  const REP = { X: 590, Z: 0, th: .62 };
+  const REP = { X: 620, Z: 0, th: .62 };            // X ≥ 620: a ponta da cauda fica fora da seta esquerda
   const APROX = { x: 975, z: 80 };                   // onde se vira para a porta (cascos a y ≤ 812)
+  const APROX_E = { x: 830, z: 80 };                 // à esquerda da porta: vira-se aqui (a andar até APROX a cabeça passava por baixo da seta direita)
   const DENTRO = { x: 932, z: -262, th: PI / 2 - .4 };
   const ENTRADA = { x: PORTA.x, z: -250 };           // fim do passo pela porta (depois vira-se e chega-se para a esquerda)
   const ALT_DEIT = -122;                             // o tronco desce até à barriga tocar no feno
@@ -1551,35 +1552,39 @@ MODULOS.vaca = (() => {
       if (P.fAbre > 1 || P.fAvanca > 1) { P.fAbre = 0; P.fAvanca = 0; }
       olhar.foco = () => PT.porta; olhar.rapido = true;
       yield* juntos(recomporPes(140), tw(Object.assign({}, ROSTO0, sem(CORPO0, 'cTurn', 'fAbre', 'fAvanca'), { orelhas: 10 }), 140, esai));
-      const thA = Math.atan2(APROX.z - P.Z, APROX.x - P.X);
-      yield* juntos(virar(thA, 280), tw({ cTurn: 0, nA: 20 }, 280));
+      const thA = Math.atan2(APROX_E.z - P.Z, APROX_E.x - P.X);
+      yield* juntos(virar(thA, 260), tw({ cTurn: 0, nA: 20 }, 260));
       olhar.rapido = false; olhar.foco = null;
-      yield* juntos(andarPara(APROX.x, APROX.z, 980, PASSO, false), tw({ nA: 18, cB: 58 }, 980));
-      const thP = Math.atan2(ENTRADA.z - P.Z, ENTRADA.x - P.X);
-      yield* juntos(virar(thP, 460), tw({ porta: 1 }, 440, eio), tw({ nA: 6, nC: -4, cB: 72, cTurn: 0 }, 460));
+      yield* juntos(andarPara(APROX_E.x, APROX_E.z, 600, PASSO, false), tw({ nA: 18, cB: 58 }, 600));
+      // vira-se para a porta à esquerda dela e dá uns passos de lado até à frente; a cancela (abre para fora, para a esquerda) abre depois
+      const thP = Math.atan2(ENTRADA.z - APROX.z, ENTRADA.x - APROX.x);
+      yield* juntos(virar(thP, 400), tw({ nA: 6, nC: -4, cB: 72, cTurn: 0 }, 400));
+      yield* andarPara(APROX.x, APROX.z, 380, PASSO, false);
+      yield* tw({ porta: 1, nA: 5, cB: 73 }, 300, eio);
       impulso('porta', -6, 500, 'mola');
       recortar = true;
-      yield* juntos(andarPara(ENTRADA.x, ENTRADA.z, 700, PASSO, false), tw({ nA: 4, cB: 74 }, 700));
+      yield* juntos(andarPara(ENTRADA.x, ENTRADA.z, 620, PASSO, false), tw({ nA: 4, cB: 74 }, 620));
       yield* juntos(virar(DENTRO.th, 480), tw({ X: DENTRO.x, Z: DENTRO.z }, 300), tw({ nA: 30, nC: -6, cB: 50, cTurn: DEITADO.cTurn }, 480), (function* () { yield* tw({ porta: 0 }, 380, eentra);
         impulso('porta', 8, 800, 'mola'); soltar('pa', AB.x0 + 40, 690, 3, { vy: -.2, vx: -.05 }); soltar('po', 1000, 772, 3); })());
-      yield* juntos(deitar(600), tw(Object.assign({}, DEITADO, ROSTO0, { orelhas: 8 }), 600));
+      yield* juntos(deitar(540), tw(Object.assign({}, DEITADO, ROSTO0, { orelhas: 8 }), 540));
       impulso('twE', -16, 400); impulso('sino', 12, 800, 'mola');
       modo = 'dentro';
     }
     /* --- volta: levanta-se (traseira primeiro), a cancela abre, sai de frente, abana a cabeça, vira-se e volta --- */
     function* volta() {
       modo = 'voltando'; reagindo = false;
-      yield* juntos(levantar(520, PI / 2, PORTA.x), tw(Object.assign({}, ROSTO0, { nA: 22, nC: -6, nY: 0, nTh: 0, cTurn: 0, cB: 56, cRoll: 0, boca: 0, mastX: 0, mastY: 0 }), 520),
-        (function* () { yield* espera(220); yield* tw({ porta: 1 }, 300, eio); })());
-      yield* juntos(andarPara(PORTA.x, APROX.z, 640, PASSO, false), tw({ nA: 20, cB: 54, cTurn: .2 }, 640));
+      yield* juntos(levantar(480, PI / 2, PORTA.x), tw(Object.assign({}, ROSTO0, { nA: 22, nC: -6, nY: 0, nTh: 0, cTurn: 0, cB: 56, cRoll: 0, boca: 0, mastX: 0, mastY: 0 }), 480),
+        (function* () { yield* espera(200); yield* tw({ porta: 1 }, 280, eio); })());
+      yield* juntos(andarPara(PORTA.x, APROX.z, 560, PASSO, false), tw({ nA: 20, cB: 54, cTurn: .2 }, 560));
       recortar = false;
-      const thV = Math.atan2(REP.Z - P.Z, REP.X - P.X) + TAU;
-      yield* juntos(virar(thV, 380), tw({ porta: 0 }, 380, eio), (function* () { yield* espera(260); impulso('porta', 5, 500, 'mola'); })(),
-        durante(380, u => { P.cRoll = 12 * Math.sin(u * PI * 3) * sino(u); P.oE = 20 * sino(u); P.oD = 20 * sino(u); }));
+      // vira-se só um pouco (de frente para nós, meio para a esquerda) e vai assim até ao sítio, meio de lado:
+      // virada de todo para a esquerda, a garupa passava pela seta direita ao virar e a cabeça pela seta esquerda ao chegar
+      yield* juntos(virar(PI / 2 + .45, 300), tw({ porta: 0 }, 300, eio), (function* () { yield* espera(220); impulso('porta', 5, 500, 'mola'); })(),
+        durante(300, u => { P.cRoll = 12 * Math.sin(u * PI * 3) * sino(u); P.oE = 20 * sino(u); P.oD = 20 * sino(u); }));
       impulso('sino', 18, 900, 'mola');
       P.cRoll = 0; P.oE = 0; P.oD = 0;
-      yield* andarPara(REP.X, REP.Z, 820, PASSO, false);
-      yield* juntos(virar(REP.th, 500), tw(Object.assign({}, CORPO0, ROSTO0), 500));
+      yield* juntos(andarPara(REP.X, REP.Z, 820, PASSO, false), tw({ cTurn: 0 }, 820));
+      yield* juntos(virar(REP.th, 300), tw(Object.assign({}, CORPO0, ROSTO0), 300));
       P.th = REP.th;
       modo = 'fora';
     }

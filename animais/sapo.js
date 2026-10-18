@@ -553,14 +553,16 @@ MODULOS.sapo = (() => {
     const pts = [];
     for (let i = 0; i <= 14; i++) { pts.push([px, py, a]); px += Math.cos(a) * len / 14; py += Math.sin(a) * len / 14; a += k / 14; }
     s += `<path d="${liso(pts.map(p => [p[0], p[1]]))}" stroke="${cor}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+    let d = '';                                // folíolos opacos da mesma cor: um só path (menos elementos)
     for (let i = 1; i < 14; i++) {
       const [qx, qy, qa] = pts[i], l = 22 * Math.sin(PI * i / 14) + 6;
       for (const sg of [-1, 1]) {
         const b = qa + sg * 1.1;
         const ex = qx + Math.cos(b) * l, ey = qy + Math.sin(b) * l;
-        s += `<path d="M${n(qx)},${n(qy)} Q${n((qx + ex) / 2 + Math.cos(qa) * 5)},${n((qy + ey) / 2 + Math.sin(qa) * 5)} ${n(ex)},${n(ey)} Q${n((qx + ex) / 2 - Math.cos(qa) * 3)},${n((qy + ey) / 2 - Math.sin(qa) * 3)} ${n(qx)},${n(qy)} Z" fill="${cor}"/>`;
+        d += `M${n(qx)},${n(qy)} Q${n((qx + ex) / 2 + Math.cos(qa) * 5)},${n((qy + ey) / 2 + Math.sin(qa) * 5)} ${n(ex)},${n(ey)} Q${n((qx + ex) / 2 - Math.cos(qa) * 3)},${n((qy + ey) / 2 - Math.sin(qa) * 3)} ${n(qx)},${n(qy)} Z`;
       }
     }
+    s += `<path d="${d}" fill="${cor}"/>`;
     return `<g transform="translate(${x},${y})">${s}</g>`;
   }
   function florestaSVG() {
@@ -578,15 +580,18 @@ MODULOS.sapo = (() => {
   }
   function margemLongeSVG() {
     const r = semente(77);
-    let erva = '';
+    const ervaD = { '#5C8A3A': '', '#7BA84C': '' };   // erva parada: um path por cor
     for (let x = 0; x < 1600; x += 7 + r() * 9) {
       const h = 8 + r() * 18, b = HORIZ + 2 + r() * 4;
-      erva += `<path d="M${n(x)},${n(b)} q${n(1 + r() * 3)},${n(-h * .6)} ${n(-2 + r() * 6)},${n(-h)}" stroke="${r() < .5 ? '#5C8A3A' : '#7BA84C'}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+      const d = `M${n(x)},${n(b)} q${n(1 + r() * 3)},${n(-h * .6)} ${n(-2 + r() * 6)},${n(-h)}`;
+      ervaD[r() < .5 ? '#5C8A3A' : '#7BA84C'] += d;
     }
+    const erva = Object.keys(ervaD).map(c => `<path d="${ervaD[c]}" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round"/>`).join('');
     let fetos = '';
     for (const [x, a] of [[640, -100], [700, -70], [905, -110], [960, -75], [1405, -105], [1460, -70]]) fetos += samambaiaSVG(x, HORIZ + 4, 60, a, a < -90 ? -1.1 : 1.1, '#5E9444');
-    let juncos = '';
-    for (let i = 0; i < 26; i++) { const x = 1040 + r() * 160, h = 30 + r() * 46; juncos += `<path d="M${n(x)},${HORIZ + 4} q${n(-2 + r() * 4)},${n(-h * .5)} ${n(-4 + r() * 8)},${n(-h)}" stroke="#4E7F36" stroke-width="3" fill="none" stroke-linecap="round"/>`; }
+    let juncosD = '';
+    for (let i = 0; i < 26; i++) { const x = 1040 + r() * 160, h = 30 + r() * 46; juncosD += `M${n(x)},${HORIZ + 4} q${n(-2 + r() * 4)},${n(-h * .5)} ${n(-4 + r() * 8)},${n(-h)}`; }
+    const juncos = `<path d="${juncosD}" stroke="#4E7F36" stroke-width="3" fill="none" stroke-linecap="round"/>`;
     return `<path d="M0,${HORIZ - 4} C300,${HORIZ - 8} 700,${HORIZ - 2} 1000,${HORIZ - 6} C1250,${HORIZ - 9} 1450,${HORIZ - 3} 1600,${HORIZ - 6} L1600,${HORIZ + 6} L0,${HORIZ + 6} Z" fill="#4C6A33"/>
       <path d="M0,${HORIZ + 4} C400,${HORIZ + 7} 900,${HORIZ + 3} 1600,${HORIZ + 6}" stroke="#2F4A24" stroke-width="3" fill="none" opacity=".6"/>
       ${fetos}${erva}${juncos}
@@ -678,12 +683,12 @@ MODULOS.sapo = (() => {
   }
   function relvaSVG(x0, x1, yf, alt, nn, sem, cores) {      // tufos de erva ao longo de uma linha
     const r = semente(sem);
-    let s = '';
+    const d = cores.map(() => '');            // erva parada: um path por cor (menos elementos)
     for (let i = 0; i < nn; i++) {
       const x = lerp(x0, x1, r()), y = yf(x) + r() * 6, h = alt * (.5 + r() * .7), inc = -6 + r() * 12;
-      s += `<path d="M${n(x - 2.5)},${n(y)} Q${n(x + inc * .4)},${n(y - h * .6)} ${n(x + inc)},${n(y - h)} Q${n(x + inc * .3 + 1.5)},${n(y - h * .55)} ${n(x + 2.5)},${n(y)} Z" fill="${cores[i % cores.length]}"/>`;
+      d[i % cores.length] += `M${n(x - 2.5)},${n(y)} Q${n(x + inc * .4)},${n(y - h * .6)} ${n(x + inc)},${n(y - h)} Q${n(x + inc * .3 + 1.5)},${n(y - h * .55)} ${n(x + 2.5)},${n(y)} Z`;
     }
-    return s;
+    return d.map((dd, i) => `<path d="${dd}" fill="${cores[i]}"/>`).join('');
   }
   function margemPertoSVG() {
     const r = semente(61);
@@ -1418,7 +1423,7 @@ MODULOS.sapo = (() => {
       yield* tw({ pupila: .8, olhosEsc: 1.05, hY: 6 }, 110, esai);
       yield* salto({ x: BORDA.x, y: BORDA.y, h: 80, alt: 44, ms: 380, forca: .45, prep: 110, pose: SENTADO });
       yield* tw(Object.assign(agachar(SENTADO, 1.15), { sq: .12, hY: 0 }), 230, eio);
-      yield* salto({ x: NO_PAD.x, y: NO_PAD.y, h: 72, alt: 178, ms: 630, forca: 1, prep: 0, pose: SENTADO, sombraOp: .35,
+      yield* salto({ x: NO_PAD.x, y: NO_PAD.y, h: 72, alt: 178, ms: 630, forca: .8, prep: 0, pose: SENTADO, sombraOp: .35,   // forca < 1: as patas esticadas não chegam à seta esquerda
         aoDescolar: () => { moverPara('voo'); },
         aoAterrar: () => {
           moverPara('nenufar'); noPad = true; pad.off = 0; pad.dip = 0; pad.v += 240; pad.va += 9;
@@ -1435,9 +1440,9 @@ MODULOS.sapo = (() => {
       modo = 'voltando'; reagindo = false;
       yield* arrumar(120);
       focar(() => [BORDA.x - 30, BORDA.y - 40]);
-      yield* salto({ x: NO_PAD.x - 4, y: NO_PAD.y, h: -78, alt: 22, ms: 270, forca: .3, prep: 80, pose: ORGULHO, aoAterrar: () => { pad.v += 70; } });
+      yield* salto({ x: NO_PAD.x - 50, y: NO_PAD.y, h: -78, alt: 22, ms: 270, forca: .3, prep: 80, pose: ORGULHO, aoAterrar: () => { pad.v += 70; } });   // salta da parte esquerda do nenúfar: as patas esticadas não chegam à seta direita
       yield* tw(Object.assign(agachar(ORGULHO, 1.1), { sq: .1, feliz: 0 }), 180, eio);
-      yield* salto({ x: BORDA.x, y: BORDA.y, h: -82, alt: 150, ms: 510, forca: 1, prep: 0, pose: SENTADO, sombraOp: .35,
+      yield* salto({ x: BORDA.x, y: BORDA.y, h: -82, alt: 150, ms: 510, forca: .8, prep: 0, pose: SENTADO, sombraOp: .35,
         aoDescolar: () => {
           P.y += pad.off; noPad = false; moverPara('voo'); pad.v += 210; pad.va -= 7;
           onda(PAD.cx, PAD.cy + 4, PAD.rx + 2, PAD.rx + 120, 1300, .85); onda(PAD.cx, PAD.cy + 4, PAD.rx, PAD.rx + 70, 1000, .6, 250);

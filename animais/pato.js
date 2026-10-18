@@ -406,7 +406,7 @@ MODULOS.pato = (() => {
       <circle cx="156.4" cy="57.6" r="2.3" fill="#FFFFFF"/><circle cx="162.4" cy="63.4" r="1" fill="#FFFFFF"/>
       <ellipse cx="160" cy="76" rx="7" ry="4.4" fill="#F7A3A8" opacity=".7"/>
       <path d="M148,40 C146,30 138,24 132,28 C128,31 131,36 135,34" stroke="${C}" stroke-width="4.2" fill="none" stroke-linecap="round"/><path d="M148,40 C146,30 138,24 132,28 C128,31 131,36 135,34" stroke="#FFFFFF" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <path d="M8,150 C40,142 70,146 100,150 C130,154 170,146 212,150 L212,160 A106,106 0 0 1 8,160 Z" fill="#6AB3C6" opacity=".72"/>
+      <path d="M8,150 C40,142 70,146 100,150 C130,154 170,146 212,150 L212,160 L203.5,160 A106,106 0 0 1 16.5,160 L8,160 Z" fill="#6AB3C6" opacity=".72"/>
       <path d="M40,154 C70,149 140,149 180,154" stroke="#E8F7FA" stroke-width="2.4" fill="none" opacity=".8"/>`;
   }
 
@@ -552,11 +552,14 @@ MODULOS.pato = (() => {
   }
   function pradoSVG() {
     const r = semente(5);
-    let erva = '';
+    const erva2 = { '#6FA640': '', '#93C45C': '' };   // um só path por cor: menos elementos
     for (let i = 0; i < 150; i++) {
       const x = r() * 1600, y = 560 + Math.pow(r(), 1.3) * 150, h = 6 + (y - 540) / 18 + r() * 6;
-      erva += `<path d="M${n(x)},${n(y)} q${n(-1 + r() * 2)},${n(-h * .6)} ${n(-3 + r() * 6)},${n(-h)}" stroke="${r() < .5 ? '#6FA640' : '#93C45C'}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+      const d = `M${n(x)},${n(y)} q${n(-1 + r() * 2)},${n(-h * .6)} ${n(-3 + r() * 6)},${n(-h)}`;
+      erva2[r() < .5 ? '#6FA640' : '#93C45C'] += d;
     }
+    let erva = '';
+    for (const c in erva2) erva += `<path d="${erva2[c]}" stroke="${c}" stroke-width="2" fill="none" stroke-linecap="round"/>`;
     let flores = '';
     for (let i = 0; i < 26; i++) {
       const x = 260 + r() * 560, y = 620 + r() * 80, k = .7 + (y - 600) / 200;
@@ -569,21 +572,29 @@ MODULOS.pato = (() => {
       ${erva}${flores}`;
   }
   function malmequer(x, y, k) {
-    let p = '';
-    for (let a = 0; a < 360; a += 40) p += `<ellipse cx="${n(Math.cos(a * RAD) * 4.4 * k)}" cy="${n(Math.sin(a * RAD) * 2.6 * k)}" rx="${n(3 * k)}" ry="${n(1.5 * k)}" transform="rotate(${a},${n(Math.cos(a * RAD) * 4.4 * k)},${n(Math.sin(a * RAD) * 2.6 * k)})" fill="#FFFFFF"/>`;
-    return `<g transform="translate(${n(x)},${n(y)})"><path d="M0,0 l0,${n(8 * k)}" stroke="#5E8E36" stroke-width="1.4"/>${p}<ellipse rx="${n(2.4 * k)}" ry="${n(1.7 * k)}" fill="#F2C230"/></g>`;
+    let d = '';   // pétalas brancas sem contorno: um só path (elipse rodada = dois arcos)
+    const rx = n(3 * k), ry = n(1.5 * k);
+    for (let a = 0; a < 360; a += 40) {
+      const cx = n(Math.cos(a * RAD) * 4.4 * k), cy = n(Math.sin(a * RAD) * 2.6 * k), ex = Math.cos(a * RAD) * rx, ey = Math.sin(a * RAD) * rx;
+      d += `M${n(cx + ex)},${n(cy + ey)} A${rx},${ry} ${a} 1 0 ${n(cx - ex)},${n(cy - ey)} A${rx},${ry} ${a} 1 0 ${n(cx + ex)},${n(cy + ey)}Z`;
+    }
+    return `<g transform="translate(${n(x)},${n(y)})"><path d="M0,0 l0,${n(8 * k)}" stroke="#5E8E36" stroke-width="1.4"/><path d="${d}" fill="#FFFFFF"/><ellipse rx="${n(2.4 * k)}" ry="${n(1.7 * k)}" fill="#F2C230"/></g>`;
   }
   function celeiroSVG() {                                    // palheiro de pedra com telhado de telha, porta de madeira e palha no sótão
     const r = semente(71);
-    let pedras = '';
+    const ped = {};   // um só path por cor: menos elementos
     for (let fila = 0; fila < 8; fila++) {
       const y = 458 + fila * 14;
       for (let x = 1152 + (fila % 2) * 12; x < 1426; x += 22 + r() * 8) {
         if (x > 1246 && x < 1334 && y > 480) continue;
         const w = 18 + r() * 8;
-        pedras += `<rect x="${n(x)}" y="${n(y)}" width="${n(Math.min(w, 1428 - x))}" height="12" rx="4" fill="${['#C9C3B4', '#B4AD9C', '#D6D0C2', '#A69F8E'][(r() * 4) | 0]}"/>`;
+        const L = n(Math.min(w, 1428 - x)), c = ['#C9C3B4', '#B4AD9C', '#D6D0C2', '#A69F8E'][(r() * 4) | 0];
+        const q = n(Math.min(4, L / 2));
+        ped[c] = (ped[c] || '') + `M${n(x + q)},${n(y)} h${n(L - 2 * q)} a${q},4 0 0 1 ${q},4 v4 a${q},4 0 0 1 -${q},4 h${n(2 * q - L)} a${q},4 0 0 1 -${q},-4 v-4 a${q},4 0 0 1 ${q},-4Z`;
       }
     }
+    let pedras = '';
+    for (const c in ped) pedras += `<path d="${ped[c]}" fill="${c}"/>`;
     let telhas = '';
     for (let i = 0; i < 7; i++) { const y = 400 + i * 9; telhas += `<path d="M${n(1290 - (y - 386) * 2.3)},${y} L${n(1290 + (y - 386) * 2.3)},${y}" stroke="#93401F" stroke-width="1.4" opacity=".5"/>`; }
     let palha = '';
@@ -641,8 +652,10 @@ MODULOS.pato = (() => {
         <path d="M${x - 3},${n(t + 10)} C${x - 4},${n(t + 30)} ${x - 1},${n(t + 50)} ${x - 3},${n(b - 6)}" stroke="#5E3E1E" stroke-width="1.2" fill="none" opacity=".6"/>
         <circle cx="${x}" cy="${n(t + 30)}" r="1.6" fill="#3A2A1A"/><circle cx="${x}" cy="${n(t + 62)}" r="1.6" fill="#3A2A1A"/>`;
     }
+    const ev = { '#5E9636': '', '#7FB24A': '' };   // um só path por cor
+    for (let i = 0; i < 60; i++) { const x = -10 + r() * 770, b = base(x) + 2, h = 10 + r() * 14; const d = `M${n(x)},${n(b)} q${n(-2 + r() * 4)},${n(-h * .6)} ${n(-4 + r() * 8)},${n(-h)}`; ev[r() < .5 ? '#5E9636' : '#7FB24A'] += d; }
     let ervas = '';
-    for (let i = 0; i < 60; i++) { const x = -10 + r() * 770, b = base(x) + 2, h = 10 + r() * 14; ervas += `<path d="M${n(x)},${n(b)} q${n(-2 + r() * 4)},${n(-h * .6)} ${n(-4 + r() * 8)},${n(-h)}" stroke="${r() < .5 ? '#5E9636' : '#7FB24A'}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`; }
+    for (const c in ev) ervas += `<path d="${ev[c]}" stroke="${c}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
     return `<g>${travessas}${postes}${ervas}</g>`;
   }
   function sobreiroSVG() {                                   // sobreiro à esquerda (moldura): tronco descortiçado cor de tijolo, copa escura
@@ -724,17 +737,22 @@ MODULOS.pato = (() => {
   function primeiroPlanoSVG() {
     const r = semente(55);
     const juncos = JUNCOS.map((j, i) => j[0] === 'F' ? juncoSVG(`pt-junco${i}`, j[1], j[2], j[3], j[4], j[5], j[6]) : '').join('');
-    let tufos = '';
+    const tf = {};   // um só path por cor
     for (let i = 0; i < 70; i++) {
       const x = -10 + r() * 700, y = 852 + r() * 52, h = 22 + r() * 30, inc = -8 + r() * 16;
       if (x > margemX(y) - 10) continue;
-      tufos += `<path d="M${n(x - 3)},${n(y)} Q${n(x + inc * .4)},${n(y - h * .6)} ${n(x + inc)},${n(y - h)} Q${n(x + inc * .3 + 2)},${n(y - h * .55)} ${n(x + 3)},${n(y)} Z" fill="${['#3F7A26', '#5A9636', '#4A8A2E', '#6EA844'][i % 4]}"/>`;
+      const c = ['#3F7A26', '#5A9636', '#4A8A2E', '#6EA844'][i % 4];
+      tf[c] = (tf[c] || '') + `M${n(x - 3)},${n(y)} Q${n(x + inc * .4)},${n(y - h * .6)} ${n(x + inc)},${n(y - h)} Q${n(x + inc * .3 + 2)},${n(y - h * .55)} ${n(x + 3)},${n(y)} Z`;
     }
+    let tufos = '';
+    for (const c in tf) tufos += `<path d="${tf[c]}" fill="${c}"/>`;
     let flores = '';
     for (let i = 0; i < 9; i++) { const x = 230 + r() * 420, y = 790 + r() * 60; flores += malmequer(x, y, 1.4 + r() * .4); }
     let dentes = '';
     for (const [x, y] of [[330, 830], [520, 812]]) {
-      let f = ''; for (let a = 0; a < 360; a += 24) f += `<path d="M0,0 L${n(Math.cos(a * RAD) * 11)},${n(Math.sin(a * RAD) * 11)}" stroke="#FFFFFF" stroke-width="1.2" opacity=".9"/><circle cx="${n(Math.cos(a * RAD) * 11)}" cy="${n(Math.sin(a * RAD) * 11)}" r="1.6" fill="#FFFFFF"/>`;
+      let fl = '', fc = '';   // fios e sementes num path cada
+      for (let a = 0; a < 360; a += 24) { const cx = n(Math.cos(a * RAD) * 11), cy = n(Math.sin(a * RAD) * 11); fl += `M0,0 L${cx},${cy}`; fc += `M${n(cx - 1.6)},${cy} a1.6,1.6 0 1 0 3.2,0 a1.6,1.6 0 1 0 -3.2,0Z`; }
+      const f = `<path d="${fl}" stroke="#FFFFFF" stroke-width="1.2" opacity=".9"/><path d="${fc}" fill="#FFFFFF"/>`;
       dentes += `<g><path d="M${x},${y} C${x - 2},${y - 20} ${x + 2},${y - 40} ${x},${y - 56}" stroke="#6A9A3E" stroke-width="2.2" fill="none"/><g transform="translate(${x},${y - 60})"><circle r="10" fill="#FFFFFF" opacity=".35"/>${f}<circle r="2.6" fill="#C9B88A"/></g></g>`;
     }
     return `${juncos}${tufos}${flores}${dentes}

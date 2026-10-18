@@ -461,7 +461,7 @@ MODULOS.galo = (() => {
       <path d="M14,60 A106,106 0 0 1 206,60 Z" fill="#C9A6D2" opacity=".55"/>
       <circle cx="52" cy="132" r="30" fill="#FFF1C2"/><circle cx="52" cy="132" r="22" fill="#FFD36A"/>
       <path d="M4,136 C40,122 70,128 110,124 C150,120 180,128 216,134 L216,150 L4,150 Z" fill="#A99CC8"/>
-      <path d="M8,158 C60,148 160,148 212,158 A106,106 0 0 1 8,158 Z" fill="#C8A06A"/>
+      <path d="M15.5,158 C62,148 158,148 204.5,158 A106,106 0 0 1 15.5,158 Z" fill="#C8A06A"/>
       <path d="M86,120 C62,70 30,58 18,92 C34,80 54,88 70,126 Z" fill="#1F4A3E" stroke="${C}" stroke-width="2"/>
       <path d="M88,126 C68,92 42,90 32,116 C46,108 62,114 76,136 Z" fill="#2C6650" stroke="${C}" stroke-width="2"/>
       <path d="M90,132 C78,112 60,114 54,134 C64,130 74,134 82,142 Z" fill="#16241F" stroke="${C}" stroke-width="2"/>
@@ -489,7 +489,7 @@ MODULOS.galo = (() => {
   const PALT = (PAU.gy - PAU.y) / cE;                       // altura do cimo do pau acima do chão
   const NO_PAU = { x: 1046, h: 34 };                        // onde fica empoleirado
   const DESCOLA = { x: 984, gy: 732 };                      // de onde salta para o poleiro (à frente da paliçada)
-  const POUSA = { x: 866, gy: 738 };                        // onde aterra ao descer
+  const POUSA = { x: 840, gy: 738 };                        // onde aterra ao descer (a cauda não pode passar x 1180: seta)
   const ZPAU = PAU.gy / sE;
   const NUV = [{ x: 180, y: 120, k: 1 }, { x: 760, y: 70, k: .7 }, { x: 1180, y: 150, k: .9 }, { x: 1500, y: 96, k: .75 }];
   const SOL = { x: 560, y: 414 };
@@ -1647,8 +1647,9 @@ MODULOS.galo = (() => {
     function* idaAoPoleiro() {
       modo = 'indo'; reagindo = false;
       focar(() => [NO_PAU.x + 20, PAU.y - 40]);
-      yield* juntos(arrumar(120), virar(90, 300, true));
-      yield* andar(DESCOLA.x, 240);
+      // vira só até 45° e acaba de virar já a andar: a 90° no sítio a cauda entrava na zona da seta esquerda
+      yield* juntos(arrumar(120), virar(45, 260, true));
+      yield* andar(DESCOLA.x, 240, { cada: p => { P.h = lerp(45, 90, eio(Math.min(1, p * 2.5))); } });
       // antecipação: agacha-se, olha para cima e abre as asas
       yield* tw({ cH: BASE.cH - 30, sq: .07, cP: 32, aE: .45, aD: .45, batE: 60, batD: 60, hy: BASE.hy - 14, hP: 20 }, 190, esai);
       soltarPes(); voo = true; alvoPau = true;
@@ -1684,7 +1685,7 @@ MODULOS.galo = (() => {
       modo = 'voltando'; reagindo = false;
       focar(() => [REPOUSO.x - 60, REPOUSO.gy - 120]);
       yield* juntos(arrumar(100), tw({ aD: .7, batD: -22, cP: POLEIRO.cP - 6, puff: .3 }, 200, eio));
-      yield* juntos(tw({ aD: 0, batD: 30, puff: 0 }, 180, eio), virar(-60, 200, true));
+      yield* juntos(tw({ aD: 0, batD: 30, puff: 0 }, 180, eio), virar(0, 200, true));   // vira-se de frente: a cauda não entra na zona da seta direita
       yield* tw({ cH: POLEIRO.cH - 20, sq: .06, cP: 30, aE: .5, aD: .5, batE: 60, batD: 60 }, 120, esai);
       soltarPes(); voo = true; alvoPau = false; pau.v -= 200;
       const x0 = P.x, g0 = P.gy, y0 = P.y, h0 = P.h;

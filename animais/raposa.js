@@ -67,9 +67,9 @@ MODULOS.raposa = (() => {
   const KZ = 0.18;           // quanto a profundidade (z) mexe no y do ecrã: vista ligeiramente de cima
   const HC = 140;            // altura do centro do tronco quando está em pé
   const R = 58;              // raio do crânio
-  const REP = { x: 545, z: 112, th: 0.35 };     // sítio de descanso no bosque (virada a 3/4 para a direita)
+  const REP = { x: 600, z: 112, th: 0.35 };     // sítio de descanso no bosque (virada a 3/4 para a direita)
   const TOCA = { x: 1000, z: -140 };             // centro da boca da toca e profundidade onde se deita lá dentro
-  const MONTE = { x: 380, z: 206 };              // monte de folhas onde espreita o rato
+  const MONTE = { x: 480, z: 206 };              // monte de folhas onde espreita o rato
   const CO = '#4A1E0C';                          // contorno castanho-avermelhado escuro
   const NSS = 'vector-effect="non-scaling-stroke"';
   const LC = 26, CW = [14, 22, 30, 34, 33, 28, 19];   // cauda: comprimento e meia-largura de cada segmento
@@ -392,11 +392,27 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
 <radialGradient id="${u}somb"><stop offset="0" stop-color="#3A200C" stop-opacity=".45"/><stop offset="1" stop-color="#3A200C" stop-opacity="0"/></radialGradient>
 <radialGradient id="${u}cisco"><stop offset="0" stop-color="#FFFBE8" stop-opacity="1"/><stop offset="1" stop-color="#FFF2C0" stop-opacity="0"/></radialGradient>
 <clipPath id="${u}bocaIn"><path d="${BOCA_D}"/></clipPath>
-<clipPath id="${u}recorte"><path clip-rule="evenodd" d="M-400,-400H2000V1300H-400Z ${SILHUETA_D} ${BOCA_D}"/></clipPath>`;
+<clipPath id="${u}recorte"><path clip-rule="evenodd" d="M-400,-400H2000V1300H-400Z ${SILHUETA_D} ${BOCA_D}"/></clipPath>
+<clipPath id="${u}recorteBoca"><path d="${BOCA_D}"/></clipPath>`;
   }
 
   // ---- peças do cenário ----
+  // folhas paradas juntas num só path por cor (menos elementos SVG): folhaSolta guarda-as enquanto juntarFolhas não é null
+  let juntarFolhas = null;
+  function despejarFolhas() {
+    const porCor = new Map();
+    for (const [x, y, s, r, cor, achata, carvalho] of juntarFolhas) {
+      const a = r / GRAU, c = Math.cos(a), sn = Math.sin(a), sy = s * achata;
+      const d = (carvalho ? CARVALHO_D : FOLHA_D).replace(/(-?[\d.]+),(-?[\d.]+)/g, (m, px, py) => { const u = px * s, v = py * sy; return n1(x + u * c - v * sn) + ',' + n1(y + u * sn + v * c); });
+      porCor.set(cor, (porCor.get(cor) || '') + d);
+    }
+    juntarFolhas = null;
+    let out = '';
+    for (const [cor, d] of porCor) out += `<path d="${d}" fill="${cor}" stroke="#7A3412" stroke-width=".9" stroke-opacity=".5"/>`;
+    return out;
+  }
   function folhaSolta(x, y, s, r, cor, achata, carvalho) {
+    if (juntarFolhas) { juntarFolhas.push([x, y, s, r, cor, achata, carvalho]); return ''; }
     return `<path d="${carvalho ? CARVALHO_D : FOLHA_D}" transform="translate(${n1(x)},${n1(y)}) rotate(${n1(r)}) scale(${n3(s)},${n3(s * achata)})" fill="${cor}" stroke="#7A3412" stroke-width="${n3(1 / s)}" stroke-opacity=".5"/>`;
   }
   function tronquinho(x, base, w, topo, cor, op, ramos, rng) {   // tronco ao longe (névoa)
@@ -407,23 +423,28 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     }
     return s;
   }
+  function circuloD(x, y, r) { return `M${n1(x - r)},${n1(y)}a${n1(r)},${n1(r)} 0 1,0 ${n1(2 * r)},0a${n1(r)},${n1(r)} 0 1,0 ${n1(-2 * r)},0Z`; }
   function copa(cx, cy, r, rng, cores, meta, classe) {   // tufo de folhagem (vários círculos de cor) que balança
     let s = `<g class="${classe}" data-x="${cx}" data-y="${cy}">`;
     for (let i = 0; i < 9; i++) {
       const a = rng() * TAU, d = rng() * r * 0.75, rr = r * (0.35 + rng() * 0.35);
-      s += `<circle cx="${n1(cx + Math.cos(a) * d)}" cy="${n1(cy + Math.sin(a) * d * 0.7)}" r="${n1(rr)}" fill="${cores[i % cores.length]}"/>`;
+      s += `<circle cx="${n1(cx + Math.cos(a) * d)}" cy="${n1(cy + Math.sin(a) * d * 0.7)}" r="${n1(rr)}" fill="${cores[i % cores.length]}"/>`;   // a ordem das cores conta: não juntar
     }
-    for (let i = 0; i < 7; i++) { const a = rng() * TAU, d = rng() * r * 0.9; s += `<circle cx="${n1(cx + Math.cos(a) * d - r * 0.15)}" cy="${n1(cy + Math.sin(a) * d * 0.6 - r * 0.2)}" r="${n1(r * (0.12 + rng() * 0.12))}" fill="#FFE2A0" opacity=".45"/>`; }
+    let brilhos = '';   // cada brilho é um subpath: as sobreposições não somam opacidade (o path inteiro tem opacity .45)
+    for (let i = 0; i < 7; i++) { const a = rng() * TAU, d = rng() * r * 0.9; brilhos += circuloD(cx + Math.cos(a) * d - r * 0.15, cy + Math.sin(a) * d * 0.6 - r * 0.2, r * (0.12 + rng() * 0.12)); }
+    s += `<path d="${brilhos}" fill="#FFE2A0" opacity=".45"/>`;
     meta.copas.push({ x: cx, y: cy, f: rng() * 6 });
     return s + '</g>';
   }
   function betula(x, base, w, rng) {
     let s = `<path d="M${x - w * 0.48},-20 L${x - w * 0.5},${base - 20} C${x - w * 0.62},${base - 6} ${x - w * 0.9},${base} ${x - w},${base + 4} L${x + w},${base + 4} C${x + w * 0.9},${base} ${x + w * 0.62},${base - 6} ${x + w * 0.5},${base - 20} L${x + w * 0.48},-20Z" fill="url(#U_betula)" stroke="#6E6052" stroke-width="2.5"/>`;
+    let marcas = '', riscos = '';   // marcas da casca num só path por cor
     for (let y = 10; y < base - 30; y += 26 + rng() * 34) {
       const lado = rng() < 0.5 ? -1 : 1, L = w * (0.3 + rng() * 0.5), x0 = x + lado * w * 0.5;
-      s += `<path d="M${n1(x0)},${n1(y)} q${n1(-lado * L * 0.5)},${n1(-3 - rng() * 3)} ${n1(-lado * L)},${n1(1 + rng() * 3)} q${n1(lado * L * 0.4)},${n1(3)} ${n1(lado * L)},${n1(3 + rng() * 2)}Z" fill="#2E2620"/>`;
-      if (rng() < 0.5) s += `<path d="M${n1(x - w * 0.3 + rng() * w * 0.5)},${n1(y + 12)} h${n1(4 + rng() * 8)}" stroke="#4A4038" stroke-width="2" stroke-linecap="round"/>`;
+      marcas += `M${n1(x0)},${n1(y)} q${n1(-lado * L * 0.5)},${n1(-3 - rng() * 3)} ${n1(-lado * L)},${n1(1 + rng() * 3)} q${n1(lado * L * 0.4)},${n1(3)} ${n1(lado * L)},${n1(3 + rng() * 2)}Z`;
+      if (rng() < 0.5) riscos += `M${n1(x - w * 0.3 + rng() * w * 0.5)},${n1(y + 12)} h${n1(4 + rng() * 8)}`;
     }
+    s += `<path d="${marcas}" fill="#2E2620"/><path d="${riscos}" stroke="#4A4038" stroke-width="2" stroke-linecap="round"/>`;
     s += `<path d="M${x - w * 0.3},0 L${x - w * 0.32},${base - 20}" stroke="#fff" stroke-width="${n1(w * 0.18)}" opacity=".5"/>`;
     return s;
   }
@@ -448,11 +469,15 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     frondes.forEach(([ang, L], j) => {
       const comp = 150 * L, cor = j % 2 ? '#7E9A3A' : '#9AB24A', cor2 = j % 2 ? '#C69A3A' : '#B28A30';
       let f = `<g transform="rotate(${ang})"><path d="M0,0 C${n1(comp * 0.1)},${n1(-comp * 0.5)} ${n1(comp * 0.35)},${n1(-comp * 0.85)} ${n1(comp * 0.55)},${n1(-comp)}" fill="none" stroke="#5A6A22" stroke-width="3" stroke-linecap="round"/>`;
+      const dd = { a: '', b: '' };   // folíolos juntos num só path por cor (menos elementos SVG)
       for (let k = 1; k < 11; k++) {
         const t = k / 11, p = bezier([[0, 0], [comp * 0.1, -comp * 0.5], [comp * 0.35, -comp * 0.85], [comp * 0.55, -comp]], t), w = 26 * (1 - t * 0.8) * L;
-        f += `<path d="M${n1(p[0])},${n1(p[1])} q${n1(-w * 0.6)},${n1(-w * 0.2)} ${n1(-w)},${n1(-w * 0.55)} q${n1(w * 0.55)},${n1(w * 0.05)} ${n1(w)},${n1(w * 0.45)}Z" fill="${k > 8 && j === 5 ? cor2 : cor}" stroke="#4A5A1A" stroke-width="1"/>`;
-        f += `<path d="M${n1(p[0])},${n1(p[1])} q${n1(w * 0.6)},${n1(-w * 0.35)} ${n1(w * 0.9)},${n1(-w * 0.8)} q${n1(-w * 0.35)},${n1(w * 0.25)} ${n1(-w * 0.9)},${n1(w * 0.8)}Z" fill="${k > 8 && j === 5 ? cor2 : cor}" stroke="#4A5A1A" stroke-width="1"/>`;
+        const q = k > 8 && j === 5 ? 'b' : 'a';
+        dd[q] += `M${n1(p[0])},${n1(p[1])} q${n1(-w * 0.6)},${n1(-w * 0.2)} ${n1(-w)},${n1(-w * 0.55)} q${n1(w * 0.55)},${n1(w * 0.05)} ${n1(w)},${n1(w * 0.45)}Z`;
+        dd[q] += `M${n1(p[0])},${n1(p[1])} q${n1(w * 0.6)},${n1(-w * 0.35)} ${n1(w * 0.9)},${n1(-w * 0.8)} q${n1(-w * 0.35)},${n1(w * 0.25)} ${n1(-w * 0.9)},${n1(w * 0.8)}Z`;
       }
+      f += `<path d="${dd.a}" fill="${cor}" stroke="#4A5A1A" stroke-width="1"/>`;
+      if (dd.b) f += `<path d="${dd.b}" fill="${cor2}" stroke="#4A5A1A" stroke-width="1"/>`;
       s += f + '</g>';
     });
     meta.fetos.push({ x, y, f: rnd(0, 6) });
@@ -496,10 +521,10 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     // manchas de luz no chão onde os raios batem
     for (const [x, y, rx] of [[640, 700, 200], [960, 640, 160], [330, 610, 110], [1330, 660, 150]]) s += `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${n1(rx * 0.22)}" fill="url(#${u}luzChao)"/>`;
     // tapete de folhas (mais pequenas e achatadas ao longe)
-    for (let i = 0; i < 430; i++) {
+    juntarFolhas = []; for (let i = 0; i < 430; i++) {
       const k = Math.pow(rng(), 0.75), y = 556 + k * 350, e = 0.45 + k * 1.15, x = rng() * 1660 - 30;
       s += folhaSolta(x, y, e, rng() * 360, PALETA[Math.floor(rng() * PALETA.length)], 0.5, rng() < 0.3);
-    }
+    } s += despejarFolhas();
     // tronco caído com musgo (à esquerda)
     s += `<ellipse cx="250" cy="716" rx="190" ry="16" fill="url(#${u}somb)"/>
 <path d="M78,664 C76,644 92,636 120,636 L386,630 C398,640 402,690 388,704 L118,712 C92,712 80,690 78,664Z" fill="url(#${u}tronco)" stroke="#3A2416" stroke-width="3"/>
@@ -520,7 +545,7 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     // monte de folhas (parte de trás) onde espreita o rato
     const my = YB + KZ * MONTE.z;
     s += `<ellipse cx="${MONTE.x}" cy="${my + 6}" rx="86" ry="13" fill="url(#${u}somb)"/>`;
-    for (let i = 0; i < 26; i++) { const a = rng() * PI, x = MONTE.x + Math.cos(a) * 62 * rng(), y = my - 6 - Math.sin(a) * 26 * rng(); s += folhaSolta(x, y, 1.6 + rng() * 0.6, rng() * 360, PALETA[i % PALETA.length], 0.7, rng() < 0.35); }
+    juntarFolhas = []; for (let i = 0; i < 26; i++) { const a = rng() * PI, x = MONTE.x + Math.cos(a) * 62 * rng(), y = my - 6 - Math.sin(a) * 26 * rng(); s += folhaSolta(x, y, 1.6 + rng() * 0.6, rng() * 360, PALETA[i % PALETA.length], 0.7, rng() < 0.35); } s += despejarFolhas();
     return s;
   }
 
@@ -567,7 +592,7 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     for (let i = 0; i < 9; i++) { const x = 900 + i * 26 + rng() * 10; s += `<path d="M${n1(x)},528 C${n1(x - 6 + rng() * 12)},${n1(560 + rng() * 20)} ${n1(x - 8 + rng() * 16)},${n1(590 + rng() * 30)} ${n1(x - 4 + rng() * 8)},${n1(610 + rng() * 40)}" fill="none" stroke="#6A4628" stroke-width="${n1(2 + rng() * 2)}" stroke-linecap="round" opacity=".7"/>`; }
     for (let i = 0; i < 12; i++) s += `<ellipse cx="${n1(900 + rng() * 200)}" cy="${n1(600 + rng() * 80)}" rx="${n1(6 + rng() * 10)}" ry="${n1(3 + rng() * 4)}" fill="#3E2614" opacity=".6"/>`;
     s += `<path d="M880,750 C900,712 950,702 1000,702 C1050,702 1100,712 1124,750Z" fill="#6A4422" opacity=".85"/>`;
-    for (let i = 0; i < 34; i++) { const x = 890 + rng() * 220, y = 708 + rng() * 40; s += folhaSolta(x, y, 0.9 + rng() * 0.5, rng() * 360, ['#9C5A2A', '#B8702E', '#8A4A20', '#C68A3A'][i % 4], 0.6, rng() < 0.3); }
+    juntarFolhas = []; for (let i = 0; i < 34; i++) { const x = 890 + rng() * 220, y = 708 + rng() * 40; s += folhaSolta(x, y, 0.9 + rng() * 0.5, rng() * 360, ['#9C5A2A', '#B8702E', '#8A4A20', '#C68A3A'][i % 4], 0.6, rng() < 0.3); } s += despejarFolhas();
     s += `<path d="${BOCA_D}" fill="none" stroke="#0E0603" stroke-width="16" opacity=".55"/></g>`;
     s += `<path d="${BOCA_D}" fill="none" stroke="${CO}" stroke-width="4" stroke-linejoin="round"/>`;
     s += `<path d="M880,690 C878,640 898,590 940,560 C970,540 1030,538 1060,556" fill="none" stroke="#B48A62" stroke-width="4" stroke-linecap="round" opacity=".55"/>`;
@@ -576,7 +601,7 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
 <path d="M880,752 C920,742 960,738 1000,740 C1040,738 1090,744 1124,752" fill="none" stroke="#9AB24A" stroke-width="6" stroke-linecap="round" opacity=".85"/>
 <path d="M870,762 C930,754 1060,752 1136,764" fill="none" stroke="#4A2E18" stroke-width="2.5" opacity=".6"/>`;
     // folhas acumuladas nas raízes, cogumelos e um feto pequeno (este abana quando a raposa chega)
-    for (let i = 0; i < 40; i++) { const lado = i % 2 ? 1 : -1, x = 1000 + lado * (150 + rng() * 170), y = 748 + rng() * 40; s += folhaSolta(x, y, 1.2 + rng() * 0.6, rng() * 360, PALETA[i % PALETA.length], 0.55, rng() < 0.35); }
+    juntarFolhas = []; for (let i = 0; i < 40; i++) { const lado = i % 2 ? 1 : -1, x = 1000 + lado * (150 + rng() * 170), y = 748 + rng() * 40; s += folhaSolta(x, y, 1.2 + rng() * 0.6, rng() * 360, PALETA[i % PALETA.length], 0.55, rng() < 0.35); } s += despejarFolhas();
     s += `<g class="cn-cogToca" data-x="1188" data-y="742">${cogumeloCastanho(1176, 742, 0.9, -8)}${cogumeloCastanho(1200, 748, 0.65, 10)}${cogumeloCastanho(1160, 752, 0.5, -16)}</g>`;
     s += feto(812, 760, 0.42, 1, meta, 'cn-fetoToca');
     s += bolota(1110, 778, 1, 20) + bolota(880, 784, 0.9, -60);
@@ -646,14 +671,17 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
       s += `<path d="M${x},${n1(y0)} C${x - 4},${n1(y0 + L * 0.4)} ${x + 6},${n1(y0 + L * 0.7)} ${x + 1},${n1(y0 + L)}" fill="none" stroke="#5A3A20" stroke-width="3" stroke-linecap="round"/><path d="M${x + 1},${n1(y0 + L)} l3,6" stroke="#7A5434" stroke-width="2" stroke-linecap="round"/>`;
     }
     s += `</g>`;
-    for (let i = 0; i < 9; i++) { const x = 900 + i * 25 + rng() * 10, y = 744 + Math.abs(x - 1000) * 0.03 + rng() * 6; s += folhaSolta(x, y, 1.3 + rng() * 0.4, rng() * 360, PALETA[i % PALETA.length], 0.55, i % 3 === 0); }
+    juntarFolhas = []; for (let i = 0; i < 9; i++) { const x = 900 + i * 25 + rng() * 10, y = 744 + Math.abs(x - 1000) * 0.03 + rng() * 6; s += folhaSolta(x, y, 1.3 + rng() * 0.4, rng() * 360, PALETA[i % PALETA.length], 0.55, i % 3 === 0); } s += despejarFolhas();
     return s + '</g>';
   }
   // parte da frente do monte de folhas (tapa o rato e o focinho da raposa quando mergulha)
   function svgMonteFrente(rng) {
     const my = YB + KZ * MONTE.z;
     let s = `<g class="monteFrente" pointer-events="none">`;
-    for (let i = 0; i < 30; i++) { const a = rng() * PI, rr = Math.sqrt(rng()), x = MONTE.x + Math.cos(a) * 70 * rr, y = my + 4 - Math.sin(a) * 18 * rr; s += folhaSolta(x, y, 1.7 + rng() * 0.6, rng() * 360, PALETA[(i * 3) % PALETA.length], 0.65, rng() < 0.35); }
+    juntarFolhas = []; for (let i = 0; i < 30; i++) { const a = rng() * PI, rr = Math.sqrt(rng()), x = MONTE.x + Math.cos(a) * 70 * rr, y = my + 4 - Math.sin(a) * 18 * rr; s += folhaSolta(x, y, 1.7 + rng() * 0.6, rng() * 360, PALETA[(i * 3) % PALETA.length], 0.65, rng() < 0.35); }
+    // folhas espalhadas à frente do monte: tapam o focinho quando a raposa mergulha (gerador próprio para não mudar o resto do cenário)
+    const r2 = semente(4471);
+    for (let i = 0; i < 16; i++) { const x = MONTE.x - 78 + r2() * 92, y = my + 10 + r2() * 38; s += folhaSolta(x, y, 1.6 + r2() * 0.6, r2() * 360, PALETA[(i * 5) % PALETA.length], 0.6, r2() < 0.35); } s += despejarFolhas();
     return s + '</g>';
   }
   function svgPrimeiroPlano(u, rng, meta) {
@@ -906,8 +934,8 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
       // 4) focinho enterrado nas folhas, rabo e cauda no ar
       const wf = janela(t, 3.28, 3.34, 4.15, 4.6);
       if (t >= 3.3 && !c.queda) { c.queda = true; soltarFolhas(MONTE.x, YB + KZ * MONTE.z - 14, 16, 1.4, 60); orD[0].v += 300; orD[1].v -= 300; }
-      A.incl = lerp(A.incl, -0.82, wf); A.alt = lerp(A.alt, -40, wf); A.fixF = Math.max(A.fixF, wf); A.pFU = lerp(A.pFU, 54, wf); A.pFH = lerp(A.pFH, 0, wf);
-      A.cabNod = lerp(A.cabNod, 1.1, wf); A.cabH = lerp(A.cabH, -40, wf); A.cabU = lerp(A.cabU, 60, wf); A.fecho = Math.max(A.fecho, wf);
+      A.incl = lerp(A.incl, -0.82, wf); A.alt = lerp(A.alt, -24, wf); A.fixF = Math.max(A.fixF, wf); A.pFU = lerp(A.pFU, 54, wf); A.pFH = lerp(A.pFH, 0, wf);
+      A.cabNod = lerp(A.cabNod, 1.1, wf); A.cabH = lerp(A.cabH, -32, wf); A.cabU = lerp(A.cabU, 60, wf); A.fecho = Math.max(A.fecho, wf);
       A.cauElev = lerp(A.cauElev, 1.0, wf); A.cauAmp = lerp(A.cauAmp, 0.55, wf); A.cauVel = lerp(A.cauVel, 3.2, wf); A.cauCurl = lerp(A.cauCurl, 0.1, wf);
       // 5) tira a cabeça: o rato fugiu! inclina a cabeça, sacode as folhas e volta ao sítio
       const wp = janela(t, 4.3, 4.6, 5.0, 5.4);
@@ -1102,12 +1130,12 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
     let resolverIda = null, resolverVolta = null, pendenteIda = false, pendenteVolta = false;
     function iniciarIda() {
       fora.acao = null; caca.ini = false; reacao.ativa = false; salto.ativo = false; saltoAlvo = 0; esp.i = -1; sacX = 0;
-      seq = { T: 0, th0: TH, thFim: TH, xFim: X, zFim: Z, cam: caminho([[X, Z], [X + 110, Z + 50], [880, 226], [968, 206]]) };
+      seq = { T: 0, th0: TH, thFim: TH, xFim: X, zFim: Z, cam: caminho([[X, Z], [X + 110, Z + 50], [860, 230], [950, 210]]) };
       modo = 'indo';
     }
     function iniciarVolta() {
       reacao.ativa = false; dentro.acao = null;
-      seq = { T: 0, cam: caminho([[TOCA.x, 196], [880, 220], [REP.x + 130, REP.z + 50], [REP.x, REP.z]]) };
+      seq = { T: 0, cam: caminho([[TOCA.x, 196], [880, 220], [REP.x + 10, REP.z + 100], [REP.x, REP.z]]) };
       seq.rumo0 = PI / 2 + angDif(PI / 2, seq.cam.rumo(0.02));
       modo = 'voltando';
     }
@@ -1460,14 +1488,15 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E, false)}</g>`)}</g>`;
       ordenarERecortar();
     }
     const recorte = `url(#${u}recorte)`;
+    const recorteBoca = `url(#${u}recorteBoca)`;   // partes bem dentro da toca: só se veem pela boca (senão a cauda sai pelas raízes ao virar-se)
     let ordemAtual = '';
     function ordenarERecortar() {
       const lista = Object.keys(partes).sort((a, b) => partes[a].z - partes[b].z);
       const chave = lista.join();
       if (chave !== ordemAtual) { ordemAtual = chave; for (const k of lista) raposaG.appendChild(partes[k].el); }
       for (const k of lista) {
-        const p = partes[k], r = tocaModo && p.gz < 0;
-        if (r !== p.recorte) { p.recorte = r; if (r) p.el.setAttribute('clip-path', recorte); else p.el.removeAttribute('clip-path'); }
+        const p = partes[k], r = tocaModo && p.gz < 0 ? (p.gz < -60 ? 2 : 1) : 0;
+        if (r !== p.recorte) { p.recorte = r; if (r) p.el.setAttribute('clip-path', r === 2 ? recorteBoca : recorte); else p.el.removeAttribute('clip-path'); }
       }
     }
 

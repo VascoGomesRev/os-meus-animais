@@ -321,15 +321,16 @@ ${pt('cabeca', `<g class="cab">${svgCabeca(u, E)}</g>`)}</g>`;
   const CANTEIRO_D = 'M728,704 C752,664 860,652 1000,654 C1150,652 1296,662 1338,700 C1354,740 1342,780 1300,790 C1150,806 860,808 760,794 C724,788 714,742 728,704Z';
 
   function ladrilhos(w, h, cols, rows, cores, rng, brilho) {   // pedras da calçada (um mosaico que se repete)
-    const cw = w / cols, ch = h / rows; let s = '';
+    const cw = w / cols, ch = h / rows; const porCor = {}; let dBrilho = '';
     for (let j = 0; j < rows; j++) for (let i = -1; i <= cols; i++) {
       const ox = (j % 2) * cw / 2, x0 = i * cw + ox, y0 = j * ch, g = 1.7, jj = () => (rng() - 0.5) * 2.4;
       const p = [[x0 + g + jj(), y0 + g + jj()], [x0 + cw - g + jj(), y0 + g + jj()], [x0 + cw - g + jj(), y0 + ch - g + jj()], [x0 + g + jj(), y0 + ch - g + jj()]];
       const cor = cores[Math.floor(rng() * cores.length)];
-      s += `<path d="M${p.map(q => n1(q[0]) + ',' + n1(q[1])).join('L')}Z" fill="${cor}" stroke="${cor}" stroke-width="2.6" stroke-linejoin="round"/>`;
-      s += `<path d="M${n1(p[0][0])},${n1(p[0][1] + 1)}L${n1(p[1][0])},${n1(p[1][1] + 1)}" stroke="${brilho}" stroke-width="1.4" opacity=".55" stroke-linecap="round"/>`;
+      porCor[cor] = (porCor[cor] || '') + `M${p.map(q => n1(q[0]) + ',' + n1(q[1])).join('L')}Z`;
+      dBrilho += `M${n1(p[0][0])},${n1(p[0][1] + 1)}L${n1(p[1][0])},${n1(p[1][1] + 1)}`;
     }
-    return s;
+    return Object.keys(porCor).map(cor => `<path d="${porCor[cor]}" fill="${cor}" stroke="${cor}" stroke-width="2.6" stroke-linejoin="round"/>`).join('') +
+      `<path d="${dBrilho}" stroke="${brilho}" stroke-width="1.4" opacity=".55" stroke-linecap="round" fill="none"/>`;
   }
 
   function defsCena(u) {
@@ -565,15 +566,20 @@ ${az('azul', '#F4F6FA', '#2F64B5', '#F2C14E')}${az('azVerde', '#F6F3E6', '#3E8C6
     for (let y = 560; y < 700; y += 22) s += `<path d="M850,${y}H1070" stroke="#4A2E18" stroke-width="2" opacity=".55"/>`;
     s += `<path d="M872,750 L1048,750 L1032,702 L888,702Z" fill="url(#${u}xadrez)"/><path d="M872,750 L1048,750 L1032,702 L888,702Z" fill="url(#${u}chaoCasa)"/>`;
     s += `<path d="M888,702 C920,694 1000,694 1032,702" fill="none" stroke="#F1E3C8" stroke-width="3" opacity=".4"/>`;
-    for (let i = 0; i < 14; i++) { const x = 880 + rng() * 160, y = 704 + rng() * 42; s += `<path d="M${n1(x)},${n1(y)}l${n1(8 + rng() * 8)},${n1(rng() * 4 - 2)}" stroke="#E7C66C" stroke-width="2" stroke-linecap="round" opacity=".75"/>`; }
+    let dPalha = '';
+    for (let i = 0; i < 14; i++) { const x = 880 + rng() * 160, y = 704 + rng() * 42; dPalha += `M${n1(x)},${n1(y)}l${n1(8 + rng() * 8)},${n1(rng() * 4 - 2)}`; }
+    s += `<path d="${dPalha}" stroke="#E7C66C" stroke-width="2" stroke-linecap="round" opacity=".75" fill="none"/>`;
     s += `<path d="${PORTA_D}" fill="none" stroke="#120904" stroke-width="10" opacity=".5"/></g>`;
     // parede da frente em tábuas de madeira
     s += `<g clip-path="url(#${u}parede)"><rect x="790" y="410" width="340" height="350" fill="url(#${u}madeira)"/>`;
+    let dJunta = '', dLuz = '', dVeio = '', dPrego = '';
+    const prego = (cx, cy) => `M${cx - 2.2},${cy}a2.2,2.2 0 1 0 4.4,0a2.2,2.2 0 1 0 -4.4,0Z`;
     for (let y = 418 + 18; y < 750; y += 26) {
-      s += `<path d="M790,${y}H1130" stroke="#7E4E24" stroke-width="2.6"/><path d="M790,${y + 2.5}H1130" stroke="#F7CD92" stroke-width="1.6" opacity=".45"/>`;
-      for (let k = 0; k < 3; k++) { const x = 800 + rng() * 300, w = 40 + rng() * 60, yy = y - 8 - rng() * 12; s += `<path d="M${n1(x)},${n1(yy)}c${n1(w * 0.3)},${n1(-2 + rng() * 2)} ${n1(w * 0.6)},${n1(2 - rng() * 2)} ${n1(w)},${n1(rng() * 2 - 1)}" fill="none" stroke="#A86C36" stroke-width="1.4" opacity=".55"/>`; }
-      if (y > 560) s += `<circle cx="811" cy="${y - 12}" r="2.2" fill="#6A4A2A"/><circle cx="1109" cy="${y - 12}" r="2.2" fill="#6A4A2A"/>`;
+      dJunta += `M790,${y}H1130`; dLuz += `M790,${y + 2.5}H1130`;
+      for (let k = 0; k < 3; k++) { const x = 800 + rng() * 300, w = 40 + rng() * 60, yy = y - 8 - rng() * 12; dVeio += `M${n1(x)},${n1(yy)}c${n1(w * 0.3)},${n1(-2 + rng() * 2)} ${n1(w * 0.6)},${n1(2 - rng() * 2)} ${n1(w)},${n1(rng() * 2 - 1)}`; }
+      if (y > 560) dPrego += prego(811, y - 12) + prego(1109, y - 12);
     }
+    s += `<path d="${dVeio}" fill="none" stroke="#A86C36" stroke-width="1.4" opacity=".55"/><path d="${dJunta}" stroke="#7E4E24" stroke-width="2.6"/><path d="${dLuz}" stroke="#F7CD92" stroke-width="1.6" opacity=".45"/><path d="${dPrego}" fill="#6A4A2A"/>`;
     s += `<ellipse cx="1088" cy="676" rx="7" ry="4" fill="#8A5428" opacity=".6"/><ellipse cx="830" cy="612" rx="6" ry="3.5" fill="#8A5428" opacity=".6"/>`;
     s += `<path d="M960,424 L1120,554 L1120,750 L1060,750 L1060,420Z" fill="#3A2210" opacity=".1"/>`;
     s += `<path d="M800,560 L960,430 L1120,560 L1120,590 L960,460 L800,590Z" fill="#2A1A0C" opacity=".22"/></g>`;
@@ -594,9 +600,18 @@ ${az('azul', '#F4F6FA', '#2F64B5', '#F2C14E')}${az('azVerde', '#F6F3E6', '#3E8C6
     const telhas = (lado, cor, clip) => {
       let t = `<g clip-path="url(#${u}${clip})"><path d="${lado > 0 ? 'M960,400L1154,562L1154,506L960,344Z' : 'M960,400L766,562L766,506L960,344Z'}" fill="${cor[0]}"/>`;
       const ang = Math.atan2(160, 192 * lado) * GRAU;
-      for (let j = 0; j < 8; j++) for (let k = 0; k < 10; k++) {
-        const f = (k + (j % 2) * 0.5) / 9, x = 960 + lado * 194 * f, y = 400 + 162 * f - j * 8.2;
-        t += `<rect x="-12" y="-5" width="24" height="10" rx="4.5" transform="translate(${n1(x)},${n1(y)}) rotate(${n1(ang)})" fill="${cor[1 + ((j * 3 + k) % 3)]}" stroke="${cor[4]}" stroke-width="1.4"/>`;
+      const ca = Math.cos(ang / GRAU), sa = Math.sin(ang / GRAU);
+      const telha = (x, y) => {           // retângulo 24×10 de cantos redondos (r 4,5), rodado e deslocado
+        const P = (a, b) => `${n1(x + a * ca - b * sa)},${n1(y + a * sa + b * ca)}`, A = 'A4.5,4.5 0 0 1 ';
+        return `M${P(-7.5, -5)}L${P(7.5, -5)}${A}${P(12, -0.5)}L${P(12, 0.5)}${A}${P(7.5, 5)}L${P(-7.5, 5)}${A}${P(-12, 0.5)}L${P(-12, -0.5)}${A}${P(-7.5, -5)}Z`;
+      };
+      for (let j = 0; j < 8; j++) {
+        const fiada = ['', '', ''];
+        for (let k = 0; k < 10; k++) {
+          const f = (k + (j % 2) * 0.5) / 9, x = 960 + lado * 194 * f, y = 400 + 162 * f - j * 8.2;
+          fiada[(j * 3 + k) % 3] += telha(x, y);
+        }
+        fiada.forEach((d, i) => { t += `<path d="${d}" fill="${cor[1 + i]}" stroke="${cor[4]}" stroke-width="1.4"/>`; });
       }
       return t + '</g>';
     };
@@ -999,7 +1014,8 @@ ${az('azul', '#F4F6FA', '#2F64B5', '#F2C14E')}${az('azVerde', '#F6F3E6', '#3E8C6
     }
     function iniciarVolta() {
       reacao.ativa = false; dentro.acao = null;
-      seq = { T: 0, cam: caminho([[PORTA.x, 190], [860, 200], [REP.x + 110, REP.z + 30], [REP.x, REP.z]]) };
+      // chega ao sítio na diagonal, a vir de trás: de lado, a cabeça passava por baixo da seta esquerda
+      seq = { T: 0, cam: caminho([[PORTA.x, 190], [860, 160], [REP.x + 70, REP.z - 70], [REP.x, REP.z]]) };
       modo = 'voltando';
     }
 
@@ -1393,5 +1409,8 @@ ${az('azul', '#F4F6FA', '#2F64B5', '#F2C14E')}${az('azVerde', '#F6F3E6', '#3E8C6
     };
   }
 
-  return { icone: gerarIcone(), montar };
+  // O ícone usa gradientes com id; o mesmo ícone pode aparecer em dois cartões do menu e, se o primeiro estiver escondido,
+  // o segundo ficava sem cor. Cada leitura de «icone» devolve uma cópia com ids próprios (cao-iconeN-…).
+  const ICONE = gerarIcone(); let nIcone = 0;
+  return { get icone() { nIcone++; return ICONE.split('cao-icone-').join('cao-icone' + nIcone + '-'); }, montar };
 })();

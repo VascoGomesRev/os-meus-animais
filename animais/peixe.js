@@ -435,7 +435,7 @@ MODULOS.peixe = (() => {
     for (let i = 0; i < 5; i++) frente += tent(76 + i * 17, 202, -24 + i * 12, 22 + (i % 2) * 6, '#E37CB2');
     return `<circle cx="110" cy="110" r="106" fill="#2F9FC8"/>
       <path d="M70,12 L100,6 L150,170 L100,180 Z" fill="#BFF0F4" opacity=".2"/><path d="M128,6 L150,10 L188,150 L160,160 Z" fill="#BFF0F4" opacity=".14"/>
-      <path d="M8,150 C40,140 70,148 110,144 C150,140 180,146 212,150 A106,106 0 0 1 8,150 Z" fill="#E9CF8E"/>
+      <path d="M11.8,150 C40,140 70,148 110,144 C150,140 180,146 208.2,150 A106,106 0 0 1 11.8,150 Z" fill="#E9CF8E"/>
       <path d="M40,176 C60,171 90,176 120,172 M120,188 C140,183 160,186 176,184" stroke="#CDAE6A" stroke-width="2" fill="none"/>
       <ellipse cx="110" cy="202" rx="52" ry="12" fill="#7A6A70"/><ellipse cx="110" cy="196" rx="48" ry="9" fill="#B05C8A"/>
       ${tras}
@@ -1099,10 +1099,11 @@ MODULOS.peixe = (() => {
     /* --- comportamentos (fora, a pairar em água aberta) --- */
     function* dardo() {                              // arranque rápido e travagem com as barbatanas abertas
       const dir = Math.random() < .6 ? 1 : -1;
+      const k = dir > 0 ? 1 : .55;                   // para a esquerda vai menos longe: o focinho não pode chegar à seta (x < 420)
       if (dir < 0) yield* virar(PSI_E, 520);
       yield* tw({ x: P.x - dir * 14, sq: .08, crista: .6, pAng: 0 }, 220, eio);
-      yield* nadar({ pts: [[P.x + dir * 90, P.y - 18], [P.x + dir * 170, P.y - 6]], ms: 480, nado: 1, ease: esai });
-      yield* juntos(tw({ remar: 1, crista: 1, sq: -.04, nado: 0, flut: 1 }, 260, esai), tw({ x: P.x + dir * 22 }, 380, esai));
+      yield* nadar({ pts: [[P.x + dir * 90 * k, P.y - 18], [P.x + dir * 170 * k, P.y - 6]], ms: 480, nado: 1, ease: esai });
+      yield* juntos(tw({ remar: 1, crista: 1, sq: -.04, nado: 0, flut: 1 }, 260, esai), tw({ x: P.x + dir * 22 * k }, 380, esai));
       yield* espera(500);
       yield* tw({ remar: 0, crista: 0, sq: 0 }, 400);
       yield* espera(300);
@@ -1110,7 +1111,7 @@ MODULOS.peixe = (() => {
     function* mordiscar() {                          // um pedacinho de plâncton passa: segue-o com os olhos, vai lá e abocanha
       const i = plancto.findIndex(p => p.vivo), p = plancto[i];
       const dir = Math.random() < .5 ? 1 : -1;
-      p.x = REPOUSO.x + dir * 250; p.y = REPOUSO.y - aleat(40, 110);
+      p.x = REPOUSO.x + dir * (dir > 0 ? 250 : 190); p.y = REPOUSO.y - aleat(40, 110);   // à esquerda mais perto (seta)
       focar(() => [p.x, p.y]);
       yield* tw({ pupila: 1.2, olhosEsc: 1.06 }, 300);
       yield* espera(700);

@@ -755,6 +755,7 @@ MODULOS.ovelha = (() => {
   // Pose de repouso (fora): de pé, a 3/4 virada para a esquerda e para nós, com a cara a olhar para a criança
   const REP = { X: 650, Z: 0, th: PI - .42 };
   const APROX = { x: 1010, z: 46 };                  // em frente da cancela (cascos a y ≤ 795)
+  const APROX_IDA = { x: 962, z: 46 };               // na ida pára um pouco antes: virada para a direita em APROX o focinho tocava na seta direita
   const DENTRO = { x: 1004, z: -292 };               // onde se deita, dentro do redil
   const TH_DENTRO = -PI - .36;                       // deitada a 3/4, virada para a esquerda e para nós
   const CORPO0 = { alt: 0, incl: 0, rollC: 0, sq: 0, nL: 66, nA: 44, nTh: 0, cTurn: -.62, cB: 16, cRoll: 0, deitado: 0, fAvanca: 0 };
@@ -1432,14 +1433,14 @@ MODULOS.ovelha = (() => {
       modo = 'indo'; reagindo = false;
       olhar.foco = () => PT.redil; olhar.rapido = true;
       yield* juntos(recomporPes(140), tw(Object.assign({}, ROSTO0, sem(CORPO0, 'cTurn'), { orelhas: .3, feliz: .3 }), 160, esai));
-      const thA = Math.atan2(APROX.z - P.Z, APROX.x - P.X);
+      const thA = Math.atan2(APROX_IDA.z - P.Z, APROX_IDA.x - P.X);
       let ang = thA; while (ang - P.th > PI) ang -= TAU; while (ang - P.th < -PI) ang += TAU;
       yield* juntos(virar(ang, 360), tw({ cTurn: 0, nA: 46 }, 360), tw({ cancela: 1 }, 600, eio));
       impulso('sino', 16, 900, 'mola');
       olhar.rapido = false; olhar.foco = null;
-      yield* juntos(andarPara(APROX.x, APROX.z, 760, TROTE, false), tw({ nA: 40, cB: 18, feliz: 0 }, 760));
+      yield* juntos(andarPara(APROX_IDA.x, APROX_IDA.z, 720, TROTE, false), tw({ nA: 40, cB: 18, feliz: 0 }, 720));
       // vira-se de costas para nós (para a entrada) e passa para entre as camadas do redil
-      yield* juntos(virar(perto(-PI / 2), 360), tw({ nA: 30, cB: 30, cTurn: 0 }, 360));
+      yield* juntos(virar(perto(Math.atan2(DENTRO.z - APROX_IDA.z, DENTRO.x - APROX_IDA.x)), 360), tw({ nA: 30, cB: 30, cTurn: 0 }, 360));
       porDentro(true);
       yield* juntos(andarPara(DENTRO.x, DENTRO.z, 620, PASSO_, false), tw({ nA: 34, cB: 26 }, 620));
       // a cancela fecha-se; vira-se lá dentro e deita-se: primeiro dobra as patas da frente, depois as de trás

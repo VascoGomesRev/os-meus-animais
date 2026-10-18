@@ -389,10 +389,12 @@ MODULOS.coelho = (() => {
     }
     s += moinhoSVG();
     s += `<path d="M0,560 C180,520 360,520 520,540 C700,562 860,520 1040,516 C1220,512 1380,540 1600,520 L1600,640 L0,640 Z" fill="url(#coelho-col2)"/>`;
+    let dLonge = '';                         // erva parada: um só path (menos elementos)
     for (let i = 0; i < 40; i++) {
       const x = r() * 1600, y = 548 + r() * 40;
-      s += `<path d="M${n(x)},${n(y)} l-4,-9 M${n(x)},${n(y)} l1,-11 M${n(x)},${n(y)} l5,-8" stroke="#6DA548" stroke-width="2" stroke-linecap="round" opacity=".7"/>`;
+      dLonge += `M${n(x)},${n(y)} l-4,-9 M${n(x)},${n(y)} l1,-11 M${n(x)},${n(y)} l5,-8`;
     }
+    s += `<path d="${dLonge}" stroke="#6DA548" stroke-width="2" stroke-linecap="round" opacity=".7" fill="none"/>`;
     return s;
   }
   function arvoreSVG() {
@@ -424,16 +426,22 @@ MODULOS.coelho = (() => {
   function pradoSVG() {
     let s = `<rect y="600" width="1600" height="300" fill="url(#coelho-prado)"/><rect y="600" width="1600" height="300" fill="url(#coelho-luzPrado)"/>`;
     const r = semente(17);
+    const ervas = {};                         // erva parada: um path por cor e por faixa de grossura (menos elementos)
     for (let i = 0; i < 150; i++) {           // ervinhas no chão (mais pequenas ao longe)
       const y = 660 + r() * 230, x = r() * 1600, k = .5 + (y - 660) / 230;
-      const c = r() < .5 ? '#5C9636' : '#A6D46A';
-      s += `<path d="M${n(x)},${n(y)} q${n(-3 * k)},${n(-8 * k)} ${n(-5 * k)},${n(-14 * k)} M${n(x)},${n(y)} q${n(1 * k)},${n(-9 * k)} ${n(3 * k)},${n(-16 * k)} M${n(x)},${n(y)} q${n(4 * k)},${n(-6 * k)} ${n(8 * k)},${n(-11 * k)}" stroke="${c}" stroke-width="${n(1.4 + k)}" fill="none" stroke-linecap="round" opacity=".8"/>`;
+      const c = r() < .5 ? '#5C9636' : '#A6D46A', faixa = Math.min(2, Math.floor((k - .5) * 3)), chave = c + faixa;
+      ervas[chave] = ervas[chave] || { c, w: 1.9 + (faixa + .5) / 3, d: '' };
+      ervas[chave].d += `M${n(x)},${n(y)} q${n(-3 * k)},${n(-8 * k)} ${n(-5 * k)},${n(-14 * k)} M${n(x)},${n(y)} q${n(1 * k)},${n(-9 * k)} ${n(3 * k)},${n(-16 * k)} M${n(x)},${n(y)} q${n(4 * k)},${n(-6 * k)} ${n(8 * k)},${n(-11 * k)}`;
     }
+    for (const e of Object.values(ervas)) s += `<path d="${e.d}" stroke="${e.c}" stroke-width="${n(e.w)}" fill="none" stroke-linecap="round" opacity=".8"/>`;
     // trevos e manchas de luz
+    let dTrevo = '';
+    const bola = (cx, cy) => `M${n(cx - 3.2)},${n(cy)}a3.2,3.2 0 1 0 6.4,0a3.2,3.2 0 1 0 -6.4,0Z`;
     for (let i = 0; i < 18; i++) {
       const x = r() * 1600, y = 700 + r() * 180;
-      s += `<g transform="translate(${n(x)},${n(y)})" fill="#4E8A30" opacity=".55"><circle cx="-3" cy="-2" r="3.2"/><circle cx="3" cy="-2" r="3.2"/><circle cx="0" cy="-6" r="3.2"/></g>`;
+      dTrevo += bola(x - 3, y - 2) + bola(x + 3, y - 2) + bola(x, y - 6);
     }
+    s += `<path d="${dTrevo}" fill="#4E8A30" opacity=".55"/>`;
     return s;
   }
   // flores do prado: papoilas, margaridas e dentes-de-leão (cada uma abana com o vento)
@@ -441,7 +449,14 @@ MODULOS.coelho = (() => {
     let cab = '';
     if (tipo === 'papoila') cab = `<g transform="translate(0,-46)"><path d="M0,0 C-14,-4 -18,-16 -8,-20 C-4,-22 0,-18 0,-14 C0,-18 4,-22 8,-20 C18,-16 14,-4 0,0 Z" fill="#E63B2E" stroke="#A8231A" stroke-width="1.2"/><path d="M0,-2 C-10,-2 -16,-10 -12,-16" stroke="#FF8A70" stroke-width="2" fill="none" opacity=".7"/><circle cx="0" cy="-11" r="3.4" fill="#2A1A14"/></g>`;
     else if (tipo === 'margarida') { let p = ''; for (let j = 0; j < 12; j++) p += `<ellipse cx="0" cy="-8" rx="2.8" ry="7" transform="rotate(${j * 30})" fill="#FFFFFF" stroke="#D6D0C4" stroke-width=".8"/>`; cab = `<g transform="translate(0,-40)">${p}<circle r="4.6" fill="#F6C834" stroke="#C99A1A" stroke-width="1"/></g>`; }
-    else { let p = ''; for (let j = 0; j < 14; j++) p += `<ellipse cx="0" cy="-6" rx="2.2" ry="6" transform="rotate(${j * 26})" fill="#FFD33A"/>`; cab = `<g transform="translate(0,-36)">${p}<circle r="3.6" fill="#F0B020"/></g>`; }
+    else {
+      let d = '';                               // 14 pétalas (elipses rodadas) num só path
+      for (let j = 0; j < 14; j++) {
+        const a = j * 26 * PI / 180, ca = Math.cos(a), sa = Math.sin(a), P = y => `${n(-y * sa)},${n(y * ca)}`, A = `A2.2,6 ${j * 26} 1 0 `;
+        d += `M${P(0)}${A}${P(-12)}${A}${P(0)}Z`;
+      }
+      cab = `<g transform="translate(0,-36)"><path d="${d}" fill="#FFD33A"/><circle r="3.6" fill="#F0B020"/></g>`;
+    }
     const alt = tipo === 'papoila' ? 46 : tipo === 'margarida' ? 40 : 36;
     return `<g transform="translate(${x},${y}) scale(${k})"><g class="cl-flor${i}">
       <path d="M0,0 C2,-${alt * .4} -2,-${alt * .7} 0,-${alt}" stroke="#4E8A30" stroke-width="2.6" fill="none"/>
@@ -1336,6 +1351,20 @@ MODULOS.coelho = (() => {
     }
 
     /* --- «som»: o coelho não tem som, mas se o motor chamar, mexe o nariz e a boca --- */
+    function* mexerBocaSilabas(silabas) {   // uma abertura por sílaba do som gravado, no início e com a duração de cada uma
+      let t = 0;
+      for (const [a, d] of silabas) {
+        if (a > t) yield* durante((a - t) * 1000, () => {});
+        const ms = limita(d * 1000, 120, 1500);
+        impulso('nar', 1.2, 400);
+        yield* durante(ms, u => {
+          const b = u < .25 ? esai(u / .25) : 1 - eseno((u - .25) / .75);
+          P.boca = .8 * b; P.somY = -8 * b; P.somP = -.2 * b;
+        });
+        t = a + ms / 1000;
+      }
+      P.boca = 0; P.somY = 0; P.somP = 0;
+    }
     function* mexerBoca(ms) {
       yield* durante(ms, u => {
         P.boca = .35 * Math.abs(Math.sin(u * PI * Math.max(2, ms / 160)));
@@ -1562,10 +1591,11 @@ MODULOS.coelho = (() => {
         else if (modo === 'dentro') lancar('corpo', reacaoDentro(), () => lancar('corpo', cicloDentro()));
         else { impulso('twE', -10, 300); impulso('twD', 10, 300); }
       },
-      fazerSom(ms, silabas) {         // o coelho não tem som (som: false); se for chamado, só mexe o nariz e a boca
+      fazerSom(ms, silabas) {         // silabas = [[início s, duração s], …] medidas no som da app (ferramentas/limpar-voz.js)
         if (!vivo) return;
         impulso('nar', 1.5, 500);
-        lancar('boca', mexerBoca(limita(ms || 700, 300, 2500)));
+        if (Array.isArray(silabas) && silabas.length) lancar('boca', mexerBocaSilabas(silabas));
+        else lancar('boca', mexerBoca(limita(ms || 700, 300, 2500)));
       },
       irAoHabitat() {
         return new Promise(res => {
