@@ -3,7 +3,7 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-18-3a9b96df";
+var VERSAO = "2026-10-18-3bfe0b14";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
@@ -236,7 +236,7 @@ var FICHEIROS = [
  },
  {
   "u": "vozes/ar.mp3",
-  "h": "0c726455"
+  "h": "90d2ef93"
  },
  {
   "u": "vozes/arvore.mp3",
@@ -268,7 +268,7 @@ var FICHEIROS = [
  },
  {
   "u": "vozes/fogo.mp3",
-  "h": "90d2ef93"
+  "h": "0c726455"
  },
  {
   "u": "vozes/galo.mp3",
@@ -332,7 +332,7 @@ var FICHEIROS = [
  },
  {
   "u": "gerado.js",
-  "h": "824a2b76"
+  "h": "6cceaaf9"
  }
 ];
 
