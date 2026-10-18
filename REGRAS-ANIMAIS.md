@@ -299,7 +299,7 @@ Os nomes e as onomatopeias são gravados pela família: para uma criança pequen
 | 1. Gravar | Vasco, no telemóvel | Um ficheiro por som: o nome («gato») e a onomatopeia («miau»). Dentro de casa, numa divisão pequena, telemóvel a 15–20 cm, 1 s de silêncio antes de falar |
 | 2. Enviar | Vasco | Carrega os ficheiros na conversa com o Claude e diz a ordem (ex.: «cão, som, gato, som») |
 | 3. Pôr por tratar | Claude | Copia para `gravacoes/por-tratar/<id>-nome.<ext>` e `gravacoes/por-tratar/<id>-som.<ext>` |
-| 4. Limpar | Claude | `node ferramentas/limpar-voz.js`: corta graves e ruído (RNNoise), corta os silêncios do início e do fim, iguala o volume, grava `vozes/<id>.mp3` e `sons/<id>.mp3`, mede as sílabas para `sons/silabas.json` e passa o original para `gravacoes/tratadas/` |
+| 4. Limpar | Claude | `node ferramentas/limpar-voz.js`: corta graves e ruído (RNNoise), corta os silêncios do início e do fim, iguala o volume pelo que se ouve (−14 LUFS, com limitador e porta de ruído nas pausas), grava `vozes/<id>.mp3` e `sons/<id>.mp3`, mede as sílabas para `sons/silabas.json` e passa o original para `gravacoes/tratadas/` |
 | 5. Publicar | Claude | `gerar-creditos.js`, `gerar-sw.js`, `verificar.js`, commit e push |
 
-O que está em `gravacoes/por-tratar/` falta tratar (`node ferramentas/limpar-voz.js --ver`). Os sons antigos do Wikimedia Commons estão em `arquivo/sons/`.
+O que está em `gravacoes/por-tratar/` falta tratar (`node ferramentas/limpar-voz.js --ver`). Se o tratamento mudar, `node ferramentas/limpar-voz.js --refazer` volta a tratar todos os originais de `gravacoes/tratadas/`. Os sons antigos do Wikimedia Commons estão em `arquivo/sons/`.

@@ -2,6 +2,7 @@
 /* Limpa as gravações da família e põe-nas na app, com o ffmpeg.
    Uso:  node ferramentas/limpar-voz.js            → trata tudo o que está em gravacoes/por-tratar/
          node ferramentas/limpar-voz.js --ver      → só mostra o que há por tratar
+         node ferramentas/limpar-voz.js --refazer  → volta a tratar todos os originais de gravacoes/tratadas/ (não os move)
 
    Nomes dos ficheiros em gravacoes/por-tratar/ (qualquer formato áudio: m4a, mp3, webm, ogg, wav…):
      <id>-nome.*     → vozes/<id>.mp3          (o nome do animal: «gato»)
@@ -10,8 +11,11 @@
 
    Passos: mono 48 kHz → corta graves abaixo de 80 Hz (ronco, vento) → RNNoise (rede neural que separa a voz
    do ruído; modelo em ferramentas/modelos/) → redução de ruído FFT → realce ligeiro dos agudos (nitidez) →
-   corta o silêncio antes e depois (deixa 60 ms / 150 ms) → compressão suave → volume ao máximo sem distorcer
-   (pico a −1 dB) → fades curtos → mp3 mono 44,1 kHz.
+   corta o silêncio antes e depois (deixa 60 ms / 150 ms) → compressão suave → fades curtos → volume igualado pelo que
+   se ouve (−14 LUFS, EBU R128; limitador a −1,5 dB para os picos não distorcerem) → porta de ruído nas pausas (o que
+   fica abaixo de −40 dB desce até 24 dB: com ganhos grandes o ruído de fundo subia) → mp3 mono 44,1 kHz.
+   O volume é igualado pelo que se ouve e não pelo pico: um som com estalidos curtos (o «pocotó» dos cascos) ficava
+   muito mais baixo do que os outros quando se punha o pico a −1 dB.
    Também mede as sílabas de cada som (onde a boca do animal deve abrir) e guarda-as em sons/silabas.json. */
 'use strict';
 const fs = require('fs');
@@ -23,6 +27,7 @@ const POR_TRATAR = path.join(RAIZ, 'gravacoes', 'por-tratar');
 const TRATADAS = path.join(RAIZ, 'gravacoes', 'tratadas');
 const MODELO = 'ferramentas/modelos/rnnoise-sh.rnnn';     // caminho relativo: o filtro arnndn não gosta de «C:» no Windows
 const SILABAS = path.join(RAIZ, 'sons', 'silabas.json');
+const ALVO_LUFS = -14, LIMITE = .84;                     // volume percebido de todas as vozes e sons; .84 ≈ −1,5 dB
 const TIPOS = { nome: id => `vozes/${id}.mp3`, som: id => `sons/${id}.mp3` };
 
 const ff = args => execFileSync('ffmpeg', ['-hide_banner', '-y', ...args], { cwd: RAIZ, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -56,16 +61,18 @@ function trocosDeVoz(f, limiar, minSil) {
   return voz;
 }
 
-function listar() {
-  if (!fs.existsSync(POR_TRATAR)) return [];
-  return fs.readdirSync(POR_TRATAR).filter(n => !n.startsWith('.')).map(n => {
+const lufs = f => +((medir(f, 'ebur128').match(/I:\s+(-?[\d.]+) LUFS\s*\n\s*Threshold/) || [, 'NaN'])[1]);
+
+function listar(pasta = POR_TRATAR) {
+  if (!fs.existsSync(pasta)) return [];
+  return fs.readdirSync(pasta).filter(n => !n.startsWith('.')).map(n => {
     const m = n.match(/^([a-z0-9]+(?:-[a-z0-9]+)*?)-(nome|som)\.[a-z0-9]+$/i);
     return m ? { ficheiro: n, id: m[1].toLowerCase(), tipo: m[2].toLowerCase() } : { ficheiro: n, erro: true };
   });
 }
 
-function tratar({ ficheiro, id, tipo }) {
-  const ent = path.join('gravacoes', 'por-tratar', ficheiro);
+function tratar({ ficheiro, id, tipo }, refazer) {
+  const ent = path.join('gravacoes', refazer ? 'tratadas' : 'por-tratar', ficheiro);
   const tmp = fs.mkdtempSync(path.join(require('os').tmpdir(), 'voz-'));
   const limpo = path.join(tmp, 'limpo.wav'), cortado = path.join(tmp, 'cortado.wav');
   // 1. Limpeza (a 48 kHz, que é o que o RNNoise espera)
@@ -82,22 +89,35 @@ function tratar({ ficheiro, id, tipo }) {
     `atrim=start=${ini.toFixed(3)}:end=${fim.toFixed(3)},asetpts=PTS-STARTPTS,acompressor=threshold=-22dB:ratio=3:attack=5:release=90:makeup=2,` +
     `afade=t=in:d=0.015,afade=t=out:st=${Math.max(0, dur - 0.08).toFixed(3)}:d=0.08`,
     '-c:a', 'pcm_s16le', cortado]);
-  // 4. Volume: pico a −1 dB
-  const pico = +((medir(cortado, 'volumedetect').match(/max_volume: (-?[\d.]+) dB/) || [, '0'])[1]);
-  const ganho = (-1 - pico).toFixed(1);
+  // 4. Volume: igualar o que se ouve (LUFS) com limitador; o limitador baixa um pouco o volume, por isso mede-se outra vez e acerta-se
   const destino = TIPOS[tipo](id);
   fs.mkdirSync(path.join(RAIZ, path.dirname(destino)), { recursive: true });
-  ff(['-i', cortado, '-af', `volume=${ganho}dB`, '-ar', '44100', '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '96k', destino]);
+  const igualado = path.join(tmp, 'igualado.wav');
+  let ganho = ALVO_LUFS - lufs(cortado);
+  if (!isFinite(ganho)) throw new Error('não consegui medir o volume');
+  for (let i = 0; i < 3; i++) {
+    ff(['-i', cortado, '-af', `volume=${ganho.toFixed(2)}dB,alimiter=limit=${LIMITE}:attack=3:release=60:level=disabled`, '-c:a', 'pcm_s16le', igualado]);
+    const erro = ALVO_LUFS - lufs(igualado);
+    if (Math.abs(erro) < .3) break;
+    ganho += erro;
+  }
+  const comPorta = path.join(tmp, 'porta.wav');
+  ff(['-i', igualado, '-af', 'agate=threshold=0.01:ratio=4:range=0.063:attack=3:release=120:knee=4', '-c:a', 'pcm_s16le', comPorta]);
+  ff(['-i', comPorta, '-ar', '44100', '-ac', '1', '-c:a', 'libmp3lame', '-b:a', '96k', destino]);
+  ganho = ganho.toFixed(1);
   // 5. Sílabas (só para os sons do animal): troços com voz no ficheiro final, para a boca abrir em sincronia
   let silabas = null;
   if (tipo === 'som') silabas = trocosDeVoz(destino, -30, 0.06).map(([a, b]) => [+a.toFixed(2), +(b - a).toFixed(2)]);
   fs.rmSync(tmp, { recursive: true, force: true });
-  fs.mkdirSync(TRATADAS, { recursive: true });
-  fs.renameSync(path.join(POR_TRATAR, ficheiro), path.join(TRATADAS, ficheiro));
-  return { destino, dur: duracao(destino), ganho, silabas };
+  if (!refazer) {
+    fs.mkdirSync(TRATADAS, { recursive: true });
+    fs.renameSync(path.join(POR_TRATAR, ficheiro), path.join(TRATADAS, ficheiro));
+  }
+  return { destino, dur: duracao(destino), ganho, lufs: lufs(destino), silabas };
 }
 
-const lista = listar();
+const refazer = process.argv.includes('--refazer');
+const lista = listar(refazer ? TRATADAS : POR_TRATAR);
 if (process.argv.includes('--ver')) {
   if (!lista.length) console.log('Nada por tratar em gravacoes/por-tratar/.');
   for (const f of lista) console.log(f.erro ? `?  ${f.ficheiro} (nome não reconhecido: usa <id>-nome ou <id>-som)` : `→  ${f.ficheiro}  (${f.id}, ${f.tipo})`);
@@ -109,12 +129,12 @@ let falhas = 0;
 for (const f of lista) {
   if (f.erro) { console.log(`IGNORADO  ${f.ficheiro}: nome não reconhecido (usa <id>-nome ou <id>-som)`); falhas++; continue; }
   try {
-    const r = tratar(f);
+    const r = tratar(f, refazer);
     if (r.silabas) silabas[f.id] = r.silabas;
-    console.log(`OK  ${f.ficheiro} → ${r.destino}  (${r.dur.toFixed(2)} s, ganho ${r.ganho} dB${r.silabas ? ', sílabas ' + JSON.stringify(r.silabas) : ''})`);
+    console.log(`OK  ${f.ficheiro} → ${r.destino}  (${r.dur.toFixed(2)} s, ganho ${r.ganho} dB, ${r.lufs.toFixed(1)} LUFS${r.silabas ? ', sílabas ' + JSON.stringify(r.silabas) : ''})`);
   } catch (e) { console.log(`ERRO  ${f.ficheiro}: ${e.message.split('\n')[0]}`); falhas++; }
 }
-if (!lista.length) console.log('Nada por tratar em gravacoes/por-tratar/.');
+if (!lista.length) console.log(refazer ? 'Não há nada em gravacoes/tratadas/.' : 'Nada por tratar em gravacoes/por-tratar/.');
 fs.writeFileSync(SILABAS, JSON.stringify(Object.fromEntries(Object.entries(silabas).sort()), null, 1) + '\n');
 if (lista.length) console.log('\nA seguir: node ferramentas/gerar-creditos.js && node ferramentas/gerar-sw.js && node ferramentas/verificar.js');
 process.exit(falhas ? 1 : 0);
