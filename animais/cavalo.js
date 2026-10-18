@@ -1476,27 +1476,58 @@ MODULOS.cavalo = (() => {
       modo = 'fora';
     }
 
-    /* --- som: «iiihihi» — levanta a cabeça, abre a boca por sílaba e mostra os dentes --- */
-    function* somBoca(ms, silabas) {
-      let lista = Array.isArray(silabas) && silabas.length ? silabas : null;
-      if (!lista) { const s = ms / 1000; lista = [[0, s * .34], [s * .42, s * .14], [s * .6, s * .14], [s * .78, s * .18]]; }
-      const fim = Math.max(...lista.map(([a, d]) => a + Math.max(d, .14))) * 1000;
-      impulso('crina', 8, 600, 'mola');
-      yield* durante(fim + 320, (u, t) => {
-        const ts = t / 1000;
-        P.somN = t < 180 ? esai(t / 180) : t > fim ? 1 - eseno(limita((t - fim) / 320, 0, 1)) : 1;
-        let b = 0, r = 0;
-        lista.forEach(([a, d], k) => {
-          const v = (ts - a) / Math.max(d, .14);
-          if (v < 0 || v > 1) return;
-          const ab = v < .15 ? esai(v / .15) : v > .8 ? 1 - eseno((v - .8) / .2) : 1;
-          b = Math.max(b, (k ? .8 : 1) * ab);
-          r += (k % 2 ? -1 : 1) * 6 * Math.sin(v * PI) + (k === 0 ? 3 * Math.sin(v * PI * 6) : 0);
-        });
-        P.somB = b; P.somR = r;
+    /* --- som: o trote dos cascos («pocotó»). Cada batida do som é um casco a pousar: fora, o cavalo trota no sítio
+           aos pares diagonais (fD+tE, fE+tD) e a cabeça acena a cada batida; com a cabeça por cima da meia-porta, só acena a cabeça --- */
+    function batidas(ms, silabas) {             // instantes (ms) em que os cascos batem no chão
+      if (Array.isArray(silabas) && silabas.length) return silabas.map(([a]) => a * 1000);
+      const k = Math.max(2, Math.round(ms / 700));
+      return Array.from({ length: k }, (_, i) => (i + .3) * ms / k);
+    }
+    // aceno da cabeça (somN < 0 baixa-a): desce nos 90 ms antes da batida e volta devagar
+    const acenoEm = (t, L, amp) => L.reduce((m, b) => { const x = t - b; return Math.min(m, x < -90 ? 0 : x < 0 ? -amp * esai((x + 90) / 90) : -amp * Math.exp(-x / 140)); }, 0);
+    function* acenar(L) {
+      const fimT = L[L.length - 1] + 500;
+      yield* durante(fimT, (u, t) => { P.somN = acenoEm(t, L, .4); });
+      P.somN = 0;
+    }
+    function* trotarNoSitio(L0) {
+      reagindo = true;
+      let t = 0, dt = 0;
+      const prep = juntos(recomporPes(140), tw(Object.assign({}, CORPO0, { nAw: 0, crinaAb: 0, orelhas: 14, feliz: .5, olhos: 1, boca: 0 }), 160, esai));
+      for (let r = prep.next(0); !r.done; r = prep.next(dt)) { dt = yield; t += dt; }
+      // cada passo pousa numa batida; os passos de um par nunca se sobrepõem e o primeiro começa depois de recompor
+      const passos = [];
+      L0.forEach((b, k) => {
+        const ant = passos[k - 1], ant2 = passos[k - 2];
+        const L = Math.max(b, t + 140, ant ? ant.L + 120 : 0);
+        const D = Math.min(240, L - Math.max(t, ant2 ? ant2.L + 40 : 0));
+        passos.push({ L, D, par: (k % 2 ? ['fE', 'tD'] : ['fD', 'tE']).map(peDe), feito: false });
       });
-      P.somB = 0; P.somR = 0; P.somN = 0;
-      soltarBafo(2);
+      const L = passos.map(p => p.L), fimT = L[L.length - 1] + 420;
+      const t0 = t;
+      lancar('boca', acenar(L.map(b => b - t0)));   // a cabeça acena noutra faixa (não fica a meio se o corpo for interrompido)
+      let bateu = -1e9;
+      while (t < fimT) {
+        for (const f of pes) { f.y = 0; f.inc = 0; }
+        for (const p of passos) {
+          const v = (t - (p.L - p.D)) / p.D;
+          if (v >= 0 && v < 1) {
+            const h = v < .55 ? esai(v / .55) : 1 - eentra((v - .55) / .45);   // sobe depressa e bate no chão
+            for (const f of p.par) { f.y = h * 30 * ESC; f.inc = -h * 30; }
+          }
+          if (!p.feito && t >= p.L) {
+            p.feito = true; bateu = p.L;
+            for (const f of p.par) soltarPo(f.x, CHAO + KZ * f.z - 2, 1, .6);
+            impulso('cabR', 2, 160); impulso('crina', 5, 400, 'mola');
+          }
+        }
+        const k = t >= bateu ? Math.exp(-(t - bateu) / 110) : 0;
+        P.alt = -4 * k;                          // o corpo assenta um pouco a cada batida
+        dt = yield; t += dt;
+      }
+      for (const f of pes) { f.y = 0; f.inc = 0; }
+      P.alt = 0;
+      yield* tw({ orelhas: 0, feliz: 0 }, 300);
     }
 
     /* --- cenário vivo e acontecimentos raros --- */
@@ -1639,7 +1670,9 @@ MODULOS.cavalo = (() => {
       },
       fazerSom(ms, silabas) {
         if (!vivo) return;
-        lancar('boca', somBoca(limita(ms || 1200, 300, 3000), silabas));
+        const L = batidas(limita(ms || 1200, 300, 4000), silabas);
+        if (modo === 'fora') lancar('corpo', trotarNoSitio(L), () => { reagindo = false; lancar('corpo', cicloFora()); });
+        else lancar('boca', acenar(L));
         impulso('flick', 24, 600, 'onda');
       },
       irAoHabitat() {

@@ -147,6 +147,7 @@ Regras do contrato:
 | Pousar num poleiro | Pau que baixa e baloiça com mola; pés e corpo leem a altura do pau a cada quadro; dedos desenhados por cima do pau |
 | Pose de cantar/relinchar | Somada à parte (`canto` 0–1, faixa própria) para não lutar com os comportamentos; não inclinar a cabeça demasiado para cima (de frente esconde a cara) |
 | Entrar de frente por uma porta (cavalo) | Recortar só pela abertura, alargada até aos cascos; sombra do interior por cima do corpo, mais escura quanto mais fundo |
+| Som de cascos («pocotó»: cavalo, zebra) | Sem boca: cada batida (início da sílaba) é um casco a pousar; trote no sítio aos pares diagonais na faixa do corpo (recompor os pés primeiro; o casco sobe depressa e bate no chão), corpo assenta um pouco a cada batida; o aceno da cabeça vai noutra faixa para não ficar a meio se o corpo for interrompido. No habitat (deitado, atrás de uma porta) só acena a cabeça |
 | Cabeça de fora por cima de uma meia-porta | Cópia da meia-porta no grupo do animal, entre corpo e pescoço |
 | Cara que se esconde de costas | Só quando sen(rumo) < −0,35; antes disso aparece o «olho fantasma» |
 | Perfil do tronco quando o animal está de frente | Esbater com `opacity` abaixo de \|cos\| 0,38 e esconder a cauda, senão nasce um «pau» por cima |
@@ -226,7 +227,7 @@ Estilo: **boneco** (cartoon, ternurento, para uma criança de 2–4 anos), mas *
 
 **Reação ao toque (`reagir`)**
 - Alegria visível em 100 ms: orelhas para cima, olhos maiores ou fechados de contente, cauda rápida, pequeno salto ou abanão.
-- `fazerSom(ms, silabas)`: a boca abre uma vez por sílaba, no início e com a duração de cada uma; a cabeça acompanha (ex.: «ão ão» = duas aberturas com um impulso da cabeça). Sem `silabas` (som carregado pelos pais), distribuir aberturas pelos `ms`.
+- `fazerSom(ms, silabas)`: a boca abre uma vez por sílaba, no início e com a duração de cada uma; a cabeça acompanha (ex.: «ão ão» = duas aberturas com um impulso da cabeça). Sem `silabas` (som carregado pelos pais), distribuir aberturas pelos `ms`. Exceção: se a onomatopeia é um som de patas («pocotó»), a boca não abre — mexem as patas (ver tabela de técnicas em §3).
 
 **Ida ao habitat (`irAoHabitat` / `voltar`)**
 - Duração: ida entre 2 e 4 s; volta entre 1,5 e 3 s. Movimento fluido do princípio ao fim, com o andar/salto completo.
