@@ -126,16 +126,16 @@ MODULOS.terra = (() => {
   const FORMIGAS = [[1214, 694], [1240, 706], [1268, 724], [1300, 728], [1326, 744], [1340, 760]];
   // rebentos: na beira da frente (ligados às sementes do corte) e mais atrás na leira
   const REBENTOS = [
-    { x: 588, v: 0, k: 1.3, g: 1, h: 1, sem: 0 }, { x: 872, v: 0, k: 1.3, g: 0, h: .75, sem: 1 }, { x: 1064, v: 0, k: 1.25, g: 0, h: .5, sem: 2 },
-    { x: 668, v: .62, k: .85, g: 1, h: .9, sem: -1 }, { x: 960, v: .7, k: .8, g: 0, h: .7, sem: -1 }, { x: 776, v: .36, k: 1, g: 1, h: .85, sem: -1 }
+    { x: 588, v: 0, k: 1.5, g: 1, h: 1, sem: 0 }, { x: 872, v: 0, k: 1.5, g: 0, h: .75, sem: 1 }, { x: 1064, v: 0, k: 1.45, g: 0, h: .5, sem: 2 },
+    { x: 668, v: .62, k: 1.05, g: 1, h: .9, sem: -1 }, { x: 960, v: .7, k: 1, g: 0, h: .7, sem: -1 }, { x: 776, v: .36, k: 1.2, g: 1, h: .85, sem: -1 }
   ];
   // buracos das minhocas à superfície
   const BURACO_P = { x: 724, v: .44 }, BURACO_G = { x: 912, v: .2 };
   // torrões que mexem (dois rolam pelas pontas, todos saltam)
   const TORROES = [
-    { x: 500, v: .46, r: 13, rolo: [[500, 0], [462, 6], [430, 22], [414, 0]] },
-    { x: 1098, v: .5, r: 12, rolo: [[1098, 0], [1136, 6], [1168, 22], [1186, 0]] },
-    { x: 830, v: .66, r: 11, rolo: null }
+    { x: 556, v: .5, r: 18, rolo: [[556, 0], [538, 6], [516, 18], [500, 0]] },
+    { x: 1044, v: .56, r: 17, rolo: [[1044, 0], [1066, 8], [1090, 24], [1104, 0]] },
+    { x: 830, v: .66, r: 15, rolo: null }
   ];
   // pá e pisco
   const PA = { x: 1142, v: .45, topo: 432 };
@@ -227,7 +227,7 @@ MODULOS.terra = (() => {
     <linearGradient id="terra-ferro" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#DCE0E2"/><stop offset=".5" stop-color="#9AA2A8"/><stop offset="1" stop-color="#5E666C"/></linearGradient>
     <radialGradient id="terra-toupeira" cx=".42" cy=".28" r=".8"><stop offset="0" stop-color="#77717F"/><stop offset=".55" stop-color="#433D4A"/><stop offset="1" stop-color="#25212A"/></radialGradient>
     <radialGradient id="terra-melro" cx=".42" cy=".3" r=".8"><stop offset="0" stop-color="#52525C"/><stop offset=".55" stop-color="#202026"/><stop offset="1" stop-color="#0C0C10"/></radialGradient>
-    <radialGradient id="terra-escaravelho" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#5A6AB8"/><stop offset=".5" stop-color="#2E2A5A"/><stop offset="1" stop-color="#14102A"/></radialGradient>
+    <radialGradient id="terra-escaravelho" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#B8F07A"/><stop offset=".45" stop-color="#3EA04A"/><stop offset="1" stop-color="#14502A"/></radialGradient>
     <radialGradient id="terra-concha" cx=".36" cy=".34" r=".72"><stop offset="0" stop-color="#F6DCA4"/><stop offset=".55" stop-color="#C8904E"/><stop offset="1" stop-color="#7E4E24"/></radialGradient>
     <radialGradient id="terra-montinho" cx=".4" cy=".25" r=".85"><stop offset="0" stop-color="#7A5232"/><stop offset=".55" stop-color="#4E301A"/><stop offset="1" stop-color="#2E1C0E"/></radialGradient>
     <radialGradient id="terra-camara" cx=".5" cy=".62" r=".6"><stop offset="0" stop-color="#3A2414"/><stop offset="1" stop-color="#1A0E06"/></radialGradient>
@@ -439,13 +439,13 @@ MODULOS.terra = (() => {
   function carrinhoSVG() {
     const r = semente(43);
     let migas = '';
-    for (let i = 0; i < 26; i++) migas += `M${n(1338 + r() * 150)},${n(560 + r() * 22)}h.01`;
+    for (let i = 0; i < 26; i++) migas += `M${n(1350 + r() * 110)},${n(540 + r() * 26)}h.01`;
     return `<g>
       <ellipse cx="1430" cy="664" rx="150" ry="13" fill="url(#terra-sombra)"/>
       <path d="M1470,622 L1486,664 M1430,622 L1418,664" stroke="#3A4A3E" stroke-width="6" stroke-linecap="round"/>
       <path d="M1360,620 L1590,592" stroke="#7A5230" stroke-width="9" stroke-linecap="round"/>
-      <path d="M1340,574 C1380,548 1460,544 1508,560 C1500,566 1360,580 1340,574 Z" fill="#4E301A"/>
-      <path d="M1384,556 C1396,532 1430,530 1440,548 L1446,560 L1384,566 Z" fill="#C8B086" stroke="#8A7450" stroke-width="1.4"/><path d="M1398,546 q10,-6 22,0" stroke="#8A7450" stroke-width="1.2" fill="none"/>
+      <path d="M1332,572 C1350,540 1400,524 1450,528 C1486,530 1510,546 1516,562 C1460,570 1380,576 1332,572 Z" fill="#4E301A" stroke="#24140A" stroke-width="1.6"/><path d="M1360,548 C1390,532 1430,530 1460,536" stroke="#8A6040" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+      <path d="M1460,540 C1470,516 1500,512 1510,530 L1516,560 L1462,562 Z" fill="#C8B086" stroke="#8A7450" stroke-width="1.4"/><path d="M1472,530 q10,-6 22,0" stroke="#8A7450" stroke-width="1.2" fill="none"/>
       <path d="${migas}" stroke="#7A5232" stroke-width="3" stroke-linecap="round"/>
       <path d="M1326,568 L1520,560 L1494,626 L1358,630 Z" fill="url(#terra-metal)" stroke="#1E3A28" stroke-width="2" stroke-linejoin="round"/>
       <path d="M1330,572 L1516,564" stroke="#9AD0A0" stroke-width="2.6" opacity=".7" stroke-linecap="round"/>
@@ -525,20 +525,20 @@ MODULOS.terra = (() => {
     </g>`;
   }
   function paSVG() {
-    const bx = PA.x, by = sup(PA.x, PA.v), tx = PA.x + 18, ty = PA.topo;
+    const bx = PA.x, by = sup(PA.x, PA.v), tx = PA.x + 6, ty = PA.topo;
     const r = semente(77);
     let migas = '';
     for (let i = 0; i < 10; i++) migas += `M${n(bx - 22 + r() * 44)},${n(by - 2 + r() * 8)}h.01`;
     return `<g>
       <ellipse cx="${bx + 20}" cy="${n(by + 4)}" rx="30" ry="7" fill="#140A04" opacity=".35"/>
-      <g transform="rotate(${n(Math.atan2(18, by - 50 - PA.topo - 22) / RAD)},${bx},${n(by)})">
+      <g>
       <path d="M${bx - 18},${n(by - 34)} Q${bx - 18},${n(by - 42)} ${bx - 8},${n(by - 42)} L${bx + 8},${n(by - 42)} Q${bx + 18},${n(by - 42)} ${bx + 18},${n(by - 34)} L${bx + 16},${n(by + 6)} L${bx - 16},${n(by + 6)} Z" fill="url(#terra-ferro)" stroke="#3A3E42" stroke-width="2" stroke-linejoin="round"/>
       <path d="M${bx - 10},${n(by - 34)} L${bx - 9},${n(by - 2)}" stroke="#FFFFFF" stroke-width="3.4" opacity=".6" stroke-linecap="round"/>
       <path d="M${bx + 9},${n(by - 32)} L${bx + 9},${n(by - 4)}" stroke="#4E565C" stroke-width="1.6" opacity=".6" stroke-linecap="round"/>
       <path d="M${bx - 6},${n(by - 41)} L${bx - 4},${n(by - 54)} L${bx + 4},${n(by - 54)} L${bx + 6},${n(by - 41)} Z" fill="#6E767C" stroke="#3A3E42" stroke-width="1.4"/></g>
       <path d="M${bx - 26},${n(by + 6)} C${bx - 22},${n(by - 6)} ${bx - 10},${n(by - 4)} ${bx},${n(by - 2)} C${bx + 10},${n(by - 5)} ${bx + 22},${n(by - 6)} ${bx + 27},${n(by + 6)} Z" fill="#4E301A" stroke="#24140A" stroke-width="1.4"/>
       <path d="${migas}" stroke="#8A6040" stroke-width="3" stroke-linecap="round"/>
-      <path d="M${bx},${n(by - 50)} L${tx},${ty + 22}" stroke="#5E3E22" stroke-width="8" stroke-linecap="round"/>
+      <path d="M${bx},${n(by - 52)} L${tx},${ty + 22}" stroke="#5E3E22" stroke-width="8" stroke-linecap="round"/>
       <path d="M${bx},${n(by - 52)} L${tx},${ty + 22}" stroke="#C8986A" stroke-width="3" stroke-linecap="round" transform="translate(-1.8,0)"/>
       <path d="M${tx - 13},${ty} Q${tx},${ty - 8} ${tx + 13},${ty} L${tx + 3},${ty + 22} L${tx - 3},${ty + 22} Z" fill="none" stroke="#5E3E22" stroke-width="5" stroke-linejoin="round"/>
       <path d="M${tx - 15},${ty} L${tx + 15},${ty}" stroke="#7A5230" stroke-width="6" stroke-linecap="round"/><path d="M${tx - 13},${ty - 1.6} L${tx + 8},${ty - 1.6}" stroke="#D4A474" stroke-width="2" stroke-linecap="round"/>
@@ -733,7 +733,7 @@ MODULOS.terra = (() => {
       <path d="${caules}" stroke="#E8E2B4" stroke-width="3" fill="none" stroke-linecap="round"/>
       ${sementes}
       <path d="${faixa(topo, 5)}" fill="url(#terra-luzCorte)"/>
-      <path d="${linhaF(topo, 5)}L1620,700L-20,700Z" fill="url(#terra-beira)" opacity=".7"/>`;
+      <path d="${linhaF(topo, 5)}L1620,700L-20,700Z" fill="url(#terra-beira)" opacity=".45"/>`;
   }
   // beira do corte: lábio claro e as ervas que pendem por cima (nos lados), em grupos que abanam
   function beiraSVG() {
@@ -815,13 +815,12 @@ MODULOS.terra = (() => {
       <path class="tr-escPernasA" d="M12,-6 L17,-13 L22,-15 M3,7 L4,14 L1,19 M-6,-8 L-11,-14 L-18,-16" stroke="#120E18" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
       <path class="tr-escPernasB" d="M12,6 L17,13 L22,15 M3,-7 L4,-14 L1,-19 M-6,8 L-11,14 L-18,16" stroke="#120E18" stroke-width="2.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
       <path d="M22,-2 q5,-4 10,-9 M22,2 q5,4 10,9" stroke="#120E18" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-      <ellipse cx="20" cy="0" rx="4.6" ry="4.2" fill="#1E1A2A"/>
-      <ellipse cx="13" cy="0" rx="6.4" ry="8" fill="#2A2644" stroke="#0E0A14" stroke-width="1.2"/>
+      <ellipse cx="20" cy="0" rx="4.6" ry="4.2" fill="#1E4A2A"/>
+      <ellipse cx="13" cy="0" rx="6.4" ry="8" fill="#2E8A40" stroke="#0E2A14" stroke-width="1.2"/><path d="M11,-5 C13,-6 15,-5 16,-3" stroke="#D8FFA0" stroke-width="1.4" fill="none" opacity=".6" stroke-linecap="round"/>
       <ellipse cx="-4" cy="0" rx="14" ry="10.5" fill="url(#terra-escaravelho)" stroke="#0E0A14" stroke-width="1.4"/>
       <path d="M8,0 L-18,0" stroke="#0E0A14" stroke-width="1.3"/>
-      <path d="M2,-6.5 C-4,-8.5 -10,-7.5 -14,-4" stroke="#B8C4FF" stroke-width="2.2" fill="none" opacity=".55" stroke-linecap="round"/>
-      <path d="M11,-5 C13,-6 15,-5 16,-3" stroke="#B8C4FF" stroke-width="1.4" fill="none" opacity=".5" stroke-linecap="round"/>
-    </g></g>`;
+      <path d="M2,-6.5 C-4,-8.5 -10,-7.5 -14,-4" stroke="#F0FFC0" stroke-width="2.4" fill="none" opacity=".75" stroke-linecap="round"/>
+          </g></g>`;
   }
   function caracolSVG() {
     return `<path class="tr-rasto" d="" stroke="#EAF2F6" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"/>
@@ -1157,14 +1156,14 @@ MODULOS.terra = (() => {
     /* --- bichos à superfície: escaravelho, caracol, melro --- */
     const bicho = { esc: null, caracol: null, melro: null };
     function poeEscaravelho(x, v, ang, fasePerna) {
-      const y = sup(x, v), k = esc(v) * 1.15;
+      const y = sup(x, v), k = esc(v) * 1.75;
       poe(R.esc, `translate(${n(x)},${n(y - 3 * k)}) scale(${n3(k)},${n3(k * .62)}) rotate(${n(ang)})`);
       const a = 2.6 * Math.sin(fasePerna);
       poe(R.pernasA, `translate(${n(a)},0)`); poe(R.pernasB, `translate(${n(-a)},0)`);
       poe(R.escDentro, `translate(0,${n(.6 * Math.abs(Math.sin(fasePerna)))})`);
     }
     function poeCaracol(x, v, t, estica, op) {
-      const y = sup(x, v), k = esc(v) * 1.1;
+      const y = sup(x, v), k = esc(v) * 1.75;
       poe(R.caracol, `translate(${n(x)},${n(y)}) scale(${n3(k)})`);
       atr(R.caracol, 'opacity', n3(op));
       const e = 1 + .12 * estica;
@@ -1172,11 +1171,11 @@ MODULOS.terra = (() => {
       atr(R.caracolPe, 'd', pe);
       const hx = -24 * e, a1 = -2.1 + .2 * Math.sin(t * 2.1), a2 = -1.7 + .2 * Math.sin(t * 1.7 + 1), L1 = 16 + 2 * Math.sin(t * 3), L2 = 13 + 2 * Math.sin(t * 2.6 + 2);
       const t1 = [hx + Math.cos(a1) * L1, -11 + Math.sin(a1) * L1], t2 = [hx + 6 + Math.cos(a2) * L2, -11 + Math.sin(a2) * L2];
-      atr(R.caracolAnt, 'd', `M${n(hx)},-11 Q${n(hx - 4)},-20 ${n(t1[0])},${n(t1[1])} M${n(hx + 6)},-11 Q${n(hx + 4)},-18 ${n(t2[0])},${n(t2[1])} M${n(hx - 4)},-4 l-6,2 M${n(hx - 2)},-2 l-5,4`);
+      atr(R.caracolAnt, 'd', `M${n(hx)},-11 Q${n(hx - 4)},-20 ${n(t1[0])},${n(t1[1])} M${n(hx + 6)},-11 Q${n(hx + 4)},-18 ${n(t2[0])},${n(t2[1])} M${n(hx - 3)},-6 l-4,-1`);
       atr(R.caracolOlhos, 'd', elip(t1[0], t1[1], 2.6, 2.6) + elip(t2[0], t2[1], 2.2, 2.2));
     }
     // ponta do bico do melro no ecrã (para a minhoca lhe ficar presa)
-    const melro = { x: -100, y: 200, rot: 0, cab: 0, sx: 1, voo: false, asa: 0, k: 1.05 };
+    const melro = { x: -100, y: 200, rot: 0, cab: 0, sx: 1, voo: false, asa: 0, k: 1.3 };
     function bicoMelro() {
       const m = melro, c = Math.cos(m.cab * RAD), s = Math.sin(m.cab * RAD);
       let px = 43 - 14, py = -40 + 34;                    // ponta do bico em volta do pescoço (14,-34)
@@ -1216,7 +1215,7 @@ MODULOS.terra = (() => {
           tr.rot += (x - px) / tr.r / RAD * .8; px = x;
           if (u >= .8 && tr.modo === 'rola') {
             tr.modo = 'desfeito'; tr.espera = aleat(8000, 12000);
-            chuvaMigalhas(x, y + 2, 16, 220, 110);
+            chuvaMigalhas(x, y + 2, 26, 260, 130);
             for (let i = 0; i < 10; i++) migalha(x + aleat(-8, 8), y - aleat(0, 8), aleat(-60, 60), -aleat(20, 120), aleat(1.6, 3.4), Math.min(CHAO - 2, y + aleat(2, 10)), aleat(2600, 4200));
             po(x, y - 4, 8, 30, 900, .6);
           }
@@ -1293,7 +1292,8 @@ MODULOS.terra = (() => {
         const fechados = frente.filter(r => r.gAlvo < .5);
         const rb = fechados.length ? escolhe(fechados) : escolhe(frente);
         rb.gAlvo = 1; rb.vg = 3.2; rb.aberto = 0; rb.boing = 1;
-        rb.h = Math.min(rb.h, .4); rb.hAlvo = 1.15; rb.hv = 9;
+        rb.hAlvo = 1.15; rb.hv = 16;
+        for (const o of rebentos) if (o !== rb) o.boing = Math.max(o.boing, .35);
         chuvaMigalhas(rb.x, rb.y, 26, 460, 140);
         po(rb.x, rb.y - 4, 10, 56, 1000, .8);
         tarefa('reacao', 'rebento', 1500, (u, A) => { A.tremor += .7 * envelope(u, .1); A.agita += .4 * envelope(u, .1); }, () => { rb.hAlvo = 1; });
@@ -1313,7 +1313,7 @@ MODULOS.terra = (() => {
     function piscoSalta() { pisco.tSalto = 0; }
     function piscoOlhaPara(x, y) { pisco.alvo = [x, y]; }
     function atualizarPisco(dt, t) {
-      const p = pisco, px = PA.x + 18, py = PA.topo - 3;
+      const p = pisco, px = PA.x + 6, py = PA.topo - 3;
       // para onde olhar: o acontecimento, um bicho que passa, ou ao acaso pela leira
       let alvo = p.alvo;
       if (!alvo) {
@@ -1544,9 +1544,9 @@ MODULOS.terra = (() => {
         S.cavar += (limita(A.cavar, 0, 1) - S.cavar) * k;
         // a leira «respira» muito pouco e estica para cima no salto
         const sal = S.salto * calma;
-        const tr = `translate(${LCX},660) scale(${n3(1 - .012 * sal)},${n3(1 + .07 * sal + .004 * Math.sin(t * 1.2))}) translate(${-LCX},-660)`;
+        const tr = `translate(${LCX},660) scale(${n3(1 - .015 * sal)},${n3(1 + .12 * sal + .004 * Math.sin(t * 1.2))}) translate(${-LCX},-660)`;
         poe(R.sup, tr); poe(R.vivos, tr);
-        poe(R.terra, `translate(0,${n(-5 * Math.max(0, sal))})`);
+        poe(R.terra, `translate(0,${n(-8 * Math.max(0, sal))})`);
         migasSoltas(dt);
         atualizarMinhocas(dt);
         // minhoca pequena (variação) e minhoca grande (reação) à superfície
