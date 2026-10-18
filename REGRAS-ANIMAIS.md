@@ -322,3 +322,18 @@ O grupo «Elementos» usa o mesmo motor, o mesmo contrato (§2), as mesmas medid
 | Tamanho | 300–420 de altura | O elemento ocupa a parte principal da área visível (≈ 400–600 de altura ou de largura) |
 
 Lista de verificação: reconhece-se à primeira; nunca está parado; ≥ 3 variações ociosas; ≥ 2 reações ao toque; cenário com 3 planos, ≥ 4 coisas a mexer e 1 acontecimento raro; `reagir()` 10 vezes depressa não estraga nada; `destruir()` a qualquer momento sem erros; 0 erros no `verificar.js`.
+
+Aprendido com o fogo e o ar:
+
+| Problema | Solução |
+|---|---|
+| Chamas, água, fitas de vento com muitas formas | Um `path` por camada com vários subcaminhos, refeito a cada quadro; partículas pequenas num `path` por cor. O fogo ficou com < 500 elementos |
+| Brilho à volta de uma forma | Cópias do mesmo `path`, um pouco maiores, só com preenchimento e opacidade baixa. Um contorno largo semitransparente num `path` com subcaminhos desenha também as linhas de dentro («tubos») |
+| Elemento sem forma própria (ar) | Mostrar o que ele faz: uma intensidade global que varia devagar + rajadas que viajam em x; cada coisa do cenário lê `vento(x)` |
+| Toques seguidos | Efeitos de toque como envelopes que se somam, com limites; apagam-se sozinhos, por isso nunca deixam nada partido |
+| Volume com coisas à volta (redemoinho) | Separar em pedaço da frente e de trás; as partículas mudam de grupo quando passam para trás |
+| Quem «nota» o acontecimento raro | Um bicho do cenário (o mocho no fogo) que segue o acontecimento com os olhos e reage ao toque |
+| Zona do nome | Na reação, o elemento pode entrar por instantes (≈ 1 s) na zona do nome, por trás do texto |
+| Zona de toque | Qualquer toque no cenário já chama `reagir()`; um retângulo invisível ≥ 300 × 300 no grupo do elemento chega |
+| Bordas em 4:3 | Nada importante a x > 1340 ou x < 260 (fica cortado ou por baixo das setas no tablet) |
+| Agentes em paralelo | Cada agente usa a sua porta e uma subpasta própria (com o nome do elemento) no diretório temporário |
