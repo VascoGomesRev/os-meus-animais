@@ -3,7 +3,7 @@
    a partir daí, serve-os da cache (funciona sem internet). Cada ficheiro tem uma revisão (hash);
    numa versão nova só se descarregam os ficheiros cuja revisão mudou. */
 'use strict';
-var VERSAO = "2026-10-18-ced45678";
+var VERSAO = "2026-10-18-fe76dd94";
 var CACHE = 'animais-precache';
 var FICHEIROS = [
  {
@@ -12,7 +12,7 @@ var FICHEIROS = [
  },
  {
   "u": "animais.js",
-  "h": "08142c08"
+  "h": "7969f338"
  },
  {
   "u": "animais/abelha.js",
@@ -131,12 +131,28 @@ var FICHEIROS = [
   "h": "d8505436"
  },
  {
+  "u": "sons/abelha.mp3",
+  "h": "c0a71058"
+ },
+ {
   "u": "sons/cao.mp3",
   "h": "e2c9cf77"
  },
  {
+  "u": "sons/cavalo.mp3",
+  "h": "d6a457ee"
+ },
+ {
   "u": "sons/coelho.mp3",
   "h": "e5abb406"
+ },
+ {
+  "u": "sons/elefante.mp3",
+  "h": "6220df9b"
+ },
+ {
+  "u": "sons/galo.mp3",
+  "h": "53d82f39"
  },
  {
   "u": "sons/gato.mp3",
@@ -147,24 +163,72 @@ var FICHEIROS = [
   "h": "df1831cf"
  },
  {
+  "u": "sons/leao.mp3",
+  "h": "417f8135"
+ },
+ {
+  "u": "sons/macaco.mp3",
+  "h": "f2698c60"
+ },
+ {
+  "u": "sons/ovelha.mp3",
+  "h": "94ffc82c"
+ },
+ {
+  "u": "sons/passarinho.mp3",
+  "h": "a9ca321e"
+ },
+ {
+  "u": "sons/pato.mp3",
+  "h": "adf20827"
+ },
+ {
   "u": "sons/peixe.mp3",
   "h": "bba757e1"
  },
  {
-  "u": "sons/raposa.mp3",
-  "h": "5108df0e"
+  "u": "sons/porco.mp3",
+  "h": "88587c8c"
  },
  {
   "u": "sons/sapo.mp3",
   "h": "416942bc"
  },
  {
+  "u": "sons/vaca.mp3",
+  "h": "5648f7b8"
+ },
+ {
+  "u": "sons/zebra.mp3",
+  "h": "d6a457ee"
+ },
+ {
+  "u": "vozes/abelha.mp3",
+  "h": "32c8e329"
+ },
+ {
   "u": "vozes/cao.mp3",
   "h": "2c045154"
  },
  {
+  "u": "vozes/cavalo.mp3",
+  "h": "707d0041"
+ },
+ {
+  "u": "vozes/coala.mp3",
+  "h": "27cd5c4d"
+ },
+ {
   "u": "vozes/coelho.mp3",
   "h": "2fe9b1ef"
+ },
+ {
+  "u": "vozes/elefante.mp3",
+  "h": "158c9664"
+ },
+ {
+  "u": "vozes/galo.mp3",
+  "h": "62fa8d59"
  },
  {
   "u": "vozes/gato.mp3",
@@ -175,8 +239,32 @@ var FICHEIROS = [
   "h": "11a778d8"
  },
  {
+  "u": "vozes/leao.mp3",
+  "h": "eed736ef"
+ },
+ {
+  "u": "vozes/macaco.mp3",
+  "h": "1c924247"
+ },
+ {
+  "u": "vozes/ovelha.mp3",
+  "h": "59b24c7c"
+ },
+ {
+  "u": "vozes/passarinho.mp3",
+  "h": "c77d72c2"
+ },
+ {
+  "u": "vozes/pato.mp3",
+  "h": "883f419a"
+ },
+ {
   "u": "vozes/peixe.mp3",
   "h": "43d7d2c8"
+ },
+ {
+  "u": "vozes/porco.mp3",
+  "h": "cafa53f8"
  },
  {
   "u": "vozes/raposa.mp3",
@@ -187,8 +275,16 @@ var FICHEIROS = [
   "h": "d2f99249"
  },
  {
+  "u": "vozes/vaca.mp3",
+  "h": "0f7dfc76"
+ },
+ {
+  "u": "vozes/zebra.mp3",
+  "h": "b5009300"
+ },
+ {
   "u": "gerado.js",
-  "h": "44e3253b"
+  "h": "36523f83"
  }
 ];
 
