@@ -165,14 +165,16 @@ function mostrar(dir) {
 }
 
 /* ---------- Habitat: o animal vai lá, fica, e volta (sozinho ao fim de um tempo, ou quando se toca outra vez).
-   O habitat não tem nome escrito nem dito: só o animal tem nome. ---------- */
+   O habitat não tem nome escrito nem dito: só o animal tem nome. Pelo caminho faz o seu som («quá quá»). ---------- */
 async function irAoHabitat() {
   if (!controlo || estado !== 'fora') return;
   const c = controlo;
   pararSom();
   estado = 'indo';
   $('#nome').classList.remove('ver');
-  try { await c.irAoHabitat(); } catch (e) { console.error(e); }
+  const indo = (async () => c.irAoHabitat())();   // um erro síncrono também cai no catch de baixo
+  somAoCaminhar(c);
+  try { await indo; } catch (e) { console.error(e); }
   if (c !== controlo) return;
   estado = 'dentro';
   agendarVolta();
@@ -254,8 +256,17 @@ function pararSom() {
   if (audioAtual) { try { audioAtual.pause(); } catch (e) {} audioAtual = null; }
   ocupado = false;
 }
+async function somAoCaminhar(c) {          // o som do animal enquanto vai para o habitat (sem dizer o nome)
+  const meu = sequencia, a = ordem[pos], s = urls[a.id + ':som'];
+  if (!a.som || !s) return;
+  await espera(250);                       // deixa-o arrancar primeiro
+  if (meu !== sequencia || c !== controlo) return;
+  const silabas = proprios[a.id + ':som'] ? null : EMBUTIDO.silabas[a.id] || null;
+  await tocar(s, ms => { if (meu === sequencia) try { c.fazerSom(ms, silabas); } catch (e) { console.error(e); } });
+}
 async function tocarAnimal() {
   if (ocupado || !controlo || estado === 'indo' || estado === 'voltando') return;
+  if (audioAtual) { try { audioAtual.pause(); } catch (e) {} audioAtual = null; }   // o som do caminho ainda a tocar
   ocupado = true;
   const meu = ++sequencia, a = ordem[pos], c = controlo, n = $('#nome');
   if (estado === 'dentro') pararVolta();
